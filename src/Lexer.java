@@ -1,8 +1,7 @@
 import javafx.util.Pair;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 
 /*
     Keywords:
@@ -72,9 +71,9 @@ public class Lexer {
         BufferedReader in = Files.newBufferedReader(Path.of(sourcePath));
 
         int c, pos = 1, line = 1;
-        Token tok = new Token("ERROR", TokenType.IDENTIFIER, -1, new Pair<>(0,0));
+        Token tok = new Token("ERROR", TokenType.IDENTIFIER, -1, new Pair<>(0, 0));
 
-        while ( (c = in.read()) != -1) {
+        while ((c = in.read()) != -1) {
             seq.add(tok);
             pos += 1;
         }

@@ -1,8 +1,6 @@
 import javafx.util.Pair;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 enum TokenType {
@@ -15,7 +13,7 @@ public class Token {
     private final String body;
     private final TokenType type;
     private final int code;
-    public static final HashMap<String, Integer> KEYWORD_TABLE = initKwTable();
+    public static final HashMap<String, Integer> KEYWORD_TABLE = initKeywordTable();
     private final Pair<Integer, Integer> position;
 
     Token(String body, TokenType type, int code, Pair<Integer, Integer> position) {
@@ -50,7 +48,7 @@ public class Token {
         }
     }
 
-    private static HashMap<String, Integer> initKwTable() {
+    private static HashMap<String, Integer> initKeywordTable() {
         HashMap<String, Integer> result = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("data/keywords.txt"))) {
             String line;
