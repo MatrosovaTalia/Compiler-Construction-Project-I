@@ -1,0 +1,19 @@
+/*
+    Euclidean algorithm for finding the greatest common divisor (gcd).
+*/
+routine gcd(a: integer, b: integer): integer is
+    while a > 0 and b > 0 loop
+        if a > b then
+            a := a % b
+        else
+            b := b % a
+        end
+    end
+    return a + b
+end
+
+routine main(argc: integer, argv: array[] integer) is 
+    var a: integer is 12
+    var b: integer is 18
+    print(gcd(a, b)) // should print(6)
+end

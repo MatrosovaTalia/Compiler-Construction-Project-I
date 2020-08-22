@@ -1,0 +1,9 @@
+routine sum_n(n:integer):integer is
+	var tmp is 0
+	for i in 1 .. n loop
+		tmp := tmp + i
+	return tmp
+end
+
+var sum_5 is sum_n(5)
+print(sum_5)

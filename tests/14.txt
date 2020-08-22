@@ -1,0 +1,69 @@
+/*
+    This file contains declaration and some methods for a dynamic stack. 
+    Methods are put, which puts an integer on the stack
+    and pop, which removes the item from the stack.
+*/
+type stack is record
+    var min_size is 16
+    var size is 0
+    var list: array[min_size] integer   
+    var full: boolean is false
+    var empty: boolean is true
+end
+
+routine put(a: stack, item: integer) is
+    if not a.full then
+        a.size := a.size + 1
+        a.empty = false
+        a.list[a.size] := item
+        if a.size = a.list.length then
+            a.full := true
+        end
+    else
+        var new: array[a.size*2] integer
+        for i in 1 .. a.size loop
+            new[i] := a.list[i]
+        end
+        a.size := a.size + 1
+        new[a.size] := item
+        a.list := new
+    end
+end
+
+
+routine pop(a: stack): integer is
+    if not a.empty then
+        if a.size = a.list.length then
+           a.full = false
+        end
+        a.size := a.size - 1
+        if size = a.list.length / 2 and size >= a.min_size * 2 then
+            var new: array[a.list.length / 2] integer
+            for i in 1 .. a.size loop
+                new[i] := a.list[i]
+            end
+            a.list = new
+        end
+        if a.size = 0 then
+            a.empty = true
+        end
+        return a.list[a.size]
+    end
+    print(-1)
+    return -1
+end
+
+
+routine main(argc: integer, argv: array[] integer) is 
+    var s: stack
+
+    for i in 1 .. 20 loop
+        put(s, i)
+    end
+    print(s.list)
+    for i in 1 .. 20 loop
+        print(pop(s))
+    end
+
+    // should print smth like 1 2 .. 19 20 20 19 .. 2 1
+end

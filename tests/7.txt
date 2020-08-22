@@ -1,0 +1,12 @@
+var i is 10
+var a is 0
+
+print(a)
+
+while i > 0 loop 
+	a := a + i
+	i := i - 1
+
+end
+
+print(a)

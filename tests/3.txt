@@ -1,0 +1,10 @@
+var a : true
+var c : real
+
+if a then
+	c := 1
+else
+	c := 0
+end
+
+print(c)

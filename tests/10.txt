@@ -1,0 +1,23 @@
+routine fib_n(n:integer):integer is
+    var fib1 is 0
+    var fib2 is 1
+
+    if n = 1 then
+        return 0
+    else 
+        if n = 2 then
+            return 1
+        end
+    end
+
+    for i in 3 .. n loop
+        var tmp is fib2
+        fib2 := fib1 + fib2
+        fib1 := tmp
+    end
+
+    return fib2
+end
+
+var fib_7 is fib_n(7)
+print(fib_7)

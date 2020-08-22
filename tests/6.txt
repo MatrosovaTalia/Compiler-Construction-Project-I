@@ -1,0 +1,12 @@
+routine update(arr : array[], i : integer, value: integer) : integer  is 
+    arr[i] := value
+end
+
+var a : array [5] integer
+
+for i in 0 .. 5 loop
+    a[i] := i
+
+print(a[1])
+update(a, 1, 3)
+print(a[1])

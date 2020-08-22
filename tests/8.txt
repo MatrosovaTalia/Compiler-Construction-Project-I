@@ -1,0 +1,14 @@
+var a is true
+var i is 1
+
+print(i)
+
+while a loop
+	i := i * 2
+
+	if i > 100 then
+		a := false
+	end
+end
+
+print(i)

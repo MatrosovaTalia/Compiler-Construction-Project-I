@@ -1,0 +1,14 @@
+var a is 50
+
+print(a)
+
+while a % 5 = 0 loop
+
+	if a % 2 = 0 then 
+		a := a + 5
+	else 
+        a := a + 3
+	end
+end
+
+print(a)

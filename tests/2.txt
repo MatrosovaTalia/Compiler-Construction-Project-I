@@ -1,0 +1,6 @@
+var a is 1
+for i in 1 .. 5 loop
+	a := a + i
+end
+
+print(a)

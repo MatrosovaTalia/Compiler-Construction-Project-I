@@ -1,0 +1,12 @@
+type Student is record 
+    var marks : array [5] integer
+    var phone_number : integer
+end
+
+var Bob : record Student;
+Bob.marks := [5, 5, 5, 5, 5];
+Bob.phone_number := 79382132312;
+
+print(Bob.marks)
+print(Bob.phone_number)
+

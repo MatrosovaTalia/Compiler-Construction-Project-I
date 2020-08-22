@@ -1,0 +1,10 @@
+routine factorial(i: integer):integer is
+    if i = 0 or i = 1 then 
+        return 1
+    end
+
+    return factorial(i-1)*i
+end
+
+var fact_5 is factorial(5)
+print(fact_5)

@@ -1,0 +1,30 @@
+/*
+    Some declarations
+*/
+
+var x: real; var y: real; var f: boolean
+
+var not_initialized: integer
+var initialized_implicit is 7           // implicit integer
+var initialized_explicit: real is 22    // explicit integer
+
+type size is integer
+type flag is boolean
+type vector is array[max_size] integer
+
+type array_list is record
+    var min_size is 16
+    var length: integer is min_size
+    var list: array[min_size] integer   
+    var full: boolean is false
+end
+
+var a: integer is 16
+var b: integer is 12
+var temp: integer
+
+// swapping values of two variables
+temp := a
+a := b
+b := temp
+print(a, b)    // should print 12 16
