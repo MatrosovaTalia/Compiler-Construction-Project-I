@@ -311,14 +311,14 @@ public class Lexer {
             // this clause handles:
             // other non-meaningful characters
             else {
-                c = in.read();
                 if (c == '\n') {
                     pos = 0;
                     line += 1;
                     seq.add(new Token("\n", TokenType.SEPARATOR, c * 10, new Pair<>(line, pos)));
-                } else if (c != -1) {
+                } else {
                     pos += 1;
                 }
+                c = in.read();
             }
         }
 
