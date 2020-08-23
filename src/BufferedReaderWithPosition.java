@@ -15,7 +15,7 @@ public class BufferedReaderWithPosition extends BufferedReader {
             line += 1;
             pos = 0;
         }
-        else {
+        else if (c != -1) {
             pos += 1;
         }
         return c;
