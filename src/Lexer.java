@@ -80,7 +80,7 @@ public class Lexer {
             // this clause handles:
             // 1. identifiers
             // 2. keywords
-            if (Character.isLetter(c)) {
+            if (Character.isLetter(c) || c == '_') {
 
                 while ((Character.isLetterOrDigit(c) || c == '_') && c != -1) {
                     buffer.append((char) c);
@@ -149,7 +149,7 @@ public class Lexer {
                 }
                 // standalone '.'
                 else {
-                    seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos() - 1)));
+                    seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     c = nextChar;
                 }
@@ -181,7 +181,7 @@ public class Lexer {
                 // operators '>', '<', ':'
                 else {
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos() - 1)));
+                            TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     c = nextChar;
                 }

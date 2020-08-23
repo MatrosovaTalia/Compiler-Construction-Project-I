@@ -12,6 +12,8 @@ type size is integer
 type flag is boolean
 type vector is array[max_size] integer
 var stoopid is .123
+var _123123 is 2312
+var _ is .0
 
 type array_list is record
     var min_size is 16
