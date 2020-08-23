@@ -11,6 +11,7 @@ var initialized_explicit: real is 22    // explicit integer
 type size is integer
 type flag is boolean
 type vector is array[max_size] integer
+var stoopid is .123
 
 type array_list is record
     var min_size is 16

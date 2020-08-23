@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 
 enum TokenType {
-    KEYWORD, IDENTIFIER, INTEGER, REAL, SYMBOLIC
+    KEYWORD, IDENTIFIER, INTEGER, REAL, SYMBOLIC, SEPARATOR
 }
 
 
@@ -66,6 +66,7 @@ public class Token {
     @Override
     public String toString() {
         return body;
+//        return "{'" + (body.equals("\n") ? "\\n" : body) + "' :" + type.toString() + "}";
     }
 
 }
