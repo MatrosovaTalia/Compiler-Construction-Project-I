@@ -69,9 +69,8 @@ public class Lexer {
     public TokenSequence lex(String sourcePath) throws IOException {
         TokenSequence seq = new TokenSequence();
         StringBuilder buffer = new StringBuilder();
-        BufferedReader in = Files.newBufferedReader(Path.of(sourcePath));
+        BufferedReaderWithPosition in = new BufferedReaderWithPosition(new FileReader(sourcePath));
 
-        int pos = 1, line = 1;
         int c = in.read();
 
         while (c != -1) {
@@ -88,19 +87,15 @@ public class Lexer {
                 while ((Character.isLetterOrDigit(c) || c == '_') && c != -1) {
                     buffer.append((char) c);
                     c = in.read();
-                    pos += 1;
                 }
-                if (c == '\n') {
-                    line += 1;
-                    pos = 0;
-                }
+
                 String st = buffer.toString();
                 Integer code;
 
                 if ((code = Token.KEYWORD_TABLE.get(st)) != null) {
-                    seq.add(new Token(st, TokenType.KEYWORD, code, new Pair<>(line, pos)));
+                    seq.add(new Token(st, TokenType.KEYWORD, code, new Pair<>(in.line(), in.pos())));
                 } else {
-                    seq.add(new Token(st, TokenType.IDENTIFIER, 100, new Pair<>(line, pos)));
+                    seq.add(new Token(st, TokenType.IDENTIFIER, 100, new Pair<>(in.line(), in.pos())));
                 }
                 buffer.delete(0, buffer.length());
             }
@@ -116,22 +111,13 @@ public class Lexer {
                     }
                     buffer.append((char) c);
                     c = in.read();
-                    pos += 1;
-                }
-                if (c == '\n') {
-                    line += 1;
-                    pos = 0;
                 }
 
                 String st = buffer.toString();
-                if (c == '\n') {
-                    line += 1;
-                    pos = 0;
-                }
                 if (isReal) {
-                    seq.add(new Token(st, TokenType.REAL, 101, new Pair<>(line, pos)));
+                    seq.add(new Token(st, TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
                 } else {
-                    seq.add(new Token(st, TokenType.INTEGER, 102, new Pair<>(line, pos)));
+                    seq.add(new Token(st, TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos())));
                 }
                 buffer.delete(0, buffer.length());
             }
@@ -144,18 +130,11 @@ public class Lexer {
 
                 buffer.append((char) c);
                 int nextChar = in.read();
-                if (nextChar == '\n') {
-                    line += 1;
-                    pos = 0;
-                } else {
-                    pos += 1;
-                }
-
                 // '..' operator
                 if (nextChar == '.') {
                     buffer.append((char) nextChar);
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(line, pos)));
+                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     c = in.read(); // in this case nextChar is already processed,
                     // therefore c gets the value of the next character
@@ -165,19 +144,14 @@ public class Lexer {
                     while (Character.isDigit(nextChar) && nextChar != -1) {
                         buffer.append((char) nextChar);
                         nextChar = in.read();
-                        pos += 1;
                     }
-                    if (nextChar == '\n') {
-                        line += 1;
-                        pos = 0;
-                    }
-                    seq.add(new Token(buffer.toString(), TokenType.REAL, 101, new Pair<>(line, pos)));
+                    seq.add(new Token(buffer.toString(), TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     c = nextChar;
                 }
                 // standalone '.'
                 else {
-                    seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(line, pos - 1)));
+                    seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos() - 1)));
                     buffer.delete(0, buffer.length());
                     c = nextChar;
                 }
@@ -194,12 +168,6 @@ public class Lexer {
 
                 buffer.append((char) c);
                 int nextChar = in.read();
-                if (nextChar == '\n') {
-                    line += 1;
-                    pos = 0;
-                } else {
-                    pos += 1;
-                }
 
                 // operators '>=', '<=' and ':='
                 if (nextChar == '=') {
@@ -207,7 +175,7 @@ public class Lexer {
                     // :=, >=, <=
                     buffer.append((char) nextChar);
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(line, pos)));
+                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
 
                     buffer.delete(0, buffer.length());
                     c = in.read();
@@ -215,7 +183,7 @@ public class Lexer {
                 // operators '>', '<', ':'
                 else {
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c, new Pair<>(line, pos - 1)));
+                            TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos() - 1)));
                     buffer.delete(0, buffer.length());
                     c = nextChar;
                 }
@@ -229,17 +197,11 @@ public class Lexer {
             else if (c == '/') {
                 buffer.append((char) c);
                 int nextChar = in.read();
-                pos += 1;
-                if (nextChar == '\n') {
-                    line += 1;
-                    pos = 0;
-                }
-
                 // operator '/='
                 if (nextChar == '=') {
                     buffer.append((char) nextChar);
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(line, pos)));
+                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     c = in.read();
                 }
@@ -247,7 +209,7 @@ public class Lexer {
                 else if (nextChar == '*') {
                     buffer.append((char) nextChar);
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(line, pos)));
+                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     while (((c = in.read()) != '*' ||
                             (nextChar = in.read()) != '/') &&
@@ -255,17 +217,12 @@ public class Lexer {
                         // do nothing (for now)
                         // we can potentially do something
                         // with comment text in this loop
-                        if (c == '\n') {
-                            line += 1;
-                            pos = 0;
-                        }
-                        pos += 1;
                     }
                     if (c == '*' && nextChar == '/') {
                         buffer.append((char) c);
                         buffer.append((char) nextChar);
                         seq.add(new Token(buffer.toString(),
-                                TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(line, pos)));
+                                TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
                     }
                     buffer.delete(0, buffer.length());
                     c = in.read();
@@ -274,20 +231,19 @@ public class Lexer {
                 else if (nextChar == '/') {
                     buffer.append((char) nextChar);
                     seq.add(new Token(buffer.toString(),
-                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(line, pos)));
+                            TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     while ((c = in.read()) != '\n' && c != -1) {
                         // do nothing (for now)
                         // we can potentially do something
                         // with comment text in this loop
-                        pos += 1;
                     }
                     // when the '\n' or eof is reached, proceed further
                     c = in.read();
                 }
                 // operator '/'
                 else {
-                    seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(line, pos)));
+                    seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos())));
                     buffer.delete(0, buffer.length());
                     c = nextChar;
                 }
@@ -303,20 +259,16 @@ public class Lexer {
                 TokenType type = TokenType.SYMBOLIC;
                 if (c == ';') type = TokenType.SEPARATOR;
                 buffer.append((char) c);
-                seq.add(new Token(buffer.toString(), type, c, new Pair<>(line, pos)));
+                seq.add(new Token(buffer.toString(), type, c, new Pair<>(in.line(), in.pos())));
                 buffer.delete(0, buffer.length());
                 c = in.read();
             }
 
             // this clause handles:
-            // other non-meaningful characters
+            // other characters
             else {
                 if (c == '\n') {
-                    pos = 0;
-                    line += 1;
-                    seq.add(new Token("\n", TokenType.SEPARATOR, c * 10, new Pair<>(line, pos)));
-                } else {
-                    pos += 1;
+                    seq.add(new Token("\n", TokenType.SEPARATOR, c * 10, new Pair<>(in.line(), in.pos())));
                 }
                 c = in.read();
             }
