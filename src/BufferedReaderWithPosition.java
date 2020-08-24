@@ -8,14 +8,14 @@ public class BufferedReaderWithPosition extends BufferedReader {
     public BufferedReaderWithPosition(Reader in) {
         super(in);
     }
+
     @Override
     public int read() throws IOException {
         int c = super.read();
         if (c == '\n') {
             line += 1;
             pos = 0;
-        }
-        else if (c != -1) {
+        } else if (c != -1) {
             pos += 1;
         }
         return c;

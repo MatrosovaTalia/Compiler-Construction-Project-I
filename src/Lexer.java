@@ -98,26 +98,55 @@ public class Lexer {
                 buffer.delete(0, buffer.length());
             }
 
+
             // this clause handles:
             // 1. real literals that start with a digit (e.g. 0.12132)
             // 2. integer literals (zeros at the beginning are allowed)
+            // 3. real literals followed by '..' operator
             else if (Character.isDigit(c)) {
-                boolean isReal = false;
-                while ((Character.isDigit(c) || c == '.') && c != -1) {
-                    if (c == '.') {
-                        isReal = true;
-                    }
+
+                while (Character.isDigit(c) && c != '.' && c != -1) {
                     buffer.append((char) c);
                     c = in.read();
                 }
 
-                String st = buffer.toString();
-                if (isReal) {
-                    seq.add(new Token(st, TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
+                if (c == '.') {
+                    int nextChar = in.read();
+                    if (nextChar == '.') { // which means '..' operator was encountered
+
+                        seq.add(new Token(buffer.toString(),
+                                TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos())));
+                        buffer.delete(0, buffer.length());
+                        seq.add(new Token("..",
+                                TokenType.SYMBOLIC, 4646, new Pair<>(in.line(), in.pos())));
+                        c = in.read(); // reading in the next unprocessed character
+
+                    } else if (Character.isDigit(nextChar)) { // which means a real literal was encountered
+
+                        buffer.append((char) c);
+                        while (Character.isDigit(nextChar)) {
+                            buffer.append((char) nextChar);
+                            nextChar = in.read();
+                        }
+                        seq.add(new Token(buffer.toString(),
+                                TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
+                        buffer.delete(0, buffer.length());
+                        c = nextChar;
+
+                    } else { // which means a real literal without digits after dot (like 1. <=> 1.0)
+
+                        buffer.append((char) c);
+                        seq.add(new Token(buffer.toString(),
+                                TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
+                        buffer.delete(0, buffer.length());
+                        c = nextChar;
+
+                    }
                 } else {
-                    seq.add(new Token(st, TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos())));
+                    seq.add(new Token(buffer.toString(),
+                            TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos())));
+                    buffer.delete(0, buffer.length());
                 }
-                buffer.delete(0, buffer.length());
             }
 
             // this clause handles:

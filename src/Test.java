@@ -5,7 +5,7 @@ public class Test {
         Lexer lexer = new Lexer();
         try {
             int i = 0;
-            for (Token t : lexer.lex("tests/12.txt")) {
+            for (Token t : lexer.lex("tests/2.txt")) {
                 System.out.print(t + " ");
                 i += 1;
             }
