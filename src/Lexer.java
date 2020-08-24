@@ -66,7 +66,7 @@ public class Lexer {
 
     public TokenSequence lex(String sourcePath) throws IOException {
         TokenSequence seq = new TokenSequence();
-        StringBuilder buffer = new StringBuilder();
+        CharacterBuffer buffer = new CharacterBuffer();
         BufferedReaderWithPosition in = new BufferedReaderWithPosition(new FileReader(sourcePath));
 
         int c = in.read();
@@ -83,7 +83,7 @@ public class Lexer {
             if (Character.isLetter(c) || c == '_') {
 
                 while ((Character.isLetterOrDigit(c) || c == '_') && c != -1) {
-                    buffer.append((char) c);
+                    buffer.add(c);
                     c = in.read();
                 }
 
@@ -95,7 +95,7 @@ public class Lexer {
                 } else {
                     seq.add(new Token(st, TokenType.IDENTIFIER, 100, new Pair<>(in.line(), in.pos())));
                 }
-                buffer.delete(0, buffer.length());
+                buffer.flush();
             }
 
 
@@ -106,7 +106,7 @@ public class Lexer {
             else if (Character.isDigit(c)) {
 
                 while (Character.isDigit(c) && c != '.' && c != -1) {
-                    buffer.append((char) c);
+                    buffer.add(c);
                     c = in.read();
                 }
 
@@ -116,36 +116,36 @@ public class Lexer {
 
                         seq.add(new Token(buffer.toString(),
                                 TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos())));
-                        buffer.delete(0, buffer.length());
+                        buffer.flush();
                         seq.add(new Token("..",
                                 TokenType.SYMBOLIC, 4646, new Pair<>(in.line(), in.pos())));
                         c = in.read(); // reading in the next unprocessed character
 
                     } else if (Character.isDigit(nextChar)) { // which means a real literal was encountered
 
-                        buffer.append((char) c);
+                        buffer.add(c);
                         while (Character.isDigit(nextChar)) {
-                            buffer.append((char) nextChar);
+                            buffer.add(nextChar);
                             nextChar = in.read();
                         }
                         seq.add(new Token(buffer.toString(),
                                 TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
-                        buffer.delete(0, buffer.length());
+                        buffer.flush();
                         c = nextChar;
 
                     } else { // which means a real literal without digits after dot (like 1. <=> 1.0)
 
-                        buffer.append((char) c);
+                        buffer.add(c);
                         seq.add(new Token(buffer.toString(),
                                 TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
-                        buffer.delete(0, buffer.length());
+                        buffer.flush();
                         c = nextChar;
 
                     }
                 } else {
                     seq.add(new Token(buffer.toString(),
                             TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                 }
             }
 
@@ -155,31 +155,31 @@ public class Lexer {
             // 3. '.' operator
             else if (c == '.') {
 
-                buffer.append((char) c);
+                buffer.add(c);
                 int nextChar = in.read();
                 // '..' operator
                 if (nextChar == '.') {
-                    buffer.append((char) nextChar);
+                    buffer.add(nextChar);
                     seq.add(new Token(buffer.toString(),
                             TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = in.read(); // in this case nextChar is already processed,
                     // therefore c gets the value of the next character
                 }
                 // real literals starting with '.' (e.g. '.12231')
                 else if (Character.isDigit(nextChar)) { // .001234125 literals
                     while (Character.isDigit(nextChar) && nextChar != -1) {
-                        buffer.append((char) nextChar);
+                        buffer.add(nextChar);
                         nextChar = in.read();
                     }
                     seq.add(new Token(buffer.toString(), TokenType.REAL, 101, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = nextChar;
                 }
                 // standalone '.'
                 else {
                     seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = nextChar;
                 }
             }
@@ -193,25 +193,25 @@ public class Lexer {
             // 6. ':='
             else if (c == '<' || c == '>' || c == ':') {
 
-                buffer.append((char) c);
+                buffer.add(c);
                 int nextChar = in.read();
 
                 // operators '>=', '<=' and ':='
                 if (nextChar == '=') {
                     // which means one of the following operators
                     // :=, >=, <=
-                    buffer.append((char) nextChar);
+                    buffer.add(nextChar);
                     seq.add(new Token(buffer.toString(),
                             TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
 
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = in.read();
                 }
                 // operators '>', '<', ':'
                 else {
                     seq.add(new Token(buffer.toString(),
                             TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = nextChar;
                 }
             }
@@ -222,22 +222,22 @@ public class Lexer {
             // 3. operator '/'
             // 4. operator '/='
             else if (c == '/') {
-                buffer.append((char) c);
+                buffer.add(c);
                 int nextChar = in.read();
                 // operator '/='
                 if (nextChar == '=') {
-                    buffer.append((char) nextChar);
+                    buffer.add(nextChar);
                     seq.add(new Token(buffer.toString(),
                             TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = in.read();
                 }
                 // multiline comments
                 else if (nextChar == '*') {
-                    buffer.append((char) nextChar);
+                    buffer.add(nextChar);
                     seq.add(new Token(buffer.toString(),
                             TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     while (((c = in.read()) != '*' ||
                             (nextChar = in.read()) != '/') &&
                             nextChar != -1 && c != -1) {
@@ -246,20 +246,20 @@ public class Lexer {
                         // with comment text in this loop
                     }
                     if (c == '*' && nextChar == '/') {
-                        buffer.append((char) c);
-                        buffer.append((char) nextChar);
+                        buffer.add(c);
+                        buffer.add(nextChar);
                         seq.add(new Token(buffer.toString(),
                                 TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
                     }
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = in.read();
                 }
                 // single line comments
                 else if (nextChar == '/') {
-                    buffer.append((char) nextChar);
+                    buffer.add(nextChar);
                     seq.add(new Token(buffer.toString(),
                             TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     while ((c = in.read()) != '\n' && c != -1) {
                         // do nothing (for now)
                         // we can potentially do something
@@ -271,7 +271,7 @@ public class Lexer {
                 // operator '/'
                 else {
                     seq.add(new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos())));
-                    buffer.delete(0, buffer.length());
+                    buffer.flush();
                     c = nextChar;
                 }
 
@@ -285,9 +285,9 @@ public class Lexer {
                     c == '=' || c == ',' || c == ';') {
                 TokenType type = TokenType.SYMBOLIC;
                 if (c == ';') type = TokenType.SEPARATOR;
-                buffer.append((char) c);
+                buffer.add(c);
                 seq.add(new Token(buffer.toString(), type, c, new Pair<>(in.line(), in.pos())));
-                buffer.delete(0, buffer.length());
+                buffer.flush();
                 c = in.read();
             }
 
