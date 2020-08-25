@@ -4,7 +4,7 @@ end
 
 var a : array [5] integer
 
-for i in 0 .. 5 loop
+for i in reverse 1 .. 5 loop
     a[i] := i
 
 print(a[1])

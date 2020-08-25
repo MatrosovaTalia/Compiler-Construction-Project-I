@@ -1,25 +1,25 @@
-public class Pair<C1, C2> {
-    private C1 element_1; // first element of pair
-    private C2 element_2; // second element of pair
+public class Pair<K, V> {
+    private K key; // first element of pair
+    private V value; // second element of pair
 
-    public Pair(C1 element_1, C2 element_2) {
-        this.element_1 = element_1;
-        this.element_2 = element_2;
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public void set_1(C1 element_1) {
-        this.element_1 = element_1;
+    public void setKey(K key) {
+        this.key = key;
     }
 
-    public void set_2(C2 element_2) {
-        this.element_2 = element_2;
+    public void setValue(V value) {
+        this.value = value;
     }
 
-    public C1 get_1() {
-        return element_1;
+    public K key() {
+        return key;
     }
 
-    public C2 get_2() {
-        return element_2;
+    public V value() {
+        return value;
     }
 }

@@ -121,7 +121,8 @@ public class Lexer {
                                 TokenType.SYMBOLIC, 4646, new Pair<>(in.line(), in.pos())));
                         c = in.read(); // reading in the next unprocessed character
 
-                    } else if (Character.isDigit(nextChar)) { // which means a real literal was encountered
+                    }
+                    else if (Character.isDigit(nextChar)) { // which means a real literal was encountered
 
                         buffer.add(c);
                         while (Character.isDigit(nextChar)) {
@@ -133,7 +134,8 @@ public class Lexer {
                         buffer.flush();
                         c = nextChar;
 
-                    } else { // which means a real literal without digits after dot (like 1. <=> 1.0)
+                    }
+                    else { // which means a real literal without digits after dot (like 1. <=> 1.0)
 
                         buffer.add(c);
                         seq.add(new Token(buffer.toString(),
@@ -224,6 +226,7 @@ public class Lexer {
             else if (c == '/') {
                 buffer.add(c);
                 int nextChar = in.read();
+
                 // operator '/='
                 if (nextChar == '=') {
                     buffer.add(nextChar);
@@ -232,6 +235,7 @@ public class Lexer {
                     buffer.flush();
                     c = in.read();
                 }
+
                 // multiline comments
                 else if (nextChar == '*') {
                     buffer.add(nextChar);
@@ -254,6 +258,7 @@ public class Lexer {
                     buffer.flush();
                     c = in.read();
                 }
+
                 // single line comments
                 else if (nextChar == '/') {
                     buffer.add(nextChar);

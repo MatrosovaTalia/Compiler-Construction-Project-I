@@ -4,5 +4,13 @@ routine sum (a: integer, b: integer) : integer is
 	
 end
 
-var result is sum(2,4)
+var a = 0
+var b = 0
+for i in 1. .. .1 loop
+    for j in 2....2 loop
+	    a := a + i
+	    b := b / (j + .0)
+	end
+end
+var result is sum(a,b)
 print(result)

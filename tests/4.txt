@@ -1,6 +1,6 @@
 routine sum_n(n:integer):integer is
 	var tmp is 0
-	for i in 1 .. n loop
+	for i in .1...9 loop
 		tmp := tmp + i
 	return tmp
 end

@@ -6,7 +6,10 @@ print(i)
 while a loop
 	i := i * 2
 
-	if i > 100 then
+	if i > 100 and
+	 i .. a.b1 + .12 = 1 and i
+	  or i and
+	   i and false then
 		a := false
 	end
 end
