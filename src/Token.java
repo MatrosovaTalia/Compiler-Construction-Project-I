@@ -63,7 +63,6 @@ public class Token {
 
     @Override
     public String toString() {
-//        return body + type;
         return "{'" +
                 (body.equals("\n") ? "\\n" : body)
                 + "' :" +
