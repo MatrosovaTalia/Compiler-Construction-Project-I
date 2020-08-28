@@ -100,7 +100,9 @@ public class Lexer {
      */
     private Token scanKeywordOrIdentifier() {
         Token tok;
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         while ((Character.isLetterOrDigit(c) || c == '_') && c != -1) {
+
             buffer.add(c);
             c = in.read();
         }
@@ -110,9 +112,9 @@ public class Lexer {
         buffer.flush();
 
         if ((code = Token.KEYWORD_TABLE.get(st)) != null) {
-            tok = new Token(st, TokenType.KEYWORD, code, new Pair<>(in.line(), in.pos()));
+            tok = new Token(st, TokenType.KEYWORD, code, pos);
         } else {
-            tok = new Token(st, TokenType.IDENTIFIER, 100, new Pair<>(in.line(), in.pos()));
+            tok = new Token(st, TokenType.IDENTIFIER, 100, pos);
         }
         return tok;
     }
@@ -127,7 +129,7 @@ public class Lexer {
      */
     private Token scanRealOrIntegerLiteral() {
         Token tok;
-
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         while (Character.isDigit(c) && c != '.' && c != -1) {
             buffer.add(c);
             c = in.read();
@@ -137,9 +139,9 @@ public class Lexer {
             int nextChar = in.read();
             if (nextChar == '.') { // which means '..' operator was encountered
                 tok = new Token(buffer.toString(),
-                        TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos()));
+                        TokenType.INTEGER, 102, pos);
                 enqueuedToken = new Token("..",
-                        TokenType.SYMBOLIC, 4646, new Pair<>(in.line(), in.pos()));
+                        TokenType.SYMBOLIC, 4646, pos);
                 buffer.flush();
                 c = in.read(); // reading in the next unprocessed character
             } else if (Character.isDigit(nextChar)) { // which means a real literal was encountered
@@ -149,7 +151,7 @@ public class Lexer {
                     nextChar = in.read();
                 }
                 tok = new Token(buffer.toString(),
-                        TokenType.REAL, 101, new Pair<>(in.line(), in.pos()));
+                        TokenType.REAL, 101, pos);
                 buffer.flush();
                 c = nextChar;
 
@@ -157,14 +159,14 @@ public class Lexer {
 
                 buffer.add(c);
                 tok = new Token(buffer.toString(),
-                        TokenType.REAL, 101, new Pair<>(in.line(), in.pos()));
+                        TokenType.REAL, 101, pos);
                 buffer.flush();
                 c = nextChar;
 
             }
         } else {
             tok = new Token(buffer.toString(),
-                    TokenType.INTEGER, 102, new Pair<>(in.line(), in.pos()));
+                    TokenType.INTEGER, 102, pos);
             buffer.flush();
         }
         return tok;
@@ -180,13 +182,14 @@ public class Lexer {
      */
     private Token scanAmbiguousWithDot() {
         Token tok;
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
         // '..' operator
         if (nextChar == '.') {
             buffer.add(nextChar);
             tok = new Token(buffer.toString(),
-                    TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos()));
+                    TokenType.SYMBOLIC, c + nextChar * 100, pos);
             buffer.flush();
             c = in.read(); // in this case nextChar is already processed,
             // therefore c gets the value of the next character
@@ -197,13 +200,13 @@ public class Lexer {
                 buffer.add(nextChar);
                 nextChar = in.read();
             }
-            tok = new Token(buffer.toString(), TokenType.REAL, 101, new Pair<>(in.line(), in.pos()));
+            tok = new Token(buffer.toString(), TokenType.REAL, 101, pos);
             buffer.flush();
             c = nextChar;
         }
         // standalone '.'
         else {
-            tok = new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos()));
+            tok = new Token(buffer.toString(), TokenType.SYMBOLIC, c, pos);
             buffer.flush();
             c = nextChar;
         }
@@ -224,6 +227,7 @@ public class Lexer {
     private Token scanAmbiguousWithEquals() {
 
         Token tok;
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
 
@@ -233,7 +237,7 @@ public class Lexer {
             // :=, >=, <=
             buffer.add(nextChar);
             tok = new Token(buffer.toString(),
-                    TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos()));
+                    TokenType.SYMBOLIC, c + nextChar * 100, pos);
 
             buffer.flush();
             c = in.read();
@@ -241,7 +245,7 @@ public class Lexer {
         // operators '>', '<', ':'
         else {
             tok = new Token(buffer.toString(),
-                    TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos()));
+                    TokenType.SYMBOLIC, c, pos);
             buffer.flush();
             c = nextChar;
         }
@@ -259,6 +263,7 @@ public class Lexer {
      */
     private Token scanAmbiguousWithSlash() {
         Token tok;
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
 
@@ -266,7 +271,7 @@ public class Lexer {
         if (nextChar == '=') {
             buffer.add(nextChar);
             tok = new Token(buffer.toString(),
-                    TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos()));
+                    TokenType.SYMBOLIC, c + nextChar * 100, pos);
             buffer.flush();
             c = in.read();
         }
@@ -275,7 +280,7 @@ public class Lexer {
         else if (nextChar == '*') {
             buffer.add(nextChar);
             tok = new Token(buffer.toString(),
-                    TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos()));
+                    TokenType.SYMBOLIC, c + nextChar * 100, pos);
             buffer.flush();
             while (((c = in.read()) != '*' ||
                     (nextChar = in.read()) != '/') &&
@@ -288,7 +293,7 @@ public class Lexer {
                 buffer.add(c);
                 buffer.add(nextChar);
                 enqueuedToken = new Token(buffer.toString(),
-                        TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos()));
+                        TokenType.SYMBOLIC, c + nextChar * 100, pos);
             }
             buffer.flush();
             c = in.read();
@@ -298,7 +303,7 @@ public class Lexer {
         else if (nextChar == '/') {
             buffer.add(nextChar);
             tok = new Token(buffer.toString(),
-                    TokenType.SYMBOLIC, c + nextChar * 100, new Pair<>(in.line(), in.pos()));
+                    TokenType.SYMBOLIC, c + nextChar * 100, pos);
             buffer.flush();
             while ((c = in.read()) != '\n' && c != -1) {
                 // do nothing (for now)
@@ -307,13 +312,13 @@ public class Lexer {
             }
             // when the '\n' or eof is reached, proceed further
             if (c == '\n') {
-                enqueuedToken = new Token("\n", TokenType.SEPARATOR, c * 10, new Pair<>(in.line(), in.pos()));
+                enqueuedToken = new Token("\n", TokenType.SEPARATOR, c * 10, pos);
             }
             c = in.read();
         }
         // operator '/'
         else {
-            tok = new Token(buffer.toString(), TokenType.SYMBOLIC, c, new Pair<>(in.line(), in.pos()));
+            tok = new Token(buffer.toString(), TokenType.SYMBOLIC, c, pos);
             buffer.flush();
             c = nextChar;
         }
@@ -329,22 +334,25 @@ public class Lexer {
      */
     private Token scanSingleCharacterToken() {
         TokenType type = TokenType.SYMBOLIC;
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         if (c == ';') type = TokenType.SEPARATOR;
         buffer.add(c);
-        Token tok = new Token(buffer.toString(), type, c, new Pair<>(in.line(), in.pos()));
+        Token tok = new Token(buffer.toString(), type, c, pos);
         buffer.flush();
         c = in.read();
         return tok;
     }
 
     private Token scanNewlineSeparator() {
-        Token tok = new Token("\n", TokenType.SEPARATOR, c * 10, new Pair<>(in.line(), in.pos()));
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Token tok = new Token("\n", TokenType.SEPARATOR, c * 10, pos);
         c = in.read();
         return tok;
     }
 
     public TokenSequence lex() {
         TokenSequence seq = new TokenSequence();
+        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         while (c != -1 || enqueuedToken != null) {
             if (enqueuedToken != null) {
                 seq.add(enqueuedToken);

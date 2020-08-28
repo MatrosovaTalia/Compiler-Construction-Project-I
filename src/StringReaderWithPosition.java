@@ -1,5 +1,5 @@
 public class StringReaderWithPosition {
-    private int line = 1, pos = 1, i = 0;
+    private int line = 1, pos = 0, i = 0;
     private String in;
 
     public StringReaderWithPosition(String in) {
@@ -10,9 +10,9 @@ public class StringReaderWithPosition {
         int c = -1;
         if (i < in.length()) {
             c = in.charAt(i);
-            if (c == '\n') {
+            if (i > 1 && in.charAt(i-1) == '\n') {
                 line += 1;
-                pos = 0;
+                pos = 1;
             } else {
                 pos += 1;
             }
