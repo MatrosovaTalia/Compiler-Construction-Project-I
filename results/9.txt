@@ -1,0 +1,15 @@
+{'var' :KEYWORD, position: [1 1]} {'a' :IDENTIFIER, position: [1 5]} {'is' :KEYWORD, position: [1 7]} {'50' :INTEGER, position: [1 10]} {'\n' :SEPARATOR, position: [1 12]}
+ {'\n' :SEPARATOR, position: [2 1]}
+ {'print' :KEYWORD, position: [3 1]} {'(' :SYMBOLIC, position: [3 6]} {'a' :IDENTIFIER, position: [3 7]} {')' :SYMBOLIC, position: [3 8]} {'\n' :SEPARATOR, position: [3 9]}
+ {'\n' :SEPARATOR, position: [4 1]}
+ {'while' :KEYWORD, position: [5 1]} {'a' :IDENTIFIER, position: [5 7]} {'%' :SYMBOLIC, position: [5 9]} {'5' :INTEGER, position: [5 11]} {'=' :SYMBOLIC, position: [5 13]} {'0' :INTEGER, position: [5 15]} {'loop' :KEYWORD, position: [5 17]} {'\n' :SEPARATOR, position: [5 21]}
+ {'\n' :SEPARATOR, position: [6 1]}
+ {'if' :KEYWORD, position: [7 2]} {'a' :IDENTIFIER, position: [7 5]} {'%' :SYMBOLIC, position: [7 7]} {'2' :INTEGER, position: [7 9]} {'=' :SYMBOLIC, position: [7 11]} {'0' :INTEGER, position: [7 13]} {'then' :KEYWORD, position: [7 15]} {'\n' :SEPARATOR, position: [7 20]}
+ {'a' :IDENTIFIER, position: [8 3]} {':=' :SYMBOLIC, position: [8 5]} {'a' :IDENTIFIER, position: [8 8]} {'+' :SYMBOLIC, position: [8 10]} {'5' :INTEGER, position: [8 12]} {'\n' :SEPARATOR, position: [8 13]}
+ {'else' :KEYWORD, position: [9 2]} {'\n' :SEPARATOR, position: [9 7]}
+ {'a' :IDENTIFIER, position: [10 9]} {':=' :SYMBOLIC, position: [10 11]} {'a' :IDENTIFIER, position: [10 14]} {'-' :SYMBOLIC, position: [10 16]} {'10' :INTEGER, position: [10 18]} {'\n' :SEPARATOR, position: [10 20]}
+ {'end' :KEYWORD, position: [11 2]} {'\n' :SEPARATOR, position: [11 5]}
+ {'end' :KEYWORD, position: [12 1]} {'\n' :SEPARATOR, position: [12 4]}
+ {'\n' :SEPARATOR, position: [13 1]}
+ {'print' :KEYWORD, position: [14 1]} {'(' :SYMBOLIC, position: [14 6]} {'a' :IDENTIFIER, position: [14 7]} {')' :SYMBOLIC, position: [14 8]} {'\n' :SEPARATOR, position: [14 9]}
+ 

@@ -65,26 +65,15 @@ import java.io.IOException;
 
 
 public class Lexer {
-    private final StringReaderWithPosition in;
-    private final CharacterBuffer buffer;
+    private StringReaderWithPosition in;
+    private CharacterBuffer buffer;
     private int c;
-    private String sourceText;
     private Token enqueuedToken = null;
 
 
-    public Lexer(String sourcePath) {
-        try (BufferedReader in = new BufferedReader(new FileReader(sourcePath))) {
-            int ch;
-            StringBuilder sourceTextBuffer = new StringBuilder();
-            while ((ch = in.read()) != -1) {
-                sourceTextBuffer.append((char) ch);
-            }
-            this.sourceText = sourceTextBuffer.toString();
-        } catch (FileNotFoundException e) {
-            System.out.println("The file that was specified can not be found!");
-        } catch (IOException e) {
-            System.out.println("There was some error while reading from the file!");
-        }
+    public Lexer() {}
+
+    public void tokenize(String sourceText){
         this.in = new StringReaderWithPosition(sourceText);
         this.c = in.read();
         this.buffer = new CharacterBuffer();

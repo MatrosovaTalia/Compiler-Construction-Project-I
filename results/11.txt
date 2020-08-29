@@ -1,0 +1,11 @@
+{'routine' :KEYWORD, position: [1 1]} {'factorial' :IDENTIFIER, position: [1 9]} {'(' :SYMBOLIC, position: [1 18]} {'i' :IDENTIFIER, position: [1 19]} {':' :SYMBOLIC, position: [1 20]} {'integer' :KEYWORD, position: [1 22]} {')' :SYMBOLIC, position: [1 29]} {':' :SYMBOLIC, position: [1 30]} {'integer' :KEYWORD, position: [1 31]} {'is' :KEYWORD, position: [1 39]} {'\n' :SEPARATOR, position: [1 41]}
+ {'if' :KEYWORD, position: [2 5]} {'i' :IDENTIFIER, position: [2 8]} {'=' :SYMBOLIC, position: [2 10]} {'0' :INTEGER, position: [2 12]} {'or' :KEYWORD, position: [2 14]} {'i' :IDENTIFIER, position: [2 17]} {'=' :SYMBOLIC, position: [2 19]} {'1' :INTEGER, position: [2 21]} {'then' :KEYWORD, position: [2 23]} {'\n' :SEPARATOR, position: [2 28]}
+ {'return' :KEYWORD, position: [3 9]} {'1' :INTEGER, position: [3 16]} {'\n' :SEPARATOR, position: [3 17]}
+ {'end' :KEYWORD, position: [4 5]} {'\n' :SEPARATOR, position: [4 8]}
+ {'\n' :SEPARATOR, position: [5 1]}
+ {'return' :KEYWORD, position: [6 5]} {'factorial' :IDENTIFIER, position: [6 12]} {'(' :SYMBOLIC, position: [6 21]} {'i' :IDENTIFIER, position: [6 22]} {'-' :SYMBOLIC, position: [6 23]} {'1' :INTEGER, position: [6 24]} {')' :SYMBOLIC, position: [6 25]} {'*' :SYMBOLIC, position: [6 26]} {'i' :IDENTIFIER, position: [6 27]} {'\n' :SEPARATOR, position: [6 28]}
+ {'end' :KEYWORD, position: [7 1]} {'\n' :SEPARATOR, position: [7 4]}
+ {'\n' :SEPARATOR, position: [8 1]}
+ {'var' :KEYWORD, position: [9 1]} {'fact_5' :IDENTIFIER, position: [9 5]} {'is' :KEYWORD, position: [9 12]} {'factorial' :IDENTIFIER, position: [9 15]} {'(' :SYMBOLIC, position: [9 24]} {'5' :INTEGER, position: [9 25]} {')' :SYMBOLIC, position: [9 26]} {'\n' :SEPARATOR, position: [9 27]}
+ {'print' :KEYWORD, position: [10 1]} {'(' :SYMBOLIC, position: [10 6]} {'fact_5' :IDENTIFIER, position: [10 7]} {')' :SYMBOLIC, position: [10 13]} {'\n' :SEPARATOR, position: [10 14]}
+ 

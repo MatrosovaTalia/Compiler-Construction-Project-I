@@ -1,0 +1,10 @@
+{'routine' :KEYWORD, position: [1 1]} {'sum_n' :IDENTIFIER, position: [1 9]} {'(' :SYMBOLIC, position: [1 14]} {'n' :IDENTIFIER, position: [1 15]} {':' :SYMBOLIC, position: [1 16]} {'integer' :KEYWORD, position: [1 17]} {')' :SYMBOLIC, position: [1 24]} {':' :SYMBOLIC, position: [1 25]} {'integer' :KEYWORD, position: [1 26]} {'is' :KEYWORD, position: [1 34]} {'\n' :SEPARATOR, position: [1 36]}
+ {'var' :KEYWORD, position: [2 2]} {'tmp' :IDENTIFIER, position: [2 6]} {'is' :KEYWORD, position: [2 10]} {'0' :INTEGER, position: [2 13]} {'\n' :SEPARATOR, position: [2 14]}
+ {'for' :KEYWORD, position: [3 2]} {'i' :IDENTIFIER, position: [3 6]} {'in' :KEYWORD, position: [3 8]} {'.1' :REAL, position: [3 11]} {'..' :SYMBOLIC, position: [3 13]} {'.9' :REAL, position: [3 15]} {'loop' :KEYWORD, position: [3 18]} {'\n' :SEPARATOR, position: [3 22]}
+ {'tmp' :IDENTIFIER, position: [4 3]} {':=' :SYMBOLIC, position: [4 7]} {'tmp' :IDENTIFIER, position: [4 10]} {'+' :SYMBOLIC, position: [4 14]} {'i' :IDENTIFIER, position: [4 16]} {'\n' :SEPARATOR, position: [4 17]}
+ {'return' :KEYWORD, position: [5 2]} {'tmp' :IDENTIFIER, position: [5 9]} {'\n' :SEPARATOR, position: [5 12]}
+ {'end' :KEYWORD, position: [6 1]} {'\n' :SEPARATOR, position: [6 4]}
+ {'\n' :SEPARATOR, position: [7 1]}
+ {'var' :KEYWORD, position: [8 1]} {'sum_5' :IDENTIFIER, position: [8 5]} {'is' :KEYWORD, position: [8 11]} {'sum_n' :IDENTIFIER, position: [8 14]} {'(' :SYMBOLIC, position: [8 19]} {'5' :INTEGER, position: [8 20]} {')' :SYMBOLIC, position: [8 21]} {'\n' :SEPARATOR, position: [8 22]}
+ {'print' :KEYWORD, position: [9 1]} {'(' :SYMBOLIC, position: [9 6]} {'sum_5' :IDENTIFIER, position: [9 7]} {')' :SYMBOLIC, position: [9 12]} {'\n' :SEPARATOR, position: [9 13]}
+ {'1' :INTEGER, position: [10 1]} {'..' :SYMBOLIC, position: [10 1]} 

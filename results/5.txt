@@ -1,0 +1,13 @@
+{'type' :KEYWORD, position: [1 1]} {'Student' :IDENTIFIER, position: [1 6]} {'is' :KEYWORD, position: [1 14]} {'record' :KEYWORD, position: [1 17]} {'\n' :SEPARATOR, position: [1 24]}
+ {'var' :KEYWORD, position: [2 5]} {'marks' :IDENTIFIER, position: [2 9]} {':' :SYMBOLIC, position: [2 15]} {'array' :KEYWORD, position: [2 17]} {'[' :SYMBOLIC, position: [2 23]} {'5' :INTEGER, position: [2 24]} {']' :SYMBOLIC, position: [2 25]} {'integer' :KEYWORD, position: [2 27]} {'\n' :SEPARATOR, position: [2 34]}
+ {'var' :KEYWORD, position: [3 5]} {'phone_number' :IDENTIFIER, position: [3 9]} {':' :SYMBOLIC, position: [3 22]} {'integer' :KEYWORD, position: [3 24]} {'\n' :SEPARATOR, position: [3 31]}
+ {'end' :KEYWORD, position: [4 1]} {'\n' :SEPARATOR, position: [4 4]}
+ {'\n' :SEPARATOR, position: [5 1]}
+ {'var' :KEYWORD, position: [6 1]} {'Bob' :IDENTIFIER, position: [6 5]} {':' :SYMBOLIC, position: [6 9]} {'record' :KEYWORD, position: [6 11]} {'Student' :IDENTIFIER, position: [6 18]} {';' :SEPARATOR, position: [6 25]} {'\n' :SEPARATOR, position: [6 26]}
+ {'Bob' :IDENTIFIER, position: [7 1]} {'.' :SYMBOLIC, position: [7 4]} {'marks' :IDENTIFIER, position: [7 5]} {':=' :SYMBOLIC, position: [7 11]} {'[' :SYMBOLIC, position: [7 14]} {'5' :INTEGER, position: [7 15]} {',' :SYMBOLIC, position: [7 16]} {'5' :INTEGER, position: [7 18]} {',' :SYMBOLIC, position: [7 19]} {'5' :INTEGER, position: [7 21]} {',' :SYMBOLIC, position: [7 22]} {'5' :INTEGER, position: [7 24]} {',' :SYMBOLIC, position: [7 25]} {'5' :INTEGER, position: [7 27]} {']' :SYMBOLIC, position: [7 28]} {';' :SEPARATOR, position: [7 29]} {'\n' :SEPARATOR, position: [7 30]}
+ {'Bob' :IDENTIFIER, position: [8 1]} {'.' :SYMBOLIC, position: [8 4]} {'phone_number' :IDENTIFIER, position: [8 5]} {':=' :SYMBOLIC, position: [8 18]} {'79382132312' :INTEGER, position: [8 21]} {';' :SEPARATOR, position: [8 32]} {'\n' :SEPARATOR, position: [8 33]}
+ {'\n' :SEPARATOR, position: [9 1]}
+ {'print' :KEYWORD, position: [10 1]} {'(' :SYMBOLIC, position: [10 6]} {'Bob' :IDENTIFIER, position: [10 7]} {'.' :SYMBOLIC, position: [10 10]} {'marks' :IDENTIFIER, position: [10 11]} {')' :SYMBOLIC, position: [10 16]} {'\n' :SEPARATOR, position: [10 17]}
+ {'print' :KEYWORD, position: [11 1]} {'(' :SYMBOLIC, position: [11 6]} {'Bob' :IDENTIFIER, position: [11 7]} {'.' :SYMBOLIC, position: [11 10]} {'phone_number' :IDENTIFIER, position: [11 11]} {')' :SYMBOLIC, position: [11 23]} {'\n' :SEPARATOR, position: [11 24]}
+ {'\n' :SEPARATOR, position: [12 1]}
+ 
