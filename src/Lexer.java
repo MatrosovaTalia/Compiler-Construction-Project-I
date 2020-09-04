@@ -1,8 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 /*
     DONE: Keywords:
     var
@@ -71,14 +66,50 @@ public class Lexer {
     private Token enqueuedToken = null;
 
 
-    public Lexer() {}
+    public Lexer() {
+    }
 
-    public void tokenize(String sourceText){
+    public void tokenize(String sourceText) {
         this.in = new StringReaderWithPosition(sourceText);
         this.c = in.read();
         this.buffer = new CharacterBuffer();
     }
 
+    public Token lex() {
+        while (c != -1 || enqueuedToken != null) {
+            if (enqueuedToken != null) {
+                Token tok = enqueuedToken;
+                enqueuedToken = null;
+                return tok;
+            }
+            if (Character.isLetter(c) || c == '_') {
+                return scanKeywordOrIdentifier();
+            } else if (Character.isDigit(c)) {
+                return scanRealOrIntegerLiteral();
+            } else if (c == '.') {
+                return scanAmbiguousWithDot();
+            } else if (c == '<' || c == '>' || c == ':') {
+                return scanAmbiguousWithEquals();
+            } else if (c == '/') {
+                return scanAmbiguousWithSlash();
+            } else if (c == '(' || c == ')' || c == '[' || c == ']' ||
+                    c == '+' || c == '-' || c == '*' || c == '%' ||
+                    c == '=' || c == ',' || c == ';') {
+                return scanSingleCharacterToken();
+            } else if (c == '\n') {
+                return scanNewlineSeparator();
+            } else if (Character.isWhitespace(c)) {
+                // skip it
+                c = in.read();
+            } else if (c != -1) {
+                throw new IllegalCharacterException("The source code of your program" +
+                        " contains an illegal character '" + (char) c + "' in line " + in.line() +
+                        ", position " + in.pos() + "!");
+
+            }
+        }
+        return null;
+    }
 
     /**
      * this method handles:
@@ -91,7 +122,6 @@ public class Lexer {
         Token tok;
         Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         while ((Character.isLetterOrDigit(c) || c == '_') && c != -1) {
-
             buffer.add(c);
             c = in.read();
         }
@@ -174,15 +204,18 @@ public class Lexer {
         Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
+
         // '..' operator
         if (nextChar == '.') {
             buffer.add(nextChar);
             tok = new Token(buffer.toString(),
+
                     TokenType.SYMBOLIC, c + nextChar * 100, pos);
             buffer.flush();
             c = in.read(); // in this case nextChar is already processed,
             // therefore c gets the value of the next character
         }
+
         // real literals starting with '.' (e.g. '.12231')
         else if (Character.isDigit(nextChar)) { // .001234125 literals
             while (Character.isDigit(nextChar) && nextChar != -1) {
@@ -339,41 +372,6 @@ public class Lexer {
         return tok;
     }
 
-    public TokenSequence lex() {
-        TokenSequence seq = new TokenSequence();
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
-        while (c != -1 || enqueuedToken != null) {
-            if (enqueuedToken != null) {
-                seq.add(enqueuedToken);
-                enqueuedToken = null;
-            }
-            if (Character.isLetter(c) || c == '_') {
-                seq.add(scanKeywordOrIdentifier());
-            } else if (Character.isDigit(c)) {
-                seq.add(scanRealOrIntegerLiteral());
-            } else if (c == '.') {
-                seq.add(scanAmbiguousWithDot());
-            } else if (c == '<' || c == '>' || c == ':') {
-                seq.add(scanAmbiguousWithEquals());
-            } else if (c == '/') {
-                seq.add(scanAmbiguousWithSlash());
-            } else if (c == '(' || c == ')' || c == '[' || c == ']' ||
-                    c == '+' || c == '-' || c == '*' || c == '%' ||
-                    c == '=' || c == ',' || c == ';') {
-                seq.add(scanSingleCharacterToken());
-            } else if (c == '\n') {
-                seq.add(scanNewlineSeparator());
-            } else if (Character.isWhitespace(c)) {
-                // skip it
-                c = in.read();
-            } else if (c != -1) {
-                throw new IllegalCharacterException("The source code of your program" +
-                        " contains an illegal character " + "in line " + in.line() +
-                        ", position " + in.pos() +
-                        ": '" + (char) c + "'!");
-
-            }
-        }
-        return seq;
-    }
 }
+
+

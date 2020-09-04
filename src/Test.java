@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -11,8 +10,9 @@ public class Test {
             lexer.tokenize(reader.sourceText);
             try {
                 FileWriter writer = new FileWriter("results/" + i + ".txt");
-                for (Token t : lexer.lex()) {
-                    writer.write(t + " ");
+                Token tok;
+                while ((tok = lexer.lex()) != null) {
+                    writer.write(tok.toString() + " ");
                 }
                 writer.close();
 
