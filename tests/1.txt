@@ -3,9 +3,9 @@ routine sum (a: integer, b: integer) : integer is
 	return a + b
 	
 end
-
-var a = 0
-var b = 0
+^^^
+var a is 0
+var b is 0
 for i in 1. .. .1 loop
     for j in 2....2 loop
 	    a := a + i

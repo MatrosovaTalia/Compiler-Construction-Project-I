@@ -1,3 +1,5 @@
+package reader;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -6,7 +8,8 @@ import java.io.IOException;
 public class Reader {
     public String sourceText;
 
-    public Reader(){}
+    public Reader() {
+    }
 
     /** @param sourcePath specifies the path to the input
      *  reads the text from input file

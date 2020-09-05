@@ -1,3 +1,5 @@
+package misc;
+
 public class Pair<K, V> {
     private K key; // first element of pair
     private V value; // second element of pair

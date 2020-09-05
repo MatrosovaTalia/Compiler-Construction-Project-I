@@ -5,7 +5,7 @@ By a team **"Mikhail with girls"**: Natalia Matrosova, Mikhail Olokin, Alisa Mar
 All the code is located in the `src` folder.
 
 ### Running Code
-In order to run the code, execute the `main` method from the `Test` class.
+In order to run the code, execute the `main` method from the `Main` class.
 
 ### Example Programs
 The 15 example programs are located in the `tests` folder.

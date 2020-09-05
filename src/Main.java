@@ -1,19 +1,26 @@
+import lexer.Lexer;
+import lexer.Token;
+import lexer.TokenType;
+import reader.Reader;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Test {
-    private static void testN_toFile(int n){
+public class Main {
+    private static void testNToFile(int n) {
         Reader reader = new Reader();
         Lexer lexer = new Lexer();
-        for (int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             reader.read("tests/" + i + ".txt");
             lexer.tokenize(reader.sourceText);
             try {
                 FileWriter writer = new FileWriter("results/" + i + ".txt");
-                Token tok;
-                while ((tok = lexer.lex()) != null) {
-                    writer.write(tok.toString() + " ");
-                }
+                TokenType type;
+                do {
+                    Token tok = lexer.lex();
+                    type = tok.getType();
+                    writer.write(tok.toString());
+                } while (type != TokenType.EOF);
                 writer.close();
 
                 System.out.println("Successfully wrote to " + i + ".txt");
@@ -26,7 +33,7 @@ public class Test {
 
 
     public static void main(String[] args) {
-        testN_toFile(15);
+        testNToFile(15);
     }
 }
 

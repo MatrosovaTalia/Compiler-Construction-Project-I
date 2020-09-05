@@ -1,3 +1,5 @@
+package lexer;
+
 public class CharacterBuffer {
     private final StringBuilder internalStorage;
 

@@ -1,3 +1,5 @@
+package lexer;
+
 public class StringReaderWithPosition {
     private int line = 1, pos = 0, i = 0;
     private String in;
