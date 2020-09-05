@@ -2,8 +2,8 @@
 import java.lang.Math;
 import java.io.*;
 import java.util.StringTokenizer;
-import lexer.Lexer;
-
+import lexer.*;
+import reader.Reader;
 
 %}
 
@@ -11,8 +11,8 @@ import lexer.Lexer;
 
 // Identifiers & numbers
 %token IDENTIFIER
-%token INTEGERLITERAL
-%token REALLITERAL
+%token INTEGER_LITERAL
+%token REAL_LITERAL
 
 // Keywords
 %token VAR TYPE IS END TRUE FALSE RECORD INTEGER REAL BOOLEAN
@@ -39,12 +39,15 @@ import lexer.Lexer;
 %token GREATER '>'
 %token LESS '<'
 %token LEQUALS '<='
-%token GEGUALS '>='
+%token GEQUALS '>='
 %token ADD '+'
 %token MINUS '-'
 %token MULTIPLY '*'
 %token DIVIDE '/'
 %token REMAINDER '%'
+%token SLCOMMENT '//'
+%token MLCOMMENT_START '/*'
+%token MLCOMMENT_END '*/'
 
 %start Program
 
@@ -74,7 +77,7 @@ VariableDeclaration
 
 VarDecMid
     : IS Expression
-    | ':' Type VarDecEnd
+    | COLON Type VarDecEnd
     ;
 
 VarDecEnd
@@ -93,16 +96,16 @@ RoutineDeclaration
 
 SetType
     : /* empty */
-    | ':' Type
+    | COLON Type
     ;
 
 Parameters
-    : '(' ParameterList ')'
+    : LPAREN ParameterList RPAREN
     ;
 
 ParameterList
     : Parameter
-    | ParameterList ',' Parameter
+    | ParameterList COMMA Parameter
     ;
 
 Parameter
@@ -132,7 +135,7 @@ Variables
     ;
 
 ArrayType
-    : ARRAY '[' Expression ']' Type
+    : ARRAY LBRACKET Expression RBRACKET Type
     ;
 
 Body
@@ -158,12 +161,12 @@ Assignment
     ;
 
 RoutineCall
-    : IDENTIFIER '(' Expressions ')'
+    : IDENTIFIER LPAREN Expressions RPAREN
     ;
 
 Expressions
     : Expression
-    | Expressions ',' Expression
+    | Expressions COMMA Expression
     ;
 
 WhileLoop
@@ -264,8 +267,8 @@ Exp
     ;
 
 Primary
-    : INTEGERLITERAL
-    | REALLITERAL
+    : INTEGER_LITERAL
+    | REAL_LITERAL
     | TRUE
     | FALSE
     | ModifiablePrimary
@@ -277,15 +280,18 @@ ModifiablePrimary
 
 ElementCall
     : /* empty */
-    | '.' IDENTIFIER ElementCall
-    | '[' Expression ']' ElementCall
+    | DOT IDENTIFIER ElementCall
+    | LBRACKET Expression RBRACKET ElementCall
     ;
 
 %%
 
+Lexer lexer;
+
 int yylex() {
-    Lexer lexer = new Lexer();
-    TokenType type = lexer.lex().getType();
+	Token tok = lexer.lex();
+	TokenType type = tok.getType();
+	System.out.println(tok.toString());
     int code;
     switch (type) {
 	case VAR -> code = VAR;
@@ -341,8 +347,30 @@ int yylex() {
 	case INTEGER_LITERAL -> code = INTEGER_LITERAL;
 	case REAL_LITERAL -> code = REAL_LITERAL;
 	case SEPARATOR -> code = SEPARATOR;
-	case EOF -> code = YYEOF;
+//	case EOF -> code = 0;
 	default -> code = -1;
     }
     return code;
+}
+
+void yyerror(String mes) {
+    System.out.println(mes);
+}
+
+void dotest()
+{
+	Reader reader = new Reader();
+	this.lexer = new Lexer();
+	int i = 3;
+	reader.read("tests/" + i + ".txt");
+	lexer.tokenize(reader.sourceText);
+	yyparse();
+}
+
+
+
+public static void main(String args[])
+{
+ Parser par = new Parser(false);
+ par.dotest();
 }
