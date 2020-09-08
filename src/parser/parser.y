@@ -55,61 +55,61 @@ import reader.Reader;
 
 Program
     : /* empty */
-    | SimpleDeclaration
+    | GlobalDeclarations
+    ;
+
+GlobalDeclarations
+    : GlobalDeclaration GlobalDeclarations
+    ;
+
+GlobalDeclaration
+    : SimpleDeclaration
     | RoutineDeclaration
     ;
 
 SimpleDeclaration
-    : VariableDeclaration
+    : VAR IDENTIFIER VariableDeclaration
     | TypeDeclaration
     ;
 
-/*VariableDeclaration
-    : VAR IDENTIFIER IS Expression
-    | VAR IDENTIFIER ':' Type IS Expression
-    | VAR IDENTIFIER ':' Type
-    ;*/
-
-/////
 VariableDeclaration
-    : VAR IDENTIFIER VarDecMid
+    : VAR IDENTIFIER COLON Type ExpressionTail
     ;
 
-VarDecMid
-    : IS Expression
-    | COLON Type VarDecEnd
-    ;
-
-VarDecEnd
+ExpressionTail
     : /* empty */
     | IS Expression
     ;
-/////
 
 TypeDeclaration
     : TYPE IDENTIFIER IS Type
     ;
 
 RoutineDeclaration
-    : ROUTINE IDENTIFIER Parameters SetType IS Body END
+    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN TypeTail IS Body Return END
     ;
 
-SetType
+Return
+    : /* empty */
+    | RETURN Expression  //{$$ = $2}
+    ;
+
+TypeTail
     : /* empty */
     | COLON Type
     ;
 
 Parameters
-    : LPAREN ParameterList RPAREN
+    : ParameterDeclaration ParameterDeclarations
     ;
 
-ParameterList
-    : Parameter
-    | ParameterList COMMA Parameter
+ParameterDeclarations
+    : /* empty */
+    | COMMA ParameterDeclaration
     ;
 
-Parameter
-    : Type IDENTIFIER
+ParameterDeclaration
+    : IDENTIFIER COLON Type
     ;
 
 Type
@@ -126,12 +126,12 @@ PrimitiveType
     ;
 
 RecordType
-    : RECORD Variables END
+    : RECORD VariableDeclarations END
     ;
 
-Variables
-    : VariableDeclaration
-    | Variables VariableDeclaration
+VariableDeclarations
+    : /* empty */
+    | VariableDeclaration VariableDeclarations
     ;
 
 ArrayType
@@ -139,11 +139,11 @@ ArrayType
     ;
 
 Body
-    : BodyList
-    | Body BodyList
+    : /* empty */
+    | BodyDeclaration Body
     ;
 
-BodyList
+BodyDeclaration
     : SimpleDeclaration
     | Statement
     ;
@@ -154,14 +154,20 @@ Statement
     | WhileLoop
     | ForLoop
     | IfStatement
+    | Print
     ;
 
 Assignment
-    : ModifiablePrimary ':=' Expression
+    : ModifiablePrimary ASSIGN Expression
     ;
 
 RoutineCall
-    : IDENTIFIER LPAREN Expressions RPAREN
+    : IDENTIFIER RoutineCallTail
+    ;
+
+RoutineCallTail
+    : /* empty */
+    | LPAREN Expressions RPAREN
     ;
 
 Expressions
@@ -178,8 +184,12 @@ ForLoop
     ;
 
 Range
-    : IN Expression '..' Expression
-    | IN REVERSE Expression '..' Expression
+    : IN ReverseTail RANGE Expression
+    ;
+
+ReverseTail
+    : /* empty */
+    | REVERSE
     ;
 
 IfStatement
@@ -192,24 +202,14 @@ ElseTail
     ;
 
 Expression
-    : Relations
+    : Relation Relations
     ;
 
-/*Relations
-    : Relation
-    | Relations LogicWord Relation
-    ;*/
-
-/////
 Relations
-    : BeginRelation Relation
+    : /* empty */
+    | LogicWord Relation Relations
     ;
 
-BeginRelation
-    : /* empty */
-    | Relations LogicWord
-    ;
-/////
 
 LogicWord
     : AND
@@ -218,26 +218,27 @@ LogicWord
     ;
 
 Relation
-    : Simples
+    : Simple SimpleTail
     ;
 
-Simples
+
+SimpleTail
     : /* empty */
-    | Simple
-    | Simples RelationSign Simple
+    | RelationSign Simple
     ;
+
 
 RelationSign
     : '<' | '>' | '<=' | '>=' | '=' | '/='
     ;
 
 Simple
-    : Factors
+    : Factor FactorTail
     ;
 
-Factors
-    : Factor
-    | Factors FactorSign Factor
+FactorTail
+    : /* empty */
+    | FactorSign Factor
     ;
 
 FactorSign
@@ -245,13 +246,13 @@ FactorSign
     ;
 
 Factor
-    : Summands
+    : Summand SummandTail
     ;
 
-Summands
-    : Summand
-    | Summands SummandSign Summand
-    ;
+SummandTail
+    : /* empty */
+    | SummandSign Summand
+
 
 SummandSign
     : '+' | '-'
@@ -259,12 +260,12 @@ SummandSign
 
 Summand
     : Primary
-    | Exp
+    |  LPAREN Expression RPAREN
     ;
 
-Exp
-    : '(' Expression ')'
-    ;
+//Exp
+//    : '(' Expression ')'
+//    ;
 
 Primary
     : INTEGER_LITERAL
@@ -282,6 +283,10 @@ ElementCall
     : /* empty */
     | DOT IDENTIFIER ElementCall
     | LBRACKET Expression RBRACKET ElementCall
+    ;
+
+Print
+    : PRINT LPAREN Expression RPAREN //{Print($3)}
     ;
 
 %%
@@ -357,11 +362,10 @@ void yyerror(String mes) {
     System.out.println(mes);
 }
 
-void dotest()
+void dotest(int i)
 {
 	Reader reader = new Reader();
 	this.lexer = new Lexer();
-	int i = 3;
 	reader.read("tests/" + i + ".txt");
 	lexer.tokenize(reader.sourceText);
 	yyparse();
@@ -372,5 +376,5 @@ void dotest()
 public static void main(String args[])
 {
  Parser par = new Parser(false);
- par.dotest();
+ par.dotest(3);
 }
