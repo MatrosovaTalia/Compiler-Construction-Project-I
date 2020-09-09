@@ -3,7 +3,7 @@ routine sum (a: integer, b: integer) : integer is
 	return a + b
 	
 end
-^^^
+
 var a is 0
 var b is 0
 for i in 1. .. .1 loop

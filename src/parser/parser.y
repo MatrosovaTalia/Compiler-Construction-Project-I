@@ -54,26 +54,28 @@ import reader.Reader;
 %%
 
 Program
-    : /* empty */
-    | GlobalDeclarations
+    : GlobalDeclarations {System.out.println("Global Declarations parsed");}
     ;
 
 GlobalDeclarations
-    : GlobalDeclaration GlobalDeclarations
+    : /* empty */
+    | GlobalDeclaration GlobalDeclarations {System.out.println("Global Declaration parsed");}
     ;
 
 GlobalDeclaration
-    : SimpleDeclaration
-    | RoutineDeclaration
+    : SimpleDeclaration SEPARATOR {System.out.println("Simple Declaration parsed");}
+    | RoutineDeclaration SEPARATOR {System.out.println("Routine Declaration parsed");}
+    | SEPARATOR {System.out.println("Routine Declaration parsed");}
     ;
 
 SimpleDeclaration
-    : VAR IDENTIFIER VariableDeclaration
-    | TypeDeclaration
+    : VariableDeclaration {System.out.println("Variable Declaration parsed");}
+    | TypeDeclaration {System.out.println("Type Declaration parsed");}
     ;
 
 VariableDeclaration
-    : VAR IDENTIFIER COLON Type ExpressionTail
+	: VAR IDENTIFIER COLON Type ExpressionTail
+	| VAR IDENTIFIER ExpressionTail
     ;
 
 ExpressionTail
@@ -91,7 +93,7 @@ RoutineDeclaration
 
 Return
     : /* empty */
-    | RETURN Expression  //{$$ = $2}
+    | RETURN Expression SEPARATOR //{$$ = $2}
     ;
 
 TypeTail
@@ -155,6 +157,7 @@ Statement
     | ForLoop
     | IfStatement
     | Print
+    | SEPARATOR
     ;
 
 Assignment
