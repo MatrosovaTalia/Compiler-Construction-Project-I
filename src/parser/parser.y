@@ -40,7 +40,7 @@ import reader.Reader;
 %token LESS '<'
 %token LEQUALS '<='
 %token GEQUALS '>='
-%token ADD '+'
+%token PLUS '+'
 %token MINUS '-'
 %token MULTIPLY '*'
 %token DIVIDE '/'
@@ -63,7 +63,7 @@ GlobalDeclarations
     ;
 
 GlobalDeclaration
-    : SimpleDeclaration SEPARATOR {System.out.println("Simple Declaration parsed");}
+    : SimpleDeclaration {System.out.println("Simple Declaration parsed");}
     | RoutineDeclaration SEPARATOR {System.out.println("Routine Declaration parsed");}
     | SEPARATOR {System.out.println("Routine Declaration parsed");}
     ;
@@ -74,8 +74,8 @@ SimpleDeclaration
     ;
 
 VariableDeclaration
-	: VAR IDENTIFIER COLON Type ExpressionTail
-	| VAR IDENTIFIER ExpressionTail
+	: VAR IDENTIFIER COLON Type ExpressionTail SEPARATOR
+	| VAR IDENTIFIER ExpressionTail SEPARATOR
     ;
 
 ExpressionTail
@@ -128,7 +128,7 @@ PrimitiveType
     ;
 
 RecordType
-    : RECORD VariableDeclarations END
+    : RECORD SEPARATOR VariableDeclarations END
     ;
 
 VariableDeclarations
@@ -232,7 +232,7 @@ SimpleTail
 
 
 RelationSign
-    : '<' | '>' | '<=' | '>=' | '=' | '/='
+    : LESS | GREATER | LEQUALS | GEQUALS | EQUALS | NEQUALS
     ;
 
 Simple
@@ -245,7 +245,7 @@ FactorTail
     ;
 
 FactorSign
-    : '*' | '/' | '%'
+    : MULTIPLY | DIVIDE | REMAINDER
     ;
 
 Factor
@@ -258,7 +258,7 @@ SummandTail
 
 
 SummandSign
-    : '+' | '-'
+    : PLUS | MINUS
     ;
 
 Summand
@@ -329,7 +329,7 @@ int yylex() {
 	case PRINT -> code = PRINT;
 	case RETURN -> code = RETURN;
 	case RANGE -> code = RANGE;
-	case ADD -> code = ADD;
+	case ADD -> code = PLUS;
 	case MINUS -> code = MINUS;
 	case MULTIPLY -> code = MULTIPLY;
 	case DIVIDE -> code = DIVIDE;
@@ -379,5 +379,5 @@ void dotest(int i)
 public static void main(String args[])
 {
  Parser par = new Parser(false);
- par.dotest(3);
+ par.dotest(5);
 }
