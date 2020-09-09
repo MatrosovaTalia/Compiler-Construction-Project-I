@@ -20,7 +20,7 @@ import reader.Reader;
 %token OR NOT XOR PRINT RETURN
 
 // Separators
-%token SEPARATOR
+%token NEWLINE SEMICOLON
 
 // Delimiters
 %token LPAREN '('
@@ -354,7 +354,8 @@ int yylex() {
 	case IDENTIFIER -> code = IDENTIFIER;
 	case INTEGER_LITERAL -> code = INTEGER_LITERAL;
 	case REAL_LITERAL -> code = REAL_LITERAL;
-	case SEPARATOR -> code = SEPARATOR;
+	case NEWLINE -> code = NEWLINE;
+	case SEMICOLON -> code = SEMICOLON;
 //	case EOF -> code = 0;
 	default -> code = -1;
     }

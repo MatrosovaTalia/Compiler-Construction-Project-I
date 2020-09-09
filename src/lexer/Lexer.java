@@ -299,29 +299,19 @@ public class Lexer {
 
         // multiline comments
         else if (nextChar == '*') {
-            buffer.add(nextChar);
-            tok = new Token(buffer.toString(), TokenType.MLCOMMENT_START, pos);
-            buffer.flush();
             while (((c = in.read()) != '*' || (nextChar = in.read()) != '/') &&
                     nextChar != -1 && c != -1) {
                 // do nothing (for now)
                 // we can potentially do something
                 // with comment text in this loop
             }
-            if (c == '*' && nextChar == '/') {
-                buffer.add(c);
-                buffer.add(nextChar);
-                enqueuedToken = new Token(buffer.toString(), TokenType.MLCOMMENT_END, pos);
-            }
             buffer.flush();
             c = in.read();
+            return lex(); // scanning next token
         }
 
         // single line comments
         else if (nextChar == '/') {
-            buffer.add(nextChar);
-            tok = new Token(buffer.toString(), TokenType.SLCOMMENT, pos);
-            buffer.flush();
             while ((c = in.read()) != '\n' && c != -1) {
                 // do nothing (for now)
                 // we can potentially do something
@@ -329,9 +319,11 @@ public class Lexer {
             }
             // when the '\n' or eof is reached, proceed further
             if (c == '\n') {
-                enqueuedToken = new Token("\n", TokenType.SEPARATOR, pos);
+                enqueuedToken = new Token("\n", TokenType.NEWLINE, pos);
             }
+            buffer.flush();
             c = in.read();
+            return lex(); // scanning next token
         }
         // operator '/'
         else {
@@ -363,7 +355,7 @@ public class Lexer {
             case '%' -> type = TokenType.REMAINDER;
             case '=' -> type = TokenType.EQUALS;
             case ',' -> type = TokenType.COMMA;
-            case ';' -> type = TokenType.SEPARATOR;
+            case ';' -> type = TokenType.SEMICOLON;
             default -> type = null;
         }
 
@@ -383,7 +375,7 @@ public class Lexer {
     private Token scanNewlineSeparator() {
         Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
         c = in.read();
-        return new Token("\n", TokenType.SEPARATOR, pos);
+        return new Token("\n", TokenType.NEWLINE, pos);
     }
 
     /**

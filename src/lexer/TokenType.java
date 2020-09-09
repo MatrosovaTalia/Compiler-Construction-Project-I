@@ -16,5 +16,5 @@ public enum TokenType {
     IDENTIFIER, INTEGER_LITERAL, REAL_LITERAL,
 
     // Special Tokens
-    SEPARATOR, EOF, ILLEGAL
+    NEWLINE, SEMICOLON, EOF, ILLEGAL
 }
