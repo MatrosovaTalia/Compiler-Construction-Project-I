@@ -3,10 +3,12 @@ type Student is record
     var phone_number : integer
 end
 
-var Bob : record Student;
-Bob.marks := [5, 5, 5, 5, 5];
-Bob.phone_number := 79382132312;
+routine main (args: int) : int is
+    var Bob : Student
+    Bob.phone_number := 79382132312
 
-print(Bob.marks)
-print(Bob.phone_number)
+    print(Bob.marks)
+    print(Bob.phone_number)
 
+    return 0
+end

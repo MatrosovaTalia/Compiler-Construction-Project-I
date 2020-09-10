@@ -64,8 +64,8 @@ GlobalDeclarations
 
 GlobalDeclaration
     : SimpleDeclaration {System.out.println("Simple Declaration parsed");}
-    | RoutineDeclaration SEPARATOR {System.out.println("Routine Declaration parsed");}
-    | SEPARATOR {System.out.println("Routine Declaration parsed");}
+    | RoutineDeclaration {System.out.println("Routine Declaration parsed");}
+    | NEWLINE {System.out.println("Routine Declaration parsed");}
     ;
 
 SimpleDeclaration
@@ -74,8 +74,8 @@ SimpleDeclaration
     ;
 
 VariableDeclaration
-	: VAR IDENTIFIER COLON Type ExpressionTail SEPARATOR
-	| VAR IDENTIFIER ExpressionTail SEPARATOR
+	: VAR IDENTIFIER COLON Type ExpressionTail NEWLINE
+	| VAR IDENTIFIER ExpressionTail NEWLINE
     ;
 
 ExpressionTail
@@ -93,7 +93,7 @@ RoutineDeclaration
 
 Return
     : /* empty */
-    | RETURN Expression SEPARATOR //{$$ = $2}
+    | RETURN Expression NEWLINE //{$$ = $2}
     ;
 
 TypeTail
@@ -128,7 +128,7 @@ PrimitiveType
     ;
 
 RecordType
-    : RECORD SEPARATOR VariableDeclarations END
+    : RECORD NEWLINE VariableDeclarations END
     ;
 
 VariableDeclarations
@@ -157,7 +157,7 @@ Statement
     | ForLoop
     | IfStatement
     | Print
-    | SEPARATOR
+    | NEWLINE
     ;
 
 Assignment
@@ -187,7 +187,7 @@ ForLoop
     ;
 
 Range
-    : IN ReverseTail RANGE Expression
+    : IN ReverseTail Expression RANGE Expression
     ;
 
 ReverseTail

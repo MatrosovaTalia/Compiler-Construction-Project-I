@@ -1,16 +1,6 @@
-routine sum (a: integer, b: integer) : integer is
-
-	return a + b
-	
+routine main (args: int) : int is
+    for i in 1 .. 5 loop
+        print(i)
+    end
+    return 0
 end
-
-var a is 0
-var b is 0
-for i in 1. .. .1 loop
-    for j in 2....2 loop
-	    a := a + i
-	    b := b / (j + .0)
-	end
-end
-var result is sum(a,b)
-print(result)
