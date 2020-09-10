@@ -1,15 +1,15 @@
-var a is true
-var c : real
+var a is true;
+var c : real;
 
 routine main (args: int) : int is
     if a then
-    	c := 1
+    	c := 1;
     else
-    	c := 0
+    	c := 0;
     end
 
-    print(c)
+    print(c);
 
-    return 0
+    return 0;
 
-end
+end;

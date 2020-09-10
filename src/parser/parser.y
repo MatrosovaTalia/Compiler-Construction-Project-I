@@ -74,8 +74,12 @@ SimpleDeclaration
     ;
 
 VariableDeclaration
-	: VAR IDENTIFIER COLON Type ExpressionTail NEWLINE
-	| VAR IDENTIFIER ExpressionTail NEWLINE
+    : VAR IDENTIFIER COLON Type ExpressionTail OptionalSemicolon
+    | VAR IDENTIFIER ExpressionTail OptionalSemicolon
+    ;
+OptionalSemicolon
+    : NEWLINE
+    | SEMICOLON
     ;
 
 ExpressionTail
@@ -88,12 +92,11 @@ TypeDeclaration
     ;
 
 RoutineDeclaration
-    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN TypeTail IS Body Return END
+    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN TypeTail IS Body END OptionalSemicolon
     ;
 
 Return
-    : /* empty */
-    | RETURN Expression NEWLINE //{$$ = $2}
+    : RETURN Expression  //{$$ = $2}
     ;
 
 TypeTail
@@ -151,12 +154,13 @@ BodyDeclaration
     ;
 
 Statement
-    : Assignment
-    | RoutineCall
-    | WhileLoop
-    | ForLoop
-    | IfStatement
-    | Print
+    : Assignment OptionalSemicolon
+    | RoutineCall OptionalSemicolon
+    | WhileLoop OptionalSemicolon
+    | ForLoop OptionalSemicolon
+    | IfStatement OptionalSemicolon
+    | Print OptionalSemicolon
+    | Return OptionalSemicolon
     | NEWLINE
     ;
 
@@ -196,7 +200,7 @@ ReverseTail
     ;
 
 IfStatement
-    : IF Expression THEN Body ElseTail END 
+    : IF Expression THEN Body ElseTail END
     ;
 
 ElseTail
@@ -380,5 +384,5 @@ void dotest(int i)
 public static void main(String args[])
 {
  Parser par = new Parser(false);
- par.dotest(5);
+ par.dotest(3);
 }
