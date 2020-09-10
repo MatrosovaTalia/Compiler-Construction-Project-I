@@ -59,27 +59,27 @@ Program
 
 GlobalDeclarations
     : /* empty */
-    | GlobalDeclaration GlobalDeclarations {System.out.println("Global Declaration parsed");}
+    | GlobalDeclaration GlobalDeclarations
     ;
 
 GlobalDeclaration
-    : SimpleDeclaration {System.out.println("Simple Declaration parsed");}
-    | RoutineDeclaration {System.out.println("Routine Declaration parsed");}
-    | NEWLINE {System.out.println("Routine Declaration parsed");}
+    : SimpleDeclaration {System.out.println("Global Declaration parsed");}
+    | RoutineDeclaration {System.out.println("Global Declaration parsed");}
+    | NEWLINE {System.out.println("Global Declaration parsed");}
     ;
 
 SimpleDeclaration
-    : VariableDeclaration {System.out.println("Variable Declaration parsed");}
+    : VariableDeclaration
     | TypeDeclaration {System.out.println("Type Declaration parsed");}
     ;
 
 VariableDeclaration
-    : VAR IDENTIFIER COLON Type ExpressionTail OptionalSemicolon
-    | VAR IDENTIFIER ExpressionTail OptionalSemicolon
+    : VAR IDENTIFIER COLON Type ExpressionTail OptionalSemicolon {{System.out.println("Variable declaration parsed");}}
+    | VAR IDENTIFIER ExpressionTail OptionalSemicolon {System.out.println("Variable declaration parsed");}
     ;
 OptionalSemicolon
-    : NEWLINE
-    | SEMICOLON
+    : NEWLINE {System.out.println("Optional Newline parsed");}
+    | SEMICOLON {System.out.println("Optional Semicolon parsed");}
     ;
 
 ExpressionTail
@@ -92,7 +92,7 @@ TypeDeclaration
     ;
 
 RoutineDeclaration
-    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN TypeTail IS Body END OptionalSemicolon
+    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN TypeTail IS Body END OptionalSemicolon {System.out.println("Routine Declaration parsed");}
     ;
 
 Return
@@ -131,13 +131,15 @@ PrimitiveType
     ;
 
 RecordType
-    : RECORD NEWLINE VariableDeclarations END
+    : RECORD NEWLINE VariableDeclarations END {System.out.println("Record type parsed");}
     ;
 
 VariableDeclarations
-    : /* empty */
-    | VariableDeclaration VariableDeclarations
+    : /* empty */ {System.out.println("Variable declarations parsed");}
+    | VariableDeclaration VariableDeclarations {System.out.println("Variable declaration parsed");}
+    | NEWLINE VariableDeclarations
     ;
+
 
 ArrayType
     : ARRAY LBRACKET Expression RBRACKET Type
@@ -384,5 +386,5 @@ void dotest(int i)
 public static void main(String args[])
 {
  Parser par = new Parser(false);
- par.dotest(3);
+ par.dotest(6);
 }

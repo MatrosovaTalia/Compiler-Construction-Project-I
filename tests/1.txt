@@ -1,6 +1,7 @@
 routine main (args: int) : int is
     for i in 1 .. 5 loop
-        print(i)
+        print(i);
+
     end
     return 0
-end
+end;

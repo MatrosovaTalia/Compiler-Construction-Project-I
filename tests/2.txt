@@ -1,12 +1,1 @@
-var a is 1
-var float is 1.1
-var wrong is 1..31
-var not_wrong is wrong1..1
-var wrong is 1.._okay
-var interesting is a1.b1..12
-
-for i in 1. .. .1 loop
-	a := a + i
-end
-
-print(a)
+var a : int;

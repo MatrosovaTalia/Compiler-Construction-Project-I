@@ -1,7 +1,7 @@
-type Student is record 
+type Student is record
     var phone_number : integer
     var marks : array [5] integer
-end
+    end
 
 routine main (args: int) : int is
     var Bob : Student;

@@ -1,10 +1,15 @@
-routine sum_n(n:integer):integer is
-	var tmp is 0
-	for i in .1...9 loop
-		tmp := tmp + i
-	return tmp
+routine stepf(v: int) : int is
+    if v > 0 then
+        return 1
+    end
+    if v = 0 then
+        return 0
+    end
+    if v < 0 then
+        return -1
+    end
 end
 
-var sum_5 is sum_n(5)
-print(sum_5)
-1..
+routine main (args: int) : int is
+    return 0
+end;

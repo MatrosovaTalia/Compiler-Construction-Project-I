@@ -1,12 +1,14 @@
-var i is 10
-var a is 0
-
-print(a)
-
-while i > 0 loop 
-	a := a + i
-	i := i - 1
-
+routine stepf(v: int) : int is
+    if v > 0 then
+        return 1
+    end
+    if v >= 0 then
+        return 0
+    end
+    return 0
 end
 
-print(a)
+routine main(args: int) : int is
+    stepf(2);
+    return 0
+end;
