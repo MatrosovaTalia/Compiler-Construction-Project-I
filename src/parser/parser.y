@@ -175,9 +175,9 @@ RoutineCall
     ;
 
 RoutineCallTail
-    : /* empty */
-    | LPAREN Expressions RPAREN
+    : LPAREN Expressions RPAREN
     ;
+
 
 Expressions
     : Expression
@@ -282,6 +282,7 @@ Primary
     | TRUE
     | FALSE
     | ModifiablePrimary
+    | RoutineCall
     ;
 
 ModifiablePrimary
