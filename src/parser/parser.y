@@ -65,7 +65,7 @@ GlobalDeclarations
 GlobalDeclaration
     : SimpleDeclaration {System.out.println("Global Declaration parsed");}
     | RoutineDeclaration {System.out.println("Global Declaration parsed");}
-    | NEWLINE {System.out.println("Global Declaration parsed");}
+    | NEWLINE {System.out.println("Newline parsed");}
     ;
 
 SimpleDeclaration
@@ -212,6 +212,7 @@ ElseTail
 
 Expression
     : Relation Relations
+    | MINUS Relation
     ;
 
 Relations
@@ -227,13 +228,13 @@ LogicWord
     ;
 
 Relation
-    : Simple SimpleTail
+    : Simple SimpleTail {System.out.println("Relation declared");}
     ;
 
 
 SimpleTail
-    : /* empty */
-    | RelationSign Simple
+    : /* empty */ {System.out.println("SimpleTail parsed");}
+    | RelationSign Simple SimpleTail {System.out.println("SimpleTail parsed");}
     ;
 
 
@@ -247,7 +248,7 @@ Simple
 
 FactorTail
     : /* empty */
-    | FactorSign Factor
+    | FactorSign Factor FactorTail
     ;
 
 FactorSign
@@ -260,7 +261,7 @@ Factor
 
 SummandTail
     : /* empty */
-    | SummandSign Summand
+    | SummandSign Summand SummandTail
 
 
 SummandSign
@@ -387,5 +388,5 @@ void dotest(int i)
 public static void main(String args[])
 {
  Parser par = new Parser(false);
- par.dotest(6);
+ par.dotest(2);
 }
