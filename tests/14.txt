@@ -12,9 +12,9 @@ type stack is record
 end
 
 routine put(a: stack, item: integer) is
-    if not a.full then
+    if not a.full then // add NOT
         a.size := a.size + 1
-        a.empty = false
+        a.empty := false
         a.list[a.size] := item
         if a.size = a.list.length then
             a.full := true
@@ -32,9 +32,9 @@ end
 
 
 routine pop(a: stack): integer is
-    if not a.empty then
+    if not a.empty then // add NOT
         if a.size = a.list.length then
-           a.full = false
+           a.full := false
         end
         a.size := a.size - 1
         if size = a.list.length / 2 and size >= a.min_size * 2 then
@@ -42,10 +42,10 @@ routine pop(a: stack): integer is
             for i in 1 .. a.size loop
                 new[i] := a.list[i]
             end
-            a.list = new
+            a.list := new
         end
         if a.size = 0 then
-            a.empty = true
+            a.empty := true
         end
         return a.list[a.size]
     end
@@ -54,7 +54,7 @@ routine pop(a: stack): integer is
 end
 
 
-routine main(argc: integer, argv: array[] integer) is 
+routine main(argc: integer, argv: array[5] integer) is 
     var s: stack
 
     for i in 1 .. 20 loop

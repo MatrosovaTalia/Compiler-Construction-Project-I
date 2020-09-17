@@ -26,8 +26,10 @@ var a: integer is 16
 var b: integer is 12
 var temp: integer
 
+routine main (args: integer) is
 // swapping values of two variables
-temp := a
-a := b
-b := temp
-print(a, b)    // should print 12 16
+    temp := a
+    a := b
+    b := temp
+    print(a, b)    // should print 12 16
+end;

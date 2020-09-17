@@ -1,11 +1,11 @@
 var a is true;
 var c : real;
 
-routine main (args: int) : int is
+routine main (args: integer) : integer is
     if a then
-    	c := 1;
+    	c := 1.0;
     else
-    	c := 0;
+    	c := 0.0;
     end
 
     print(c);

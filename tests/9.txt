@@ -1,14 +1,16 @@
 var a is 50
 
-print(a)
+routine main (args: integer) is
+    print(a)
 
-while a % 5 = 0 loop
+    while a % 5 = 0 loop
 
-	if a % 2 = 0 then 
-		a := a + 5
-	else 
-        a := a - 10
-	end
-end
+	    if a % 2 = 0 then 
+		    a := a + 5
+	    else 
+            a := a - 10
+	    end
+    end
 
-print(a)
+    print(a)
+end;

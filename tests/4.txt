@@ -1,4 +1,4 @@
-routine stepf(v: int) : int is
+routine stepf(v: integer) : integer is
     if v > 0 then
         return 1
     end
@@ -10,6 +10,6 @@ routine stepf(v: int) : int is
     end
 end
 
-routine main (args: int) : int is
+routine main (args: integer) : integer is
     return 0
 end;

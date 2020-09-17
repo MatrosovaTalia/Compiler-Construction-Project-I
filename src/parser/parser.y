@@ -64,7 +64,7 @@ GlobalDeclarations
 
 GlobalDeclaration
     : SimpleDeclaration {System.out.println("Global Declaration parsed");}
-    | RoutineDeclaration {System.out.println("Global Declaration parsed");}
+    | RoutineDeclaration {System.out.println("Routine Declaration parsed");}
     | NEWLINE {System.out.println("Newline parsed");}
     ;
 
@@ -105,13 +105,10 @@ TypeTail
     ;
 
 Parameters
-    : ParameterDeclaration ParameterDeclarations
+    : ParameterDeclaration
+    | ParameterDeclaration COMMA Parameters
     ;
 
-ParameterDeclarations
-    : /* empty */
-    | COMMA ParameterDeclaration
-    ;
 
 ParameterDeclaration
     : IDENTIFIER COLON Type
@@ -171,17 +168,14 @@ Assignment
     ;
 
 RoutineCall
-    : IDENTIFIER RoutineCallTail
+    : IDENTIFIER LPAREN Expressions RPAREN
     ;
 
-RoutineCallTail
-    : LPAREN Expressions RPAREN
-    ;
 
 
 Expressions
     : Expression
-    | Expressions COMMA Expression
+    | Expression COMMA Expressions
     ;
 
 WhileLoop
@@ -212,12 +206,15 @@ ElseTail
 
 Expression
     : Relation Relations
-    | MINUS Relation
+    | SummandSign Relation Relations
+    | NOT Relation Relations
+    | NOT SummandSign Relation Relations
     ;
 
 Relations
     : /* empty */
     | LogicWord Relation Relations
+    | LogicWord NOT Relation Relations
     ;
 
 
@@ -278,6 +275,7 @@ Summand
 //    ;
 
 Primary
+
     : INTEGER_LITERAL
     | REAL_LITERAL
     | TRUE
@@ -297,7 +295,7 @@ ElementCall
     ;
 
 Print
-    : PRINT LPAREN Expression RPAREN //{Print($3)}
+    : PRINT LPAREN Expressions RPAREN //{Print($3)}
     ;
 
 %%

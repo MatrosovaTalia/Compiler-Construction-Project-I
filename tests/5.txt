@@ -3,7 +3,7 @@ type Student is record
     var marks : array [5] integer
     end
 
-routine main (args: int) : int is
+routine main (args: integer) : integer is
     var Bob : Student;
     Bob.phone_number := 79382132312;
 

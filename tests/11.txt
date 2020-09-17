@@ -6,5 +6,7 @@ routine factorial(i: integer):integer is
     return factorial(i-1)*i
 end
 
-var fact_5 is factorial(5)
-print(fact_5)
+routine main (args: integer) is
+    var fact_5 is factorial(5)
+    print(fact_5)
+end;

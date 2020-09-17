@@ -1,14 +1,14 @@
-routine stepf(v: int) : int is
-    if v > 0 then
+routine stepf(v: integer) : integer is
+    if v > 0 and v < 5 then
         return 1
     end
-    if v >= 0 then
+    if v <= 0 then
         return 0
     end
     return 0
 end
 
-routine main(args: int) : int is
-    stepf(2);
+routine main(args: integer) : integer is
+    stepf(2, 3, 4);
     return 0
 end;

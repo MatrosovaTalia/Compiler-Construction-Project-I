@@ -1,0 +1,11 @@
+var a is not true or true and not true;
+routine main (args: integer, a: integer, o: boolean, l: integer) is
+
+    print(a.v)
+    print(av[2])
+    print(ak(5))
+    print(2+3)
+    prt(a,s,d)
+
+
+end;

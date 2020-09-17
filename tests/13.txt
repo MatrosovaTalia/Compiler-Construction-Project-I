@@ -12,7 +12,7 @@ routine gcd(a: integer, b: integer): integer is
     return a + b
 end
 
-routine main(argc: integer, argv: array[] integer) is 
+routine main(argc: integer, argv: array[5] integer) is 
     var a: integer is 12
     var b: integer is 18
     print(gcd(a, b)) // should print(6)

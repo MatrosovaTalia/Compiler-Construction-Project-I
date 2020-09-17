@@ -19,5 +19,7 @@ routine fib_n(n:integer):integer is
     return fib2
 end
 
-var fib_7 is fib_n(7)
-print(fib_7)
+routine main (args: integer) is
+    var fib_7 is fib_n(7)
+    print(fib_7)
+end;

@@ -1,4 +1,4 @@
-routine main (args: int) : int is
+routine main (args: integer) : integer is
     for i in 1 .. 5 loop
         print(i);
 

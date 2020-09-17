@@ -1,4 +1,4 @@
-routine stepf(v: int) : int is
+routine stepf(v: integer) : integer is
     if v > 0 then
         return 1
     end
@@ -8,8 +8,8 @@ routine stepf(v: int) : int is
     return 0
 end
 
-routine main(args: int) : int is
-    var a : int;
+routine main(args: integer) : integer is
+    var a : integer;
     a := stepf(2)
     return 0
 end;
