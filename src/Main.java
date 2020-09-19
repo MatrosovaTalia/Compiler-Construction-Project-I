@@ -20,7 +20,7 @@ public class Main {
                     Token tok = lexer.lex();
                     type = tok.getType();
                     writer.write(tok.toString());
-                } while (type != TokenType.EOF);
+                } while (type != TokenType.YYEOF);
                 writer.close();
 
                 System.out.println("Successfully wrote to " + i + ".txt");

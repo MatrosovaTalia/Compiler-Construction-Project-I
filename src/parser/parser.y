@@ -1,4 +1,6 @@
 %{
+package parser;
+import lexems.*;
 import java.lang.Math;
 import java.io.*;
 import java.util.StringTokenizer;
@@ -6,385 +8,424 @@ import lexer.*;
 import reader.Reader;
 
 %}
+%output "YYParser.java"
+%define lex_throws {}
+%define api.value.type {ILexem}
 
 /* YACC Declarations */
 
 // Identifiers & numbers
-%token IDENTIFIER
-%token INTEGER_LITERAL
-%token REAL_LITERAL
-
+%token <Identifer> IDENTIFIER
+%token <IntegerLiteral> INTEGER_LITERAL
+%token <RealLiteral> REAL_LITERAL
+%token <BooleanLiteral> TRUE FALSE
 // Keywords
-%token VAR TYPE IS END TRUE FALSE RECORD INTEGER REAL BOOLEAN
+%token VAR TYPE IS END RECORD
+%token INTEGER REAL BOOLEAN
 %token ARRAY WHILE LOOP FOR IN REVERSE IF THEN ELSE ROUTINE AND
 %token OR NOT XOR PRINT RETURN
 
 // Separators
-%token NEWLINE SEMICOLON
+%token <ILexem> NEWLINE
+%token SEMICOLON
 
 // Delimiters
-%token LPAREN '('
-%token RPAREN ')'
-%token LBRACKET '['
-%token RBRACKET ']'
-%token COMMA ','
-%token DOT '.'
-%token COLON ':'
-%token  RANGE '..'
+%token LPAREN
+%token RPAREN
+%token LBRACKET
+%token RBRACKET
+%token COMMA
+%token DOT
+%token COLON
+%token RANGE
 
 // Operator signs
-%token EQUALS '='
-%token ASSIGN ':='
-%token NEQUALS '/='
-%token GREATER '>'
-%token LESS '<'
-%token LEQUALS '<='
-%token GEQUALS '>='
-%token PLUS '+'
-%token MINUS '-'
-%token MULTIPLY '*'
-%token DIVIDE '/'
-%token REMAINDER '%'
-%token SLCOMMENT '//'
-%token MLCOMMENT_START '/*'
-%token MLCOMMENT_END '*/'
+%token EQUALS
+%token ASSIGN
+%token NEQUALS
+%token GREATER
+%token LESS
+%token LEQUALS
+%token GEQUALS
+%token PLUS
+%token MINUS
+%token MULTIPLY
+%token DIVIDE
+%token REMAINDER
+
+%type <ILexem> Program
+%type <ILexem> GlobalDeclarations
+%type <ILexem> GlobalDeclaration
+%type <ILexem> SimpleDeclaration
+%type <ILexem> RoutineDeclaration
+%type <ILexem> VariableDeclarations
+%type <ILexem> VariableDeclaration
+%type <ILexem> TypeDeclaration
+%type <ILexem> Type
+%type <ILexem> Return
+%type <ILexem> Print
+%type <ILexem> Parameters
+%type <ILexem> ParameterDeclaration
+%type <ILexem> PrimitiveType
+%type <ILexem> ArrayType
+%type <ILexem> RecordType
+%type <ILexem> Body
+%type <ILexem> BodyDeclaration
+%type <ILexem> Statement
+%type <ILexem> Assignment
+%type <ILexem> RoutineCall
+%type <ILexem> Expressions
+%type <ILexem> Expression
+%type <ILexem> WhileLoop
+%type <ILexem> ForLoop
+%type <ILexem> IfStatement
+%type <ILexem> Relations
+%type <ILexem> LogicWord
+%type <ILexem> Relation
+%type <ILexem> SimpleTail
+%type <ILexem> RelationSign
+%type <ILexem> Simple
+%type <ILexem> FactorSign
+%type <ILexem> FactorTail
+%type <ILexem> Factor
+%type <ILexem> SummandSign
+%type <ILexem> Summand
+%type <ILexem> SummandTail
+%type <ILexem> Primary
+%type <ILexem> ModifiablePrimary
+%type <ILexem> ElementCall
+
 
 %start Program
 
 %%
 
 Program
-    : GlobalDeclarations {System.out.println("Global Declarations parsed");}
+    : GlobalDeclarations {ast = $1;}
     ;
 
 GlobalDeclarations
-    : /* empty */
-    | GlobalDeclaration GlobalDeclarations
+    : /* empty */ { $$ = new GlobalDeclarations();}
+    | GlobalDeclaration GlobalDeclarations {$$ = $2; $2.addDeclaration($1);}
     ;
 
 GlobalDeclaration
-    : SimpleDeclaration {System.out.println("Global Declaration parsed");}
-    | RoutineDeclaration {System.out.println("Routine Declaration parsed");}
-    | NEWLINE {System.out.println("Newline parsed");}
+    : SimpleDeclaration {$$ = new GlobalDeclarion($1);}
+    | RoutineDeclaration {$$ = new GlobalDeclarion($1);}
+    | NEWLINE
     ;
 
 SimpleDeclaration
-    : VariableDeclaration
-    | TypeDeclaration {System.out.println("Type Declaration parsed");}
+    : VariableDeclaration { $$ = $1;}
+    | TypeDeclaration { $$ = new SimpleDeclaration($1);}
     ;
 
 VariableDeclaration
-    : VAR IDENTIFIER COLON Type ExpressionTail OptionalSemicolon {{System.out.println("Variable declaration parsed");}}
-    | VAR IDENTIFIER ExpressionTail OptionalSemicolon {System.out.println("Variable declaration parsed");}
+    : VAR IDENTIFIER COLON Type OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
+    | VAR IDENTIFIER COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
+    | VAR IDENTIFIER IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
     ;
 OptionalSemicolon
-    : NEWLINE {System.out.println("Optional Newline parsed");}
-    | SEMICOLON {System.out.println("Optional Semicolon parsed");}
-    ;
-
-ExpressionTail
-    : /* empty */
-    | IS Expression
+    : NEWLINE
+    | SEMICOLON
     ;
 
 TypeDeclaration
-    : TYPE IDENTIFIER IS Type
+    : TYPE IDENTIFIER IS Type {$$ = new TypeDeclaration($2, $4);}
     ;
 
 RoutineDeclaration
-    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN TypeTail IS Body END OptionalSemicolon {System.out.println("Routine Declaration parsed");}
+    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN IS Body END OptionalSemicolon {
+    	$$ = new RoutineDeclaration($2, $4, $7);
+    }
+    | ROUTINE IDENTIFIER LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon {
+    	$$ = new RoutineDeclaration($2, $4, $7, $9);
+    }
     ;
 
 Return
-    : RETURN Expression  //{$$ = $2}
+    : RETURN Expression {$$ = new Return($2);}
     ;
 
-TypeTail
-    : /* empty */
-    | COLON Type
-    ;
 
 Parameters
-    : ParameterDeclaration
-    | ParameterDeclaration COMMA Parameters
+    : ParameterDeclaration { $$ = new Parameters($1); }
+    | ParameterDeclaration COMMA Parameters { $$ = $3; $3.addParameter($1); }
     ;
 
 
 ParameterDeclaration
-    : IDENTIFIER COLON Type
+    : IDENTIFIER COLON Type { $$ = new Parameter($1, $3); }
     ;
 
 Type
-    : PrimitiveType
-    | ArrayType
-    | RecordType
-    | IDENTIFIER
+    : PrimitiveType { $$ = $1; }
+    | ArrayType { $$ = $1; }
+    | RecordType { $$ = $1; }
+    | IDENTIFIER { $$ = $1; }
     ;
 
 PrimitiveType
-    : INTEGER
-    | REAL
-    | BOOLEAN
+    : INTEGER { $$ = new PrimitiveType("integer");}
+    | REAL { $$ = new PrimitiveType("real"); }
+    | BOOLEAN { $$ = new PrimitiveType("boolean"); }
     ;
 
 RecordType
-    : RECORD NEWLINE VariableDeclarations END {System.out.println("Record type parsed");}
+    : RECORD NEWLINE VariableDeclarations END {$$ = $3;}
     ;
 
 VariableDeclarations
-    : /* empty */ {System.out.println("Variable declarations parsed");}
-    | VariableDeclaration VariableDeclarations {System.out.println("Variable declaration parsed");}
-    | NEWLINE VariableDeclarations
+    : /* empty */ { $$ = new RecordType(); }
+    | VariableDeclaration VariableDeclarations { $$ = $2; $2.addDeclaration($1);}
+    | NEWLINE VariableDeclarations { $$ = $2; }
     ;
 
 
 ArrayType
-    : ARRAY LBRACKET Expression RBRACKET Type
+    : ARRAY LBRACKET Expression RBRACKET Type { $$ = new ArrayType($3, $5); }
     ;
 
 Body
-    : /* empty */
-    | BodyDeclaration Body
+    : /* empty */ { $$ = new Body();}
+    | BodyDeclaration Body {$$ = $2; $2.addBody($1);}
     ;
 
 BodyDeclaration
-    : SimpleDeclaration
-    | Statement
+    : SimpleDeclaration {$$ = new BodyDeclaration($1);}
+    | Statement {$$ = new BodyDeclaration($1);}
     ;
 
 Statement
-    : Assignment OptionalSemicolon
-    | RoutineCall OptionalSemicolon
-    | WhileLoop OptionalSemicolon
-    | ForLoop OptionalSemicolon
-    | IfStatement OptionalSemicolon
-    | Print OptionalSemicolon
-    | Return OptionalSemicolon
+    : Assignment OptionalSemicolon {$$ = $1;}
+    | RoutineCall OptionalSemicolon {$$ = $1; }
+    | WhileLoop OptionalSemicolon {$$ = $1;}
+    | ForLoop OptionalSemicolon {$$ = $1;}
+    | IfStatement OptionalSemicolon{$$ = $1;}
+    | Print OptionalSemicolon {$$ = $1;}
+    | Return OptionalSemicolon {$$ = $1;}
     | NEWLINE
     ;
 
 Assignment
-    : ModifiablePrimary ASSIGN Expression
+    : ModifiablePrimary ASSIGN Expression {$$ = new Assignment($1, $3);}
     ;
 
 RoutineCall
-    : IDENTIFIER LPAREN Expressions RPAREN
+    : IDENTIFIER LPAREN Expressions RPAREN {$$ = new RoutineCall($1, $3); }
     ;
 
-
-
 Expressions
-    : Expression
-    | Expression COMMA Expressions
+    : Expression { $$ = new Expressions($1); }
+    | Expression COMMA Expressions { $$ = $3; $3.addExpression($1); }
     ;
 
 WhileLoop
-    : WHILE Expression LOOP Body END
+    : WHILE Expression LOOP Body END {$$ = new WhileLoop($2, $4); }
     ;
 
 ForLoop
-    : FOR IDENTIFIER Range LOOP Body END
-    ;
-
-Range
-    : IN ReverseTail Expression RANGE Expression
-    ;
-
-ReverseTail
-    : /* empty */
-    | REVERSE
+    : FOR IDENTIFIER IN Expression RANGE Expression LOOP Body END
+    {$$ = new ForLoop($2, $4, $6, $8, false);}
+    | FOR IDENTIFIER IN REVERSE Expression RANGE Expression LOOP Body END
+    {$$ = new ForLoop($2, $5, $7, $9, true);}
     ;
 
 IfStatement
-    : IF Expression THEN Body ElseTail END
+    : IF Expression THEN Body END {$$ = new IfStatement($2, $4);}
+    | IF Expression THEN Body ELSE Body END {$$ = new IfStatement($2, $4, $6);}
     ;
 
-ElseTail
-    : /* empty */
-    | ELSE Body
-    ;
 
 Expression
-    : Relation Relations
-    | SummandSign Relation Relations
-    | NOT Relation Relations
-    | NOT SummandSign Relation Relations
+    : Relation Relations { $$ = $2; $2.addRelation($1); }
+    | SummandSign Relation Relations { $$ = $3;  $2.setSummandSign($1); $3.addRelation($2); }
+    | NOT Relation Relations { $$ = $3; $2.setNot(); $3.addRelation($2); }
+    | NOT SummandSign Relation Relations { $$ = $4; $3.setSummandSign($2); $3.setNot(); $4.addRelation($3); }
     ;
 
 Relations
-    : /* empty */
-    | LogicWord Relation Relations
-    | LogicWord NOT Relation Relations
+    : /* empty */  { $$ = new Expression();}
+    | LogicWord Relation Relations { $$ = $3; $3.addRelation($2, $1); }
+    | LogicWord NOT Relation Relations {$$ = $4; $3.setNot(); $4.addRelation($3, $1);}
     ;
+
 
 
 LogicWord
-    : AND
-    | OR
-    | XOR
+    : AND { $$ = new LogicWord("and"); }
+    | OR { $$ = new LogicWord("or"); }
+    | XOR { $$ = new LogicWord("xor"); }
     ;
 
 Relation
-    : Simple SimpleTail {System.out.println("Relation declared");}
+    : Simple SimpleTail { $$ = $2; $2.addSimple($1); }
     ;
 
 
 SimpleTail
-    : /* empty */ {System.out.println("SimpleTail parsed");}
-    | RelationSign Simple SimpleTail {System.out.println("SimpleTail parsed");}
+    : /* empty */ { $$ = new IRelation(); }
+    | RelationSign Simple SimpleTail { $$ = $3; $3.addSimple($2, $1); }
     ;
 
 
 RelationSign
-    : LESS | GREATER | LEQUALS | GEQUALS | EQUALS | NEQUALS
+    : LESS { $$ = new RelationSign("<"); }
+    | GREATER { $$ = new RelationSign(">"); }
+    | LEQUALS { $$ = new RelationSign("<="); }
+    | GEQUALS { $$ = new RelationSign(">="); }
+    | EQUALS { $$ =  new RelationSign("="); }
+    | NEQUALS { $$ = new RelationSign("/="); }
     ;
 
 Simple
-    : Factor FactorTail
+    : Factor FactorTail { $$ = $2; $2.addFactor($1); }
     ;
 
 FactorTail
-    : /* empty */
-    | FactorSign Factor FactorTail
+    : /* empty */ {$$ = new Simple(); }
+    | FactorSign Factor FactorTail { $$ = $3; $3.addFactor($2, $1); }
     ;
 
 FactorSign
-    : MULTIPLY | DIVIDE | REMAINDER
+    : MULTIPLY { $$ = FactorSign("*"); };
+    | DIVIDE { $$ = FactorSign("/"); }
+    | REMAINDER { $$ = FactorSign("%"); }
     ;
 
 Factor
-    : Summand SummandTail
+    : Summand SummandTail { $$ = $2; $2.addSummand($1); }
     ;
 
 SummandTail
-    : /* empty */
-    | SummandSign Summand SummandTail
+    : /* empty */ { $$ = new Factor(); }
+    | SummandSign Summand SummandTail { $$ = $3; $$.addSummand($2, $1); }
 
 
 SummandSign
-    : PLUS | MINUS
+    : PLUS { $$ = new SummandSign("+"); }
+    | MINUS { $$ = new SummandSign("-"); }
     ;
 
 Summand
-    : Primary
-    |  LPAREN Expression RPAREN
+    : Primary { $$ = new Summand($1); }
+    | LPAREN Expression RPAREN { $$ = new Summand($2); }
     ;
 
-//Exp
-//    : '(' Expression ')'
-//    ;
-
 Primary
-
-    : INTEGER_LITERAL
-    | REAL_LITERAL
-    | TRUE
-    | FALSE
-    | ModifiablePrimary
-    | RoutineCall
+    : INTEGER_LITERAL { $$ = $1;}
+    | REAL_LITERAL { $$ = $1; }
+    | TRUE { $$ = true; }
+    | FALSE { $$ = false; }
+    | ModifiablePrimary { $$ = $1; }
+    | RoutineCall { $$ = $1;}
     ;
 
 ModifiablePrimary
-    : IDENTIFIER ElementCall
+    : IDENTIFIER ElementCall { $$ = new ModifiablePrimary($1, $2); }
     ;
 
 ElementCall
-    : /* empty */
-    | DOT IDENTIFIER ElementCall
-    | LBRACKET Expression RBRACKET ElementCall
+    : /* empty */ { $$ = new ElementCall(); }
+    | DOT IDENTIFIER ElementCall { $$ = $3; $3.addElementCall($2); }
+    | LBRACKET Expression RBRACKET ElementCall { $$ = $4; $4.addElementCall($2);}
     ;
 
 Print
-    : PRINT LPAREN Expressions RPAREN //{Print($3)}
+    : PRINT LPAREN Expressions RPAREN {$$ = new Print($3);}
     ;
 
+
 %%
-
-Lexer lexer;
-
-int yylex() {
-	Token tok = lexer.lex();
-	TokenType type = tok.getType();
-	System.out.println(tok.toString());
-    int code;
-    switch (type) {
-	case VAR -> code = VAR;
-	case TYPE -> code = TYPE;
-	case IS -> code = IS;
-	case END -> code = END;
-	case INTEGER -> code = INTEGER;
-	case REAL -> code = REAL;
-	case BOOLEAN -> code = BOOLEAN;
-	case TRUE -> code = TRUE;
-	case FALSE -> code = FALSE;
-	case RECORD -> code = RECORD;
-	case ARRAY -> code = ARRAY;
-	case WHILE -> code = WHILE;
-	case LOOP -> code = LOOP;
-	case FOR -> code = FOR;
-	case IN -> code = IN;
-	case REVERSE -> code = REVERSE;
-	case IF -> code = IF;
-	case THEN -> code = THEN;
-	case ELSE -> code = ELSE;
-	case ROUTINE -> code = ROUTINE;
-	case AND -> code = AND;
-	case OR -> code = OR;
-	case NOT -> code = NOT;
-	case XOR -> code = XOR;
-	case PRINT -> code = PRINT;
-	case RETURN -> code = RETURN;
-	case RANGE -> code = RANGE;
-	case ADD -> code = PLUS;
-	case MINUS -> code = MINUS;
-	case MULTIPLY -> code = MULTIPLY;
-	case DIVIDE -> code = DIVIDE;
-	case REMAINDER -> code = REMAINDER;
-	case RBRACKET -> code = RBRACKET;
-	case LBRACKET -> code = LBRACKET;
-	case LESS -> code = LESS;
-	case LEQUALS -> code = LEQUALS;
-	case GREATER -> code = GREATER;
-	case GEQUALS -> code = GEQUALS;
-	case EQUALS -> code = EQUALS;
-	case NEQUALS -> code = NEQUALS;
-	case DOT -> code = DOT;
-	case COMMA -> code = COMMA;
-	case ASSIGN -> code = ASSIGN;
-	case COLON -> code = COLON;
-	case LPAREN -> code = LPAREN;
-	case RPAREN -> code = RPAREN;
-	case SLCOMMENT -> code = SLCOMMENT;
-	case MLCOMMENT_START -> code = MLCOMMENT_START;
-	case MLCOMMENT_END -> code = MLCOMMENT_END;
-	case IDENTIFIER -> code = IDENTIFIER;
-	case INTEGER_LITERAL -> code = INTEGER_LITERAL;
-	case REAL_LITERAL -> code = REAL_LITERAL;
-	case NEWLINE -> code = NEWLINE;
-	case SEMICOLON -> code = SEMICOLON;
-//	case EOF -> code = 0;
-	default -> code = -1;
-    }
-    return code;
-}
-
-void yyerror(String mes) {
-    System.out.println(mes);
-}
-
-void dotest(int i)
-{
-	Reader reader = new Reader();
-	this.lexer = new Lexer();
-	reader.read("tests/" + i + ".txt");
-	lexer.tokenize(reader.sourceText);
-	yyparse();
-}
-
-
-
-public static void main(String args[])
-{
- Parser par = new Parser(false);
- par.dotest(2);
-}
+//
+//
+//Lexer lexer;
+//
+//GlobalDeclarations ast;
+//
+//int yylex() {
+//	Token tok = lexer.lex();
+//	TokenType type = tok.getType();
+//	System.out.println(tok.toString());
+//    int code;
+//    switch (type) {
+//	case VAR -> code = VAR;
+//	case TYPE -> code = TYPE;
+//	case IS -> code = IS;
+//	case END -> code = END;
+//	case INTEGER -> code = INTEGER;
+//	case REAL -> code = REAL;
+//	case BOOLEAN -> code = BOOLEAN;
+//	case TRUE -> code = TRUE;
+//	case FALSE -> code = FALSE;
+//	case RECORD -> code = RECORD;
+//	case ARRAY -> code = ARRAY;
+//	case WHILE -> code = WHILE;
+//	case LOOP -> code = LOOP;
+//	case FOR -> code = FOR;
+//	case IN -> code = IN;
+//	case REVERSE -> code = REVERSE;
+//	case IF -> code = IF;
+//	case THEN -> code = THEN;
+//	case ELSE -> code = ELSE;
+//	case ROUTINE -> code = ROUTINE;
+//	case AND -> code = AND;
+//	case OR -> code = OR;
+//	case NOT -> code = NOT;
+//	case XOR -> code = XOR;
+//	case PRINT -> code = PRINT;
+//	case RETURN -> code = RETURN;
+//	case RANGE -> code = RANGE;
+//	case ADD -> code = PLUS;
+//	case MINUS -> code = MINUS;
+//	case MULTIPLY -> code = MULTIPLY;
+//	case DIVIDE -> code = DIVIDE;
+//	case REMAINDER -> code = REMAINDER;
+//	case RBRACKET -> code = RBRACKET;
+//	case LBRACKET -> code = LBRACKET;
+//	case LESS -> code = LESS;
+//	case LEQUALS -> code = LEQUALS;
+//	case GREATER -> code = GREATER;
+//	case GEQUALS -> code = GEQUALS;
+//	case EQUALS -> code = EQUALS;
+//	case NEQUALS -> code = NEQUALS;
+//	case DOT -> code = DOT;
+//	case COMMA -> code = COMMA;
+//	case ASSIGN -> code = ASSIGN;
+//	case COLON -> code = COLON;
+//	case LPAREN -> code = LPAREN;
+//	case RPAREN -> code = RPAREN;
+//	case SLCOMMENT -> code = SLCOMMENT;
+//	case MLCOMMENT_START -> code = MLCOMMENT_START;
+//	case MLCOMMENT_END -> code = MLCOMMENT_END;
+//	case IDENTIFIER -> code = IDENTIFIER;
+//	case INTEGER_LITERAL -> code = INTEGER_LITERAL;
+//	case REAL_LITERAL -> code = REAL_LITERAL;
+//	case NEWLINE -> code = NEWLINE;
+//	case SEMICOLON -> code = SEMICOLON;
+////	case EOF -> code = 0;
+//	default -> code = -1;
+//    }
+//    return code;
+//}
+//
+//void yyerror(String mes) {
+//    System.out.println(mes);
+//}
+//
+//void dotest(int i)
+//{
+//	Reader reader = new Reader();
+//	this.lexer = new Lexer();
+//	reader.read("tests/" + i + ".txt");
+//	lexer.tokenize(reader.sourceText);
+//	yyparse();
+//}
+//
+//
+//
+//public static void main(String args[])
+//{
+// Parser par = new Parser(false);
+// par.dotest(6);
+//}

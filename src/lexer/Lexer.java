@@ -1,6 +1,10 @@
 package lexer;
 
+import lexems.ILexem;
 import misc.Pair;
+import parser.YYParser;
+
+import java.io.IOException;
 
 /*
     DONE: Keywords:
@@ -63,15 +67,14 @@ import misc.Pair;
  */
 
 
-public class Lexer {
+public class Lexer implements YYParser.Lexer {
     private StringReaderWithPosition in;
     private CharacterBuffer buffer;
     private int c;
     private Token enqueuedToken = null;
 
 
-    public Lexer() {
-    }
+    public Lexer() {}
 
     public void tokenize(String sourceText) {
         this.in = new StringReaderWithPosition(sourceText);
@@ -109,7 +112,7 @@ public class Lexer {
                 return scanIllegalCharacter();
             }
         }
-        return new Token("", TokenType.EOF, new Pair<>(in.line(), in.pos()));
+        return new Token("", TokenType.YYEOF, new Pair<>(in.line(), in.pos()));
     }
 
 
@@ -349,7 +352,7 @@ public class Lexer {
             case ')' -> type = TokenType.RPAREN;
             case '[' -> type = TokenType.LBRACKET;
             case ']' -> type = TokenType.RBRACKET;
-            case '+' -> type = TokenType.ADD;
+            case '+' -> type = TokenType.PLUS;
             case '-' -> type = TokenType.MINUS;
             case '*' -> type = TokenType.MULTIPLY;
             case '%' -> type = TokenType.REMAINDER;
@@ -386,13 +389,52 @@ public class Lexer {
      */
     private Token scanIllegalCharacter() {
         buffer.add(c);
-        Token tok = new Token(buffer.toString(), TokenType.ILLEGAL, new Pair<>(in.line(), in.pos()));
+        Token tok = new Token(buffer.toString(), TokenType.YYUNDEF, new Pair<>(in.line(), in.pos()));
         buffer.flush();
         c = in.read();
         return tok;
     }
 
 
+    @Override
+    public ILexem getLVal() {
+        return new ILexem() {
+            @Override
+            public int hashCode() {
+                return super.hashCode();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return super.equals(obj);
+            }
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                return super.clone();
+            }
+
+            @Override
+            public String toString() {
+                return super.toString();
+            }
+
+            @Override
+            protected void finalize() throws Throwable {
+                super.finalize();
+            }
+        };
+    }
+
+    @Override
+    public int yylex() {
+        return lex().getType().getValue();
+    }
+
+    @Override
+    public void yyerror(String msg) {
+        System.out.println(msg);
+    }
 }
 
 
