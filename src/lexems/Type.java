@@ -18,4 +18,8 @@ public class Type implements ILexem{
    public Type(Identifier identifier) {
        this.type = identifier;
    }
+
+    public Type() {
+
+    }
 }

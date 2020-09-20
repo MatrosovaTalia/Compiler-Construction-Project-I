@@ -1,22 +1,22 @@
 package lexems;
 
 public class VariableDeclaration implements ILexem {
-    public Identifier identifier;
-    public Type type;
-    public Expression expression;
+    public ILexem identifier;
+    public ILexem type;
+    public ILexem expression;
 
-    public VariableDeclaration(Identifier identifier, Type type) {
+    public VariableDeclaration(ILexem identifier, Type type) {
         this.identifier = identifier;
         this.type = type;
     }
 
-    public VariableDeclaration(Identifier identifier, Type type, Expression expression) {
+    public VariableDeclaration(ILexem identifier, Type type, ILexem expression) {
         this.identifier = identifier;
         this.type = type;
         this.expression = expression;
     }
 
-    public VariableDeclaration(Identifier identifier, Expression expression) {
+    public VariableDeclaration(ILexem identifier, Expression expression) {
         this.identifier = identifier;
         this.expression = expression;
     }

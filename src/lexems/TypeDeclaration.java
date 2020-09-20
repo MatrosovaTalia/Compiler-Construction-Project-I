@@ -1,10 +1,10 @@
 package lexems;
 
 public class TypeDeclaration implements ILexem {
-    Identifier identifier;
+    ILexem identifier;
     Type type;
 
-    public TypeDeclaration(Identifier identifier, Type type){
+    public TypeDeclaration(ILexem identifier, Type type){
         this.identifier = identifier;
         this.type = type;
     }

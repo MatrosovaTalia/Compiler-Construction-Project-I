@@ -1,10 +1,10 @@
 package lexems;
 
 public class Parameter implements ILexem {
-    public Identifier identifier;
+    public ILexem identifier;
     public Type type;
 
-    public Parameter(Identifier identifier, Type type) {
+    public Parameter(ILexem identifier, Type type) {
         this.identifier = identifier;
         this.type = type;
     }

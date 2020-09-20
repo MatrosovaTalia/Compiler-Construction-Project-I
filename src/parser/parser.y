@@ -31,7 +31,7 @@ import reader.Reader;
 /* YACC Declarations */
 
 // Identifiers & numbers
-%token <Identifier> IDENTIFIER
+%token <String> IDENTIFIER
 %token <IntegerLiteral> INTEGER_LITERAL
 %token <RealLiteral> REAL_LITERAL
 %token <BooleanLiteral> TRUE FALSE
@@ -110,7 +110,7 @@ import reader.Reader;
 %type <ILexem> Primary
 %type <ModifiablePrimary> ModifiablePrimary
 %type <IList> ElementCall
-
+%type <ILexem> Identifier
 
 %start Program
 
@@ -137,9 +137,9 @@ SimpleDeclaration
     ;
 
 VariableDeclaration
-    : VAR IDENTIFIER COLON Type OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
-    | VAR IDENTIFIER COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
-    | VAR IDENTIFIER IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
+    : VAR Identifier COLON Type OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
+    | VAR Identifier COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
+    | VAR Identifier IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
     ;
 OptionalSemicolon
     : NEWLINE
@@ -147,14 +147,14 @@ OptionalSemicolon
     ;
 
 TypeDeclaration
-    : TYPE IDENTIFIER IS Type {$$ = new TypeDeclaration($2, $4);}
+    : TYPE Identifier IS Type {$$ = new TypeDeclaration($2, $4);}
     ;
 
 RoutineDeclaration
-    : ROUTINE IDENTIFIER LPAREN Parameters RPAREN IS Body END OptionalSemicolon {
+    : ROUTINE Identifier LPAREN Parameters RPAREN IS Body END OptionalSemicolon {
     	$$ = new RoutineDeclaration($2, $4, $7);
     }
-    | ROUTINE IDENTIFIER LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon {
+    | ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon {
     	$$ = new RoutineDeclaration($2, $4, $7, $9);
     }
     ;
@@ -171,14 +171,14 @@ Parameters
 
 
 ParameterDeclaration
-    : IDENTIFIER COLON Type { $$ = new Parameter($1, $3); }
+    : Identifier COLON Type { $$ = new Parameter($1, $3); }
     ;
 
 Type
     : PrimitiveType { $$ = $1; }
     | ArrayType { $$ = $1; }
     | RecordType { $$ = $1; }
-    | IDENTIFIER { $$ = $1; }
+    | Identifier { $$ = $1; }
     ;
 
 PrimitiveType
@@ -228,7 +228,7 @@ Assignment
     ;
 
 RoutineCall
-    : IDENTIFIER LPAREN Expressions RPAREN {$$ = new RoutineCall($1, $3); }
+    : Identifier LPAREN Expressions RPAREN {$$ = new RoutineCall($1, $3); }
     ;
 
 Expressions
@@ -241,9 +241,9 @@ WhileLoop
     ;
 
 ForLoop
-    : FOR IDENTIFIER IN Expression RANGE Expression LOOP Body END
+    : FOR Identifier IN Expression RANGE Expression LOOP Body END
     {$$ = new ForLoop($2, $4, $6, $8, false);}
-    | FOR IDENTIFIER IN REVERSE Expression RANGE Expression LOOP Body END
+    | FOR Identifier IN REVERSE Expression RANGE Expression LOOP Body END
     {$$ = new ForLoop($2, $5, $7, $9, true);}
     ;
 
@@ -331,19 +331,19 @@ Summand
 Primary
     : INTEGER_LITERAL { $$ = $1;}
     | REAL_LITERAL { $$ = $1; }
-    | TRUE { $$ = true; }
-    | FALSE { $$ = false; }
+    | TRUE { $$ = new BooleanLiteral(true); }
+    | FALSE { $$ = new BooleanLiteral(false); }
     | ModifiablePrimary { $$ = $1; }
     | RoutineCall { $$ = $1;}
     ;
 
 ModifiablePrimary
-    : IDENTIFIER ElementCall { $$ = new ModifiablePrimary($1, $2); }
+    : Identifier ElementCall { $$ = new ModifiablePrimary($1, $2); }
     ;
 
 ElementCall
     : /* empty */ { $$ = new ElementCall(); }
-    | DOT IDENTIFIER ElementCall { $$ = $3; $3.add($2); }
+    | DOT Identifier ElementCall { $$ = $3; $3.add($2); }
     | LBRACKET Expression RBRACKET ElementCall { $$ = $4; $4.add($2);}
     ;
 
@@ -351,6 +351,8 @@ Print
     : PRINT LPAREN Expressions RPAREN {$$ = new Print($3);}
     ;
 
+Identifier:
+	IDENTIFIER {$$ = new Identifier($1);}
 
 %%
 //
