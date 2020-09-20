@@ -1,21 +1,37 @@
-%{
-package parser;
-import lexems.*;
-import java.lang.Math;
-import java.io.*;
-import java.util.StringTokenizer;
-import lexer.*;
-import reader.Reader;
-
-%}
+%language "Java"
 %output "YYParser.java"
 %define lex_throws {}
-%define api.value.type {ILexem}
+%define api.parser.class {YYParser}
+%define api.parser.public
+%define api.package {parser}
+%define api.value.type {Object}
 
+
+%code imports {
+import lexems.*;
+import lexer.*;
+import reader.Reader;
+}
+
+%code {
+    private static GlobalDeclarations ast;
+    public static GlobalDeclarations makeAST(String i) {
+        ast = new lexems.GlobalDeclarations();
+        MyLexer l = new MyLexer();
+        Reader reader = new Reader();
+        reader.read("tests/" + i + ".txt");
+        l.tokenize(reader.sourceText);
+        YYParser p = new YYParser(l);
+        if (!p.parse()) {
+            System.exit(1);
+        }
+        return ast;
+    }
+}
 /* YACC Declarations */
 
 // Identifiers & numbers
-%token <Identifer> IDENTIFIER
+%token <Identifier> IDENTIFIER
 %token <IntegerLiteral> INTEGER_LITERAL
 %token <RealLiteral> REAL_LITERAL
 %token <BooleanLiteral> TRUE FALSE
@@ -53,47 +69,47 @@ import reader.Reader;
 %token DIVIDE
 %token REMAINDER
 
-%type <ILexem> Program
-%type <ILexem> GlobalDeclarations
+%type <GlobalDeclarations> Program
+%type <GlobalDeclarations> GlobalDeclarations
 %type <ILexem> GlobalDeclaration
 %type <ILexem> SimpleDeclaration
 %type <ILexem> RoutineDeclaration
-%type <ILexem> VariableDeclarations
+%type <IList> VariableDeclarations
 %type <ILexem> VariableDeclaration
 %type <ILexem> TypeDeclaration
-%type <ILexem> Type
+%type <Type> Type
 %type <ILexem> Return
 %type <ILexem> Print
-%type <ILexem> Parameters
+%type <Parameters> Parameters
 %type <ILexem> ParameterDeclaration
 %type <ILexem> PrimitiveType
 %type <ILexem> ArrayType
-%type <ILexem> RecordType
-%type <ILexem> Body
+%type <IList> RecordType
+%type <Body> Body
 %type <ILexem> BodyDeclaration
 %type <ILexem> Statement
 %type <ILexem> Assignment
 %type <ILexem> RoutineCall
-%type <ILexem> Expressions
-%type <ILexem> Expression
+%type <Expressions> Expressions
+%type <Expression> Expression
 %type <ILexem> WhileLoop
 %type <ILexem> ForLoop
 %type <ILexem> IfStatement
-%type <ILexem> Relations
+%type <IList2> Relations
 %type <ILexem> LogicWord
-%type <ILexem> Relation
-%type <ILexem> SimpleTail
+%type <IRelation> Relation
+%type <IList2> SimpleTail
 %type <ILexem> RelationSign
-%type <ILexem> Simple
+%type <IList2> Simple
 %type <ILexem> FactorSign
-%type <ILexem> FactorTail
+%type <IList2> FactorTail
 %type <ILexem> Factor
-%type <ILexem> SummandSign
+%type <SummandSign> SummandSign
 %type <ILexem> Summand
-%type <ILexem> SummandTail
+%type <IList2> SummandTail
 %type <ILexem> Primary
-%type <ILexem> ModifiablePrimary
-%type <ILexem> ElementCall
+%type <ModifiablePrimary> ModifiablePrimary
+%type <IList> ElementCall
 
 
 %start Program
@@ -106,18 +122,18 @@ Program
 
 GlobalDeclarations
     : /* empty */ { $$ = new GlobalDeclarations();}
-    | GlobalDeclaration GlobalDeclarations {$$ = $2; $2.addDeclaration($1);}
+    | GlobalDeclaration GlobalDeclarations {$$ = $2; $2.add($1);}
     ;
 
 GlobalDeclaration
-    : SimpleDeclaration {$$ = new GlobalDeclarion($1);}
-    | RoutineDeclaration {$$ = new GlobalDeclarion($1);}
+    : SimpleDeclaration {$$ = $1;}
+    | RoutineDeclaration {$$ = $1;}
     | NEWLINE
     ;
 
 SimpleDeclaration
     : VariableDeclaration { $$ = $1;}
-    | TypeDeclaration { $$ = new SimpleDeclaration($1);}
+    | TypeDeclaration { $$ = $1;}
     ;
 
 VariableDeclaration
@@ -149,8 +165,8 @@ Return
 
 
 Parameters
-    : ParameterDeclaration { $$ = new Parameters($1); }
-    | ParameterDeclaration COMMA Parameters { $$ = $3; $3.addParameter($1); }
+    : ParameterDeclaration { $$ = $1; }
+    | ParameterDeclaration COMMA Parameters { $$ = $3; $3.add($1); }
     ;
 
 
@@ -177,7 +193,7 @@ RecordType
 
 VariableDeclarations
     : /* empty */ { $$ = new RecordType(); }
-    | VariableDeclaration VariableDeclarations { $$ = $2; $2.addDeclaration($1);}
+    | VariableDeclaration VariableDeclarations { $$ = $2; $2.add($1);}
     | NEWLINE VariableDeclarations { $$ = $2; }
     ;
 
@@ -217,7 +233,7 @@ RoutineCall
 
 Expressions
     : Expression { $$ = new Expressions($1); }
-    | Expression COMMA Expressions { $$ = $3; $3.addExpression($1); }
+    | Expression COMMA Expressions { $$ = $3; $3.add($1); }
     ;
 
 WhileLoop
@@ -238,16 +254,16 @@ IfStatement
 
 
 Expression
-    : Relation Relations { $$ = $2; $2.addRelation($1); }
-    | SummandSign Relation Relations { $$ = $3;  $2.setSummandSign($1); $3.addRelation($2); }
-    | NOT Relation Relations { $$ = $3; $2.setNot(); $3.addRelation($2); }
-    | NOT SummandSign Relation Relations { $$ = $4; $3.setSummandSign($2); $3.setNot(); $4.addRelation($3); }
+    : Relation Relations { $$ = $2; $2.add($1); }
+    | SummandSign Relation Relations { $$ = $3;  $2.setSummandSign($1); $3.add($2); }
+    | NOT Relation Relations { $$ = $3; $2.setNot(); $3.add($2); }
+    | NOT SummandSign Relation Relations { $$ = $4; $3.setSummandSign($2); $3.setNot(); $4.add($3); }
     ;
 
 Relations
     : /* empty */  { $$ = new Expression();}
-    | LogicWord Relation Relations { $$ = $3; $3.addRelation($2, $1); }
-    | LogicWord NOT Relation Relations {$$ = $4; $3.setNot(); $4.addRelation($3, $1);}
+    | LogicWord Relation Relations { $$ = $3; $3.add2($2, $1); }
+    | LogicWord NOT Relation Relations {$$ = $4; $3.setNot(); $4.add2($3, $1);}
     ;
 
 
@@ -259,13 +275,13 @@ LogicWord
     ;
 
 Relation
-    : Simple SimpleTail { $$ = $2; $2.addSimple($1); }
+    : Simple SimpleTail { $$ = $2; $2.add($1); }
     ;
 
 
 SimpleTail
     : /* empty */ { $$ = new IRelation(); }
-    | RelationSign Simple SimpleTail { $$ = $3; $3.addSimple($2, $1); }
+    | RelationSign Simple SimpleTail { $$ = $3; $3.add2($2, $1); }
     ;
 
 
@@ -279,27 +295,27 @@ RelationSign
     ;
 
 Simple
-    : Factor FactorTail { $$ = $2; $2.addFactor($1); }
+    : Factor FactorTail { $$ = $2; $2.add($1); }
     ;
 
 FactorTail
     : /* empty */ {$$ = new Simple(); }
-    | FactorSign Factor FactorTail { $$ = $3; $3.addFactor($2, $1); }
+    | FactorSign Factor FactorTail { $$ = $3; $3.add2($2, $1); }
     ;
 
 FactorSign
-    : MULTIPLY { $$ = FactorSign("*"); };
-    | DIVIDE { $$ = FactorSign("/"); }
-    | REMAINDER { $$ = FactorSign("%"); }
+    : MULTIPLY { $$ = new FactorSign("*"); };
+    | DIVIDE { $$ = new FactorSign("/"); }
+    | REMAINDER { $$ = new FactorSign("%"); }
     ;
 
 Factor
-    : Summand SummandTail { $$ = $2; $2.addSummand($1); }
+    : Summand SummandTail { $$ = $2; $2.add($1); }
     ;
 
 SummandTail
     : /* empty */ { $$ = new Factor(); }
-    | SummandSign Summand SummandTail { $$ = $3; $$.addSummand($2, $1); }
+    | SummandSign Summand SummandTail { $$ = $3; $3.add2($2, $1); }
 
 
 SummandSign
@@ -327,8 +343,8 @@ ModifiablePrimary
 
 ElementCall
     : /* empty */ { $$ = new ElementCall(); }
-    | DOT IDENTIFIER ElementCall { $$ = $3; $3.addElementCall($2); }
-    | LBRACKET Expression RBRACKET ElementCall { $$ = $4; $4.addElementCall($2);}
+    | DOT IDENTIFIER ElementCall { $$ = $3; $3.add($2); }
+    | LBRACKET Expression RBRACKET ElementCall { $$ = $4; $4.add($2);}
     ;
 
 Print

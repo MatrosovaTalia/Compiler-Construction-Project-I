@@ -67,14 +67,14 @@ import java.io.IOException;
  */
 
 
-public class Lexer implements YYParser.Lexer {
+public class MyLexer implements YYParser.Lexer {
     private StringReaderWithPosition in;
     private CharacterBuffer buffer;
     private int c;
     private Token enqueuedToken = null;
 
 
-    public Lexer() {}
+    public MyLexer() {}
 
     public void tokenize(String sourceText) {
         this.in = new StringReaderWithPosition(sourceText);

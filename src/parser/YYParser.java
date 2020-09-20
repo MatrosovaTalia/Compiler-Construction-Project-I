@@ -34,23 +34,19 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-
-/* First part of user prologue.  */
-/* "parser.y":1  */
-
 package parser;
-import lexems.*;
-import java.lang.Math;
-import java.io.*;
-import java.util.StringTokenizer;
-import lexer.*;
-import reader.Reader;
 
-
-/* "YYParser.java":51  */
 
 
 import java.text.MessageFormat;
+/* "%code imports" blocks.  */
+/* "parser.y":10  */
+
+import lexems.*;
+import lexer.*;
+import reader.Reader;
+
+/* "YYParser.java":50  */
 
 /**
  * A Bison parser, automatically generated from <tt>parser.y</tt>.
@@ -476,7 +472,7 @@ public class YYParser
      * Method to retrieve the semantic value of the last scanned token.
      * @return the semantic value of the last scanned token.
      */
-    ILexem getLVal();
+    Object getLVal();
 
     /**
      * Entry point for the scanner.  Returns the token identifier corresponding
@@ -540,12 +536,12 @@ public class YYParser
 
   private final class YYStack {
     private int[] stateStack = new int[16];
-    private ILexem[] valueStack = new ILexem[16];
+    private Object[] valueStack = new Object[16];
 
     public int size = 16;
     public int height = -1;
 
-    public final void push (int state, ILexem value) {
+    public final void push (int state, Object value) {
       height++;
       if (size == height)
         {
@@ -553,7 +549,7 @@ public class YYParser
           System.arraycopy (stateStack, 0, newStateStack, 0, height);
           stateStack = newStateStack;
 
-          ILexem[] newValueStack = new ILexem[size * 2];
+          Object[] newValueStack = new Object[size * 2];
           System.arraycopy (valueStack, 0, newValueStack, 0, height);
           valueStack = newValueStack;
 
@@ -580,7 +576,7 @@ public class YYParser
       return stateStack[height - i];
     }
 
-    public final ILexem valueAt (int i) {
+    public final Object valueAt (int i) {
       return valueStack[height - i];
     }
 
@@ -663,660 +659,660 @@ public class YYParser
        Otherwise, the following line sets YYVAL to garbage.
        This behavior is undocumented and Bison
        users should not rely upon it.  */
-    ILexem yyval = (0 < yylen) ? yystack.valueAt(yylen - 1) : yystack.valueAt(0);
+    Object yyval = (0 < yylen) ? yystack.valueAt(yylen - 1) : yystack.valueAt(0);
 
     switch (yyn)
       {
           case 2: /* Program: GlobalDeclarations  */
   if (yyn == 2)
-    /* "parser.y":104  */
-                         {ast = ((ILexem)(yystack.valueAt (0)));};
+    /* "parser.y":120  */
+                         {ast = ((GlobalDeclarations)(yystack.valueAt (0)));};
   break;
 
 
   case 3: /* GlobalDeclarations: %empty  */
   if (yyn == 3)
-    /* "parser.y":108  */
+    /* "parser.y":124  */
                   { yyval = new GlobalDeclarations();};
   break;
 
 
   case 4: /* GlobalDeclarations: GlobalDeclaration GlobalDeclarations  */
   if (yyn == 4)
-    /* "parser.y":109  */
-                                           {yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addDeclaration(((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":125  */
+                                           {yyval = ((GlobalDeclarations)(yystack.valueAt (0))); ((GlobalDeclarations)(yystack.valueAt (0))).add(((ILexem)(yystack.valueAt (1))));};
   break;
 
 
   case 5: /* GlobalDeclaration: SimpleDeclaration  */
   if (yyn == 5)
-    /* "parser.y":113  */
-                        {yyval = new GlobalDeclarion(((ILexem)(yystack.valueAt (0))));};
+    /* "parser.y":129  */
+                        {yyval = ((ILexem)(yystack.valueAt (0)));};
   break;
 
 
   case 6: /* GlobalDeclaration: RoutineDeclaration  */
   if (yyn == 6)
-    /* "parser.y":114  */
-                         {yyval = new GlobalDeclarion(((ILexem)(yystack.valueAt (0))));};
+    /* "parser.y":130  */
+                         {yyval = ((ILexem)(yystack.valueAt (0)));};
   break;
 
 
   case 8: /* SimpleDeclaration: VariableDeclaration  */
   if (yyn == 8)
-    /* "parser.y":119  */
+    /* "parser.y":135  */
                           { yyval = ((ILexem)(yystack.valueAt (0)));};
   break;
 
 
   case 9: /* SimpleDeclaration: TypeDeclaration  */
   if (yyn == 9)
-    /* "parser.y":120  */
-                      { yyval = new SimpleDeclaration(((ILexem)(yystack.valueAt (0))));};
+    /* "parser.y":136  */
+                      { yyval = ((ILexem)(yystack.valueAt (0)));};
   break;
 
 
   case 10: /* VariableDeclaration: VAR IDENTIFIER COLON Type OptionalSemicolon  */
   if (yyn == 10)
-    /* "parser.y":124  */
-                                                  {yyval = new VariableDeclaration(((Identifer)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":140  */
+                                                  {yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (3))), ((Type)(yystack.valueAt (1))));};
   break;
 
 
   case 11: /* VariableDeclaration: VAR IDENTIFIER COLON Type IS Expression OptionalSemicolon  */
   if (yyn == 11)
-    /* "parser.y":125  */
-                                                                { yyval = new VariableDeclaration(((Identifer)(yystack.valueAt (5))), ((ILexem)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":141  */
+                                                                { yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (5))), ((Type)(yystack.valueAt (3))), ((Expression)(yystack.valueAt (1)))); };
   break;
 
 
   case 12: /* VariableDeclaration: VAR IDENTIFIER IS Expression OptionalSemicolon  */
   if (yyn == 12)
-    /* "parser.y":126  */
-                                                     {yyval = new VariableDeclaration(((Identifer)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":142  */
+                                                     {yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (3))), ((Expression)(yystack.valueAt (1))));};
   break;
 
 
   case 15: /* TypeDeclaration: TYPE IDENTIFIER IS Type  */
   if (yyn == 15)
-    /* "parser.y":134  */
-                              {yyval = new TypeDeclaration(((Identifer)(yystack.valueAt (2))), ((ILexem)(yystack.valueAt (0))));};
+    /* "parser.y":150  */
+                              {yyval = new TypeDeclaration(((Identifier)(yystack.valueAt (2))), ((Type)(yystack.valueAt (0))));};
   break;
 
 
   case 16: /* RoutineDeclaration: ROUTINE IDENTIFIER LPAREN Parameters RPAREN IS Body END OptionalSemicolon  */
   if (yyn == 16)
-    /* "parser.y":138  */
+    /* "parser.y":154  */
                                                                                 {
-    	yyval = new RoutineDeclaration(((Identifer)(yystack.valueAt (7))), ((ILexem)(yystack.valueAt (5))), ((ILexem)(yystack.valueAt (2))));
+    	yyval = new RoutineDeclaration(((Identifier)(yystack.valueAt (7))), ((Parameters)(yystack.valueAt (5))), ((Body)(yystack.valueAt (2))));
     };
   break;
 
 
   case 17: /* RoutineDeclaration: ROUTINE IDENTIFIER LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon  */
   if (yyn == 17)
-    /* "parser.y":141  */
+    /* "parser.y":157  */
                                                                                            {
-    	yyval = new RoutineDeclaration(((Identifer)(yystack.valueAt (9))), ((ILexem)(yystack.valueAt (7))), ((ILexem)(yystack.valueAt (4))), ((ILexem)(yystack.valueAt (2))));
+    	yyval = new RoutineDeclaration(((Identifier)(yystack.valueAt (9))), ((Parameters)(yystack.valueAt (7))), ((Type)(yystack.valueAt (4))), ((Body)(yystack.valueAt (2))));
     };
   break;
 
 
   case 18: /* Return: RETURN Expression  */
   if (yyn == 18)
-    /* "parser.y":147  */
-                        {yyval = new Return(((ILexem)(yystack.valueAt (0))));};
+    /* "parser.y":163  */
+                        {yyval = new Return(((Expression)(yystack.valueAt (0))));};
   break;
 
 
   case 19: /* Parameters: ParameterDeclaration  */
   if (yyn == 19)
-    /* "parser.y":152  */
-                           { yyval = new Parameters(((ILexem)(yystack.valueAt (0)))); };
+    /* "parser.y":168  */
+                           { yyval = ((ILexem)(yystack.valueAt (0))); };
   break;
 
 
   case 20: /* Parameters: ParameterDeclaration COMMA Parameters  */
   if (yyn == 20)
-    /* "parser.y":153  */
-                                            { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addParameter(((ILexem)(yystack.valueAt (2)))); };
+    /* "parser.y":169  */
+                                            { yyval = ((Parameters)(yystack.valueAt (0))); ((Parameters)(yystack.valueAt (0))).add(((ILexem)(yystack.valueAt (2)))); };
   break;
 
 
   case 21: /* ParameterDeclaration: IDENTIFIER COLON Type  */
   if (yyn == 21)
-    /* "parser.y":158  */
-                            { yyval = new Parameter(((Identifer)(yystack.valueAt (2))), ((ILexem)(yystack.valueAt (0)))); };
+    /* "parser.y":174  */
+                            { yyval = new Parameter(((Identifier)(yystack.valueAt (2))), ((Type)(yystack.valueAt (0)))); };
   break;
 
 
   case 22: /* Type: PrimitiveType  */
   if (yyn == 22)
-    /* "parser.y":162  */
+    /* "parser.y":178  */
                     { yyval = ((ILexem)(yystack.valueAt (0))); };
   break;
 
 
   case 23: /* Type: ArrayType  */
   if (yyn == 23)
-    /* "parser.y":163  */
+    /* "parser.y":179  */
                 { yyval = ((ILexem)(yystack.valueAt (0))); };
   break;
 
 
   case 24: /* Type: RecordType  */
   if (yyn == 24)
-    /* "parser.y":164  */
-                 { yyval = ((ILexem)(yystack.valueAt (0))); };
+    /* "parser.y":180  */
+                 { yyval = ((IList)(yystack.valueAt (0))); };
   break;
 
 
   case 25: /* Type: IDENTIFIER  */
   if (yyn == 25)
-    /* "parser.y":165  */
-                 { yyval = ((Identifer)(yystack.valueAt (0))); };
+    /* "parser.y":181  */
+                 { yyval = ((Identifier)(yystack.valueAt (0))); };
   break;
 
 
   case 26: /* PrimitiveType: INTEGER  */
   if (yyn == 26)
-    /* "parser.y":169  */
+    /* "parser.y":185  */
               { yyval = new PrimitiveType("integer");};
   break;
 
 
   case 27: /* PrimitiveType: REAL  */
   if (yyn == 27)
-    /* "parser.y":170  */
+    /* "parser.y":186  */
            { yyval = new PrimitiveType("real"); };
   break;
 
 
   case 28: /* PrimitiveType: BOOLEAN  */
   if (yyn == 28)
-    /* "parser.y":171  */
+    /* "parser.y":187  */
               { yyval = new PrimitiveType("boolean"); };
   break;
 
 
   case 29: /* RecordType: RECORD NEWLINE VariableDeclarations END  */
   if (yyn == 29)
-    /* "parser.y":175  */
-                                              {yyval = ((ILexem)(yystack.valueAt (1)));};
+    /* "parser.y":191  */
+                                              {yyval = ((IList)(yystack.valueAt (1)));};
   break;
 
 
   case 30: /* VariableDeclarations: %empty  */
   if (yyn == 30)
-    /* "parser.y":179  */
+    /* "parser.y":195  */
                   { yyval = new RecordType(); };
   break;
 
 
   case 31: /* VariableDeclarations: VariableDeclaration VariableDeclarations  */
   if (yyn == 31)
-    /* "parser.y":180  */
-                                               { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addDeclaration(((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":196  */
+                                               { yyval = ((IList)(yystack.valueAt (0))); ((IList)(yystack.valueAt (0))).add(((ILexem)(yystack.valueAt (1))));};
   break;
 
 
   case 32: /* VariableDeclarations: NEWLINE VariableDeclarations  */
   if (yyn == 32)
-    /* "parser.y":181  */
-                                   { yyval = ((ILexem)(yystack.valueAt (0))); };
+    /* "parser.y":197  */
+                                   { yyval = ((IList)(yystack.valueAt (0))); };
   break;
 
 
   case 33: /* ArrayType: ARRAY LBRACKET Expression RBRACKET Type  */
   if (yyn == 33)
-    /* "parser.y":186  */
-                                              { yyval = new ArrayType(((ILexem)(yystack.valueAt (2))), ((ILexem)(yystack.valueAt (0)))); };
+    /* "parser.y":202  */
+                                              { yyval = new ArrayType(((Expression)(yystack.valueAt (2))), ((Type)(yystack.valueAt (0)))); };
   break;
 
 
   case 34: /* Body: %empty  */
   if (yyn == 34)
-    /* "parser.y":190  */
+    /* "parser.y":206  */
                   { yyval = new Body();};
   break;
 
 
   case 35: /* Body: BodyDeclaration Body  */
   if (yyn == 35)
-    /* "parser.y":191  */
-                           {yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addBody(((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":207  */
+                           {yyval = ((Body)(yystack.valueAt (0))); ((Body)(yystack.valueAt (0))).addBody(((ILexem)(yystack.valueAt (1))));};
   break;
 
 
   case 36: /* BodyDeclaration: SimpleDeclaration  */
   if (yyn == 36)
-    /* "parser.y":195  */
+    /* "parser.y":211  */
                         {yyval = new BodyDeclaration(((ILexem)(yystack.valueAt (0))));};
   break;
 
 
   case 37: /* BodyDeclaration: Statement  */
   if (yyn == 37)
-    /* "parser.y":196  */
+    /* "parser.y":212  */
                 {yyval = new BodyDeclaration(((ILexem)(yystack.valueAt (0))));};
   break;
 
 
   case 38: /* Statement: Assignment OptionalSemicolon  */
   if (yyn == 38)
-    /* "parser.y":200  */
+    /* "parser.y":216  */
                                    {yyval = ((ILexem)(yystack.valueAt (1)));};
   break;
 
 
   case 39: /* Statement: RoutineCall OptionalSemicolon  */
   if (yyn == 39)
-    /* "parser.y":201  */
+    /* "parser.y":217  */
                                     {yyval = ((ILexem)(yystack.valueAt (1))); };
   break;
 
 
   case 40: /* Statement: WhileLoop OptionalSemicolon  */
   if (yyn == 40)
-    /* "parser.y":202  */
+    /* "parser.y":218  */
                                   {yyval = ((ILexem)(yystack.valueAt (1)));};
   break;
 
 
   case 41: /* Statement: ForLoop OptionalSemicolon  */
   if (yyn == 41)
-    /* "parser.y":203  */
+    /* "parser.y":219  */
                                 {yyval = ((ILexem)(yystack.valueAt (1)));};
   break;
 
 
   case 42: /* Statement: IfStatement OptionalSemicolon  */
   if (yyn == 42)
-    /* "parser.y":204  */
+    /* "parser.y":220  */
                                    {yyval = ((ILexem)(yystack.valueAt (1)));};
   break;
 
 
   case 43: /* Statement: Print OptionalSemicolon  */
   if (yyn == 43)
-    /* "parser.y":205  */
+    /* "parser.y":221  */
                               {yyval = ((ILexem)(yystack.valueAt (1)));};
   break;
 
 
   case 44: /* Statement: Return OptionalSemicolon  */
   if (yyn == 44)
-    /* "parser.y":206  */
+    /* "parser.y":222  */
                                {yyval = ((ILexem)(yystack.valueAt (1)));};
   break;
 
 
   case 46: /* Assignment: ModifiablePrimary ASSIGN Expression  */
   if (yyn == 46)
-    /* "parser.y":211  */
-                                          {yyval = new Assignment(((ILexem)(yystack.valueAt (2))), ((ILexem)(yystack.valueAt (0))));};
+    /* "parser.y":227  */
+                                          {yyval = new Assignment(((ModifiablePrimary)(yystack.valueAt (2))), ((Expression)(yystack.valueAt (0))));};
   break;
 
 
   case 47: /* RoutineCall: IDENTIFIER LPAREN Expressions RPAREN  */
   if (yyn == 47)
-    /* "parser.y":215  */
-                                           {yyval = new RoutineCall(((Identifer)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":231  */
+                                           {yyval = new RoutineCall(((Identifier)(yystack.valueAt (3))), ((Expressions)(yystack.valueAt (1)))); };
   break;
 
 
   case 48: /* Expressions: Expression  */
   if (yyn == 48)
-    /* "parser.y":219  */
-                 { yyval = new Expressions(((ILexem)(yystack.valueAt (0)))); };
+    /* "parser.y":235  */
+                 { yyval = new Expressions(((Expression)(yystack.valueAt (0)))); };
   break;
 
 
   case 49: /* Expressions: Expression COMMA Expressions  */
   if (yyn == 49)
-    /* "parser.y":220  */
-                                   { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addExpression(((ILexem)(yystack.valueAt (2)))); };
+    /* "parser.y":236  */
+                                   { yyval = ((Expressions)(yystack.valueAt (0))); ((Expressions)(yystack.valueAt (0))).add(((Expression)(yystack.valueAt (2)))); };
   break;
 
 
   case 50: /* WhileLoop: WHILE Expression LOOP Body END  */
   if (yyn == 50)
-    /* "parser.y":224  */
-                                     {yyval = new WhileLoop(((ILexem)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":240  */
+                                     {yyval = new WhileLoop(((Expression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1)))); };
   break;
 
 
   case 51: /* ForLoop: FOR IDENTIFIER IN Expression RANGE Expression LOOP Body END  */
   if (yyn == 51)
-    /* "parser.y":229  */
-    {yyval = new ForLoop(((Identifer)(yystack.valueAt (7))), ((ILexem)(yystack.valueAt (5))), ((ILexem)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1))), false);};
+    /* "parser.y":245  */
+    {yyval = new ForLoop(((Identifier)(yystack.valueAt (7))), ((Expression)(yystack.valueAt (5))), ((Expression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))), false);};
   break;
 
 
   case 52: /* ForLoop: FOR IDENTIFIER IN REVERSE Expression RANGE Expression LOOP Body END  */
   if (yyn == 52)
-    /* "parser.y":231  */
-    {yyval = new ForLoop(((Identifer)(yystack.valueAt (8))), ((ILexem)(yystack.valueAt (5))), ((ILexem)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1))), true);};
+    /* "parser.y":247  */
+    {yyval = new ForLoop(((Identifier)(yystack.valueAt (8))), ((Expression)(yystack.valueAt (5))), ((Expression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))), true);};
   break;
 
 
   case 53: /* IfStatement: IF Expression THEN Body END  */
   if (yyn == 53)
-    /* "parser.y":235  */
-                                  {yyval = new IfStatement(((ILexem)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":251  */
+                                  {yyval = new IfStatement(((Expression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))));};
   break;
 
 
   case 54: /* IfStatement: IF Expression THEN Body ELSE Body END  */
   if (yyn == 54)
-    /* "parser.y":236  */
-                                            {yyval = new IfStatement(((ILexem)(yystack.valueAt (5))), ((ILexem)(yystack.valueAt (3))), ((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":252  */
+                                            {yyval = new IfStatement(((Expression)(yystack.valueAt (5))), ((Body)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))));};
   break;
 
 
   case 55: /* Expression: Relation Relations  */
   if (yyn == 55)
-    /* "parser.y":241  */
-                         { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addRelation(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":257  */
+                         { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add(((IRelation)(yystack.valueAt (1)))); };
   break;
 
 
   case 56: /* Expression: SummandSign Relation Relations  */
   if (yyn == 56)
-    /* "parser.y":242  */
-                                     { yyval = ((ILexem)(yystack.valueAt (0)));  ((ILexem)(yystack.valueAt (1))).setSummandSign(((ILexem)(yystack.valueAt (2)))); ((ILexem)(yystack.valueAt (0))).addRelation(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":258  */
+                                     { yyval = ((IList2)(yystack.valueAt (0)));  ((IRelation)(yystack.valueAt (1))).setSummandSign(((SummandSign)(yystack.valueAt (2)))); ((IList2)(yystack.valueAt (0))).add(((IRelation)(yystack.valueAt (1)))); };
   break;
 
 
   case 57: /* Expression: NOT Relation Relations  */
   if (yyn == 57)
-    /* "parser.y":243  */
-                             { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (1))).setNot(); ((ILexem)(yystack.valueAt (0))).addRelation(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":259  */
+                             { yyval = ((IList2)(yystack.valueAt (0))); ((IRelation)(yystack.valueAt (1))).setNot(); ((IList2)(yystack.valueAt (0))).add(((IRelation)(yystack.valueAt (1)))); };
   break;
 
 
   case 58: /* Expression: NOT SummandSign Relation Relations  */
   if (yyn == 58)
-    /* "parser.y":244  */
-                                         { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (1))).setSummandSign(((ILexem)(yystack.valueAt (2)))); ((ILexem)(yystack.valueAt (1))).setNot(); ((ILexem)(yystack.valueAt (0))).addRelation(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":260  */
+                                         { yyval = ((IList2)(yystack.valueAt (0))); ((IRelation)(yystack.valueAt (1))).setSummandSign(((SummandSign)(yystack.valueAt (2)))); ((IRelation)(yystack.valueAt (1))).setNot(); ((IList2)(yystack.valueAt (0))).add(((IRelation)(yystack.valueAt (1)))); };
   break;
 
 
   case 59: /* Relations: %empty  */
   if (yyn == 59)
-    /* "parser.y":248  */
+    /* "parser.y":264  */
                    { yyval = new Expression();};
   break;
 
 
   case 60: /* Relations: LogicWord Relation Relations  */
   if (yyn == 60)
-    /* "parser.y":249  */
-                                   { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addRelation(((ILexem)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
+    /* "parser.y":265  */
+                                   { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add2(((IRelation)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
   break;
 
 
   case 61: /* Relations: LogicWord NOT Relation Relations  */
   if (yyn == 61)
-    /* "parser.y":250  */
-                                       {yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (1))).setNot(); ((ILexem)(yystack.valueAt (0))).addRelation(((ILexem)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (3))));};
+    /* "parser.y":266  */
+                                       {yyval = ((IList2)(yystack.valueAt (0))); ((IRelation)(yystack.valueAt (1))).setNot(); ((IList2)(yystack.valueAt (0))).add2(((IRelation)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (3))));};
   break;
 
 
   case 62: /* LogicWord: AND  */
   if (yyn == 62)
-    /* "parser.y":256  */
+    /* "parser.y":272  */
           { yyval = new LogicWord("and"); };
   break;
 
 
   case 63: /* LogicWord: OR  */
   if (yyn == 63)
-    /* "parser.y":257  */
+    /* "parser.y":273  */
          { yyval = new LogicWord("or"); };
   break;
 
 
   case 64: /* LogicWord: XOR  */
   if (yyn == 64)
-    /* "parser.y":258  */
+    /* "parser.y":274  */
           { yyval = new LogicWord("xor"); };
   break;
 
 
   case 65: /* Relation: Simple SimpleTail  */
   if (yyn == 65)
-    /* "parser.y":262  */
-                        { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addSimple(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":278  */
+                        { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add(((IList2)(yystack.valueAt (1)))); };
   break;
 
 
   case 66: /* SimpleTail: %empty  */
   if (yyn == 66)
-    /* "parser.y":267  */
+    /* "parser.y":283  */
                   { yyval = new IRelation(); };
   break;
 
 
   case 67: /* SimpleTail: RelationSign Simple SimpleTail  */
   if (yyn == 67)
-    /* "parser.y":268  */
-                                     { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addSimple(((ILexem)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
+    /* "parser.y":284  */
+                                     { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add2(((IList2)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
   break;
 
 
   case 68: /* RelationSign: LESS  */
   if (yyn == 68)
-    /* "parser.y":273  */
+    /* "parser.y":289  */
            { yyval = new RelationSign("<"); };
   break;
 
 
   case 69: /* RelationSign: GREATER  */
   if (yyn == 69)
-    /* "parser.y":274  */
+    /* "parser.y":290  */
               { yyval = new RelationSign(">"); };
   break;
 
 
   case 70: /* RelationSign: LEQUALS  */
   if (yyn == 70)
-    /* "parser.y":275  */
+    /* "parser.y":291  */
               { yyval = new RelationSign("<="); };
   break;
 
 
   case 71: /* RelationSign: GEQUALS  */
   if (yyn == 71)
-    /* "parser.y":276  */
+    /* "parser.y":292  */
               { yyval = new RelationSign(">="); };
   break;
 
 
   case 72: /* RelationSign: EQUALS  */
   if (yyn == 72)
-    /* "parser.y":277  */
+    /* "parser.y":293  */
              { yyval =  new RelationSign("="); };
   break;
 
 
   case 73: /* RelationSign: NEQUALS  */
   if (yyn == 73)
-    /* "parser.y":278  */
+    /* "parser.y":294  */
               { yyval = new RelationSign("/="); };
   break;
 
 
   case 74: /* Simple: Factor FactorTail  */
   if (yyn == 74)
-    /* "parser.y":282  */
-                        { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addFactor(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":298  */
+                        { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add(((ILexem)(yystack.valueAt (1)))); };
   break;
 
 
   case 75: /* FactorTail: %empty  */
   if (yyn == 75)
-    /* "parser.y":286  */
+    /* "parser.y":302  */
                   {yyval = new Simple(); };
   break;
 
 
   case 76: /* FactorTail: FactorSign Factor FactorTail  */
   if (yyn == 76)
-    /* "parser.y":287  */
-                                   { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addFactor(((ILexem)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
+    /* "parser.y":303  */
+                                   { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add2(((ILexem)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
   break;
 
 
   case 77: /* FactorSign: MULTIPLY  */
   if (yyn == 77)
-    /* "parser.y":291  */
-               { yyval = FactorSign("*"); };
+    /* "parser.y":307  */
+               { yyval = new FactorSign("*"); };
   break;
 
 
   case 78: /* FactorSign: DIVIDE  */
   if (yyn == 78)
-    /* "parser.y":292  */
-             { yyval = FactorSign("/"); };
+    /* "parser.y":308  */
+             { yyval = new FactorSign("/"); };
   break;
 
 
   case 79: /* FactorSign: REMAINDER  */
   if (yyn == 79)
-    /* "parser.y":293  */
-                { yyval = FactorSign("%"); };
+    /* "parser.y":309  */
+                { yyval = new FactorSign("%"); };
   break;
 
 
   case 80: /* Factor: Summand SummandTail  */
   if (yyn == 80)
-    /* "parser.y":297  */
-                          { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addSummand(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":313  */
+                          { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add(((ILexem)(yystack.valueAt (1)))); };
   break;
 
 
   case 81: /* SummandTail: %empty  */
   if (yyn == 81)
-    /* "parser.y":301  */
+    /* "parser.y":317  */
                   { yyval = new Factor(); };
   break;
 
 
   case 82: /* SummandTail: SummandSign Summand SummandTail  */
   if (yyn == 82)
-    /* "parser.y":302  */
-                                      { yyval = ((ILexem)(yystack.valueAt (0))); yyval.addSummand(((ILexem)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (2)))); };
+    /* "parser.y":318  */
+                                      { yyval = ((IList2)(yystack.valueAt (0))); ((IList2)(yystack.valueAt (0))).add2(((ILexem)(yystack.valueAt (1))), ((SummandSign)(yystack.valueAt (2)))); };
   break;
 
 
   case 83: /* SummandSign: PLUS  */
   if (yyn == 83)
-    /* "parser.y":306  */
+    /* "parser.y":322  */
            { yyval = new SummandSign("+"); };
   break;
 
 
   case 84: /* SummandSign: MINUS  */
   if (yyn == 84)
-    /* "parser.y":307  */
+    /* "parser.y":323  */
             { yyval = new SummandSign("-"); };
   break;
 
 
   case 85: /* Summand: Primary  */
   if (yyn == 85)
-    /* "parser.y":311  */
+    /* "parser.y":327  */
               { yyval = new Summand(((ILexem)(yystack.valueAt (0)))); };
   break;
 
 
   case 86: /* Summand: LPAREN Expression RPAREN  */
   if (yyn == 86)
-    /* "parser.y":312  */
-                               { yyval = new Summand(((ILexem)(yystack.valueAt (1)))); };
+    /* "parser.y":328  */
+                               { yyval = new Summand(((Expression)(yystack.valueAt (1)))); };
   break;
 
 
   case 87: /* Primary: INTEGER_LITERAL  */
   if (yyn == 87)
-    /* "parser.y":316  */
+    /* "parser.y":332  */
                       { yyval = ((IntegerLiteral)(yystack.valueAt (0)));};
   break;
 
 
   case 88: /* Primary: REAL_LITERAL  */
   if (yyn == 88)
-    /* "parser.y":317  */
+    /* "parser.y":333  */
                    { yyval = ((RealLiteral)(yystack.valueAt (0))); };
   break;
 
 
   case 89: /* Primary: TRUE  */
   if (yyn == 89)
-    /* "parser.y":318  */
+    /* "parser.y":334  */
            { yyval = true; };
   break;
 
 
   case 90: /* Primary: FALSE  */
   if (yyn == 90)
-    /* "parser.y":319  */
+    /* "parser.y":335  */
             { yyval = false; };
   break;
 
 
   case 91: /* Primary: ModifiablePrimary  */
   if (yyn == 91)
-    /* "parser.y":320  */
-                        { yyval = ((ILexem)(yystack.valueAt (0))); };
+    /* "parser.y":336  */
+                        { yyval = ((ModifiablePrimary)(yystack.valueAt (0))); };
   break;
 
 
   case 92: /* Primary: RoutineCall  */
   if (yyn == 92)
-    /* "parser.y":321  */
+    /* "parser.y":337  */
                   { yyval = ((ILexem)(yystack.valueAt (0)));};
   break;
 
 
   case 93: /* ModifiablePrimary: IDENTIFIER ElementCall  */
   if (yyn == 93)
-    /* "parser.y":325  */
-                             { yyval = new ModifiablePrimary(((Identifer)(yystack.valueAt (1))), ((ILexem)(yystack.valueAt (0)))); };
+    /* "parser.y":341  */
+                             { yyval = new ModifiablePrimary(((Identifier)(yystack.valueAt (1))), ((IList)(yystack.valueAt (0)))); };
   break;
 
 
   case 94: /* ElementCall: %empty  */
   if (yyn == 94)
-    /* "parser.y":329  */
+    /* "parser.y":345  */
                   { yyval = new ElementCall(); };
   break;
 
 
   case 95: /* ElementCall: DOT IDENTIFIER ElementCall  */
   if (yyn == 95)
-    /* "parser.y":330  */
-                                 { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addElementCall(((Identifer)(yystack.valueAt (1)))); };
+    /* "parser.y":346  */
+                                 { yyval = ((IList)(yystack.valueAt (0))); ((IList)(yystack.valueAt (0))).add(((Identifier)(yystack.valueAt (1)))); };
   break;
 
 
   case 96: /* ElementCall: LBRACKET Expression RBRACKET ElementCall  */
   if (yyn == 96)
-    /* "parser.y":331  */
-                                               { yyval = ((ILexem)(yystack.valueAt (0))); ((ILexem)(yystack.valueAt (0))).addElementCall(((ILexem)(yystack.valueAt (2))));};
+    /* "parser.y":347  */
+                                               { yyval = ((IList)(yystack.valueAt (0))); ((IList)(yystack.valueAt (0))).add(((Expression)(yystack.valueAt (2))));};
   break;
 
 
   case 97: /* Print: PRINT LPAREN Expressions RPAREN  */
   if (yyn == 97)
-    /* "parser.y":335  */
-                                      {yyval = new Print(((ILexem)(yystack.valueAt (1))));};
+    /* "parser.y":351  */
+                                      {yyval = new Print(((Expressions)(yystack.valueAt (1))));};
   break;
 
 
 
-/* "YYParser.java":1320  */
+/* "YYParser.java":1316  */
 
         default: break;
       }
@@ -1359,7 +1355,7 @@ public class YYParser
 
 
     /* Semantic value of the lookahead.  */
-    ILexem yylval = null;
+    Object yylval = null;
 
     yyerrstatus_ = 0;
     yynerrs = 0;
@@ -1954,9 +1950,27 @@ private static final short[] yycheck_ = yycheck_init();
   private static final int YYFINAL_ = 15;
   private static final int YYNTOKENS_ = 54;
 
+/* Unqualified %code blocks.  */
+/* "parser.y":16  */
+
+    private static GlobalDeclarations ast;
+    public static GlobalDeclarations makeAST(String i) {
+        ast = new lexems.GlobalDeclarations();
+        MyLexer l = new MyLexer();
+        Reader reader = new Reader();
+        reader.read("tests/" + i + ".txt");
+        l.tokenize(reader.sourceText);
+        YYParser p = new YYParser(l);
+        if (!p.parse()) {
+            System.exit(1);
+        }
+        return ast;
+    }
+
+/* "YYParser.java":1971  */
 
 }
-/* "parser.y":339  */
+/* "parser.y":355  */
 
 //
 //

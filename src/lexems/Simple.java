@@ -2,21 +2,24 @@ package lexems;
 
 import java.util.ArrayList;
 
-public class Simple implements ILexem {
-    public ArrayList<Factor> factors;
-    public ArrayList<FactorSign> factorSigns;
+public class Simple implements IList2 {
+    public ArrayList<ILexem> factors;
+    public ArrayList<ILexem> factorSigns;
 
     public Simple() {
         factors = new ArrayList<>();
         factorSigns = new ArrayList<>();
     }
 
-    public void addFactor(Factor factor, FactorSign factorSign) {
-        factors.add(factor);
-        factorSigns.add(factorSign);
+
+    @Override
+    public void add2(ILexem iLexem1, ILexem iLexem2) {
+        factors.add(iLexem1);
+        factorSigns.add(iLexem2);
     }
 
-    public void addFactor(Factor factor) {
-        factors.add(factor);
+    @Override
+    public void add(ILexem iLexem) {
+        factors.add(iLexem);
     }
 }

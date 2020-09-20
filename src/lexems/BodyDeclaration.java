@@ -4,11 +4,7 @@ package lexems;
 public class BodyDeclaration implements ILexem {
     public ILexem body;
 
-    public BodyDeclaration(SimpleDeclaration simpleDeclaration) {
+    public BodyDeclaration(ILexem simpleDeclaration) {
         body = simpleDeclaration;
-    }
-
-    public BodyDeclaration(Statement statement) {
-        body = statement;
     }
 }

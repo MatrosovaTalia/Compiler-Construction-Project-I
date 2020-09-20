@@ -1,7 +1,9 @@
-import lexer.Lexer;
+import lexer.MyLexer;
 import lexer.Token;
 import lexer.TokenType;
 import reader.Reader;
+import lexems.*;
+import parser.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,15 +11,15 @@ import java.io.IOException;
 public class Main {
     private static void testNToFile(int n) {
         Reader reader = new Reader();
-        Lexer lexer = new Lexer();
+        MyLexer myLexer = new MyLexer();
         for (int i = 1; i <= n; i++) {
             reader.read("tests/" + i + ".txt");
-            lexer.tokenize(reader.sourceText);
+            myLexer.tokenize(reader.sourceText);
             try {
                 FileWriter writer = new FileWriter("results/" + i + ".txt");
                 TokenType type;
                 do {
-                    Token tok = lexer.lex();
+                    Token tok = myLexer.lex();
                     type = tok.getType();
                     writer.write(tok.toString());
                 } while (type != TokenType.YYEOF);
@@ -33,7 +35,13 @@ public class Main {
 
 
     public static void main(String[] args) {
-        testNToFile(15);
+
+        // testNToFile(15);
+
+        GlobalDeclarations ast = YYParser.makeAST("3");
+
+        System.out.println(ast == null);
+
     }
 }
 
