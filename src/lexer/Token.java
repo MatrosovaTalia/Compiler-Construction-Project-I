@@ -68,7 +68,7 @@ public class Token {
         return "{'" +
                 (body.equals("\n") ? "\\n" : body)
                 + "' :" +
-                type.toString() + ", position: [" + position.key() + " " + position.value() + "]}"
+                type.toString() + "("+ type.getValue() +")" + ", position: [" + position.key() + " " + position.value() + "]}"
                 + (body.equals("\n") ? "\n" : "");
     }
 

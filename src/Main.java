@@ -36,7 +36,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // testNToFile(15);
+//         testNToFile(15);
 
         GlobalDeclarations ast = YYParser.makeAST("3");
 
