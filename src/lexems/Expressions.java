@@ -6,6 +6,7 @@ public class Expressions implements IList {
     public ArrayList<ILexem> expressions;
 
     public Expressions(Expression expression) {
+        expressions = new ArrayList<>();
         expressions.add(expression);
     }
 

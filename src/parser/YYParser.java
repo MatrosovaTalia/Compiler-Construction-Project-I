@@ -1316,7 +1316,7 @@ public class YYParser
   case 98: /* Identifier: IDENTIFIER  */
   if (yyn == 98)
     /* "parser.y":355  */
-                   {yyval = new Identifier(((String)(yystack.valueAt (0))));};
+                   {yyval = yylexer.getLVal();};
   break;
 
 

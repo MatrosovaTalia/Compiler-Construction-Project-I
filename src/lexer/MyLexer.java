@@ -1,10 +1,14 @@
 package lexer;
 
-import lexems.ILexem;
+import lexems.*;
 import misc.Pair;
 import parser.YYParser;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import static lexer.TokenType.IDENTIFIER;
 
 /*
     DONE: Keywords:
@@ -72,6 +76,7 @@ public class MyLexer implements YYParser.Lexer {
     private CharacterBuffer buffer;
     private int c;
     private Token enqueuedToken = null;
+    private Token currentToken = null;
 
 
     public MyLexer() {}
@@ -398,37 +403,53 @@ public class MyLexer implements YYParser.Lexer {
 
     @Override
     public ILexem getLVal() {
-        return new ILexem() {
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
+        TokenType type = currentToken.getType();
+        String body = currentToken.getBody();
+        ILexem lval;
+        switch (type) {
+            case IDENTIFIER -> lval = new Identifier(body);
+            case REAL_LITERAL -> lval = new RealLiteral(
+                    new BigDecimal(body)
+            );
+            case INTEGER_LITERAL -> lval = new IntegerLiteral(
+                    new BigInteger(body)
+            );
+            case TRUE -> lval = new BooleanLiteral(true);
+            case FALSE -> lval = new BooleanLiteral(false);
+            default -> lval = new ILexem() {
+                @Override
+                public int hashCode() {
+                    return super.hashCode();
+                }
 
-            @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
-            }
+                @Override
+                public boolean equals(Object obj) {
+                    return super.equals(obj);
+                }
 
-            @Override
-            protected Object clone() throws CloneNotSupportedException {
-                return super.clone();
-            }
+                @Override
+                protected Object clone() throws CloneNotSupportedException {
+                    return super.clone();
+                }
 
-            @Override
-            public String toString() {
-                return super.toString();
-            }
+                @Override
+                public String toString() {
+                    return super.toString();
+                }
 
-            @Override
-            protected void finalize() throws Throwable {
-                super.finalize();
-            }
-        };
+                @Override
+                protected void finalize() throws Throwable {
+                    super.finalize();
+                }
+            };
+        }
+        return lval;
     }
 
     @Override
     public int yylex() {
-        return lex().getType().getValue();
+        currentToken = lex();
+        return currentToken.getType().getValue();
     }
 
     @Override

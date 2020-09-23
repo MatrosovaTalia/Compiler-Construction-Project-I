@@ -1,9 +1,11 @@
 package lexems;
 
-public class RealLiteral implements ILexem {
-    public final double v;
+import java.math.BigDecimal;
 
-    public RealLiteral(double v){
+public class RealLiteral implements ILexem {
+    public final BigDecimal v;
+
+    public RealLiteral(BigDecimal v){
         this.v = v;
     }
 

@@ -1,9 +1,11 @@
 package lexems;
 
-public class IntegerLiteral implements ILexem{
-    public final int v;
+import java.math.BigInteger;
 
-    public IntegerLiteral(int v){
+public class IntegerLiteral implements ILexem{
+    public final BigInteger v;
+
+    public IntegerLiteral(BigInteger v){
         this.v = v;
     }
 

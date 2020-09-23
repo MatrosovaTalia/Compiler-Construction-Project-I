@@ -352,7 +352,7 @@ Print
     ;
 
 Identifier:
-	IDENTIFIER {$$ = new Identifier($1);}
+	IDENTIFIER {$$ = yylexer.getLVal();}
 
 %%
 //
