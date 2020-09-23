@@ -4,7 +4,7 @@
 %define api.parser.class {YYParser}
 %define api.parser.public
 %define api.package {parser}
-%define api.value.type {Object}
+%define api.value.type {ASTNode}
 
 
 %code imports {
@@ -31,10 +31,10 @@ import reader.Reader;
 /* YACC Declarations */
 
 // Identifiers & numbers
-%token <String> IDENTIFIER
-%token <IntegerLiteral> INTEGER_LITERAL
-%token <RealLiteral> REAL_LITERAL
-%token <BooleanLiteral> TRUE FALSE
+%token  IDENTIFIER
+%token  INTEGER_LITERAL
+%token  REAL_LITERAL
+%token  TRUE FALSE
 // Keywords
 %token VAR TYPE IS END RECORD
 %token INTEGER REAL BOOLEAN
@@ -42,7 +42,7 @@ import reader.Reader;
 %token OR NOT XOR PRINT RETURN
 
 // Separators
-%token <ILexem> NEWLINE
+%token  NEWLINE
 %token SEMICOLON
 
 // Delimiters
@@ -69,48 +69,48 @@ import reader.Reader;
 %token DIVIDE
 %token REMAINDER
 
-%type <GlobalDeclarations> Program
-%type <GlobalDeclarations> GlobalDeclarations
-%type <ILexem> GlobalDeclaration
-%type <ILexem> SimpleDeclaration
-%type <ILexem> RoutineDeclaration
-%type <IList> VariableDeclarations
-%type <ILexem> VariableDeclaration
-%type <ILexem> TypeDeclaration
-%type <Type> Type
-%type <ILexem> Return
-%type <ILexem> Print
-%type <Parameters> Parameters
-%type <ILexem> ParameterDeclaration
-%type <ILexem> PrimitiveType
-%type <ILexem> ArrayType
-%type <IList> RecordType
-%type <Body> Body
-%type <ILexem> BodyDeclaration
-%type <ILexem> Statement
-%type <ILexem> Assignment
-%type <ILexem> RoutineCall
-%type <Expressions> Expressions
-%type <Expression> Expression
-%type <ILexem> WhileLoop
-%type <ILexem> ForLoop
-%type <ILexem> IfStatement
-%type <IList2> Relations
-%type <ILexem> LogicWord
-%type <IRelation> Relation
-%type <IList2> SimpleTail
-%type <ILexem> RelationSign
-%type <IList2> Simple
-%type <ILexem> FactorSign
-%type <IList2> FactorTail
-%type <ILexem> Factor
-%type <SummandSign> SummandSign
-%type <ILexem> Summand
-%type <IList2> SummandTail
-%type <ILexem> Primary
-%type <ModifiablePrimary> ModifiablePrimary
-%type <IList> ElementCall
-%type <ILexem> Identifier
+%type  Program
+%type  GlobalDeclarations
+%type  GlobalDeclaration
+%type  SimpleDeclaration
+%type  RoutineDeclaration
+%type  VariableDeclarations
+%type  VariableDeclaration
+%type  TypeDeclaration
+%type Type
+%type  Return
+%type  Print
+%type  Parameters
+%type  ParameterDeclaration
+%type  PrimitiveType
+%type  ArrayType
+%type  RecordType
+%type  Body
+%type  BodyDeclaration
+%type  Statement
+%type  Assignment
+%type  RoutineCall
+%type  Expressions
+%type  Expression
+%type  WhileLoop
+%type  ForLoop
+%type  IfStatement
+%type  Relations
+%type  LogicWord
+%type  Relation
+%type  SimpleTail
+%type  RelationSign
+%type  Simple
+%type  FactorSign
+%type  FactorTail
+%type  Factor
+%type  SummandSign
+%type  Summand
+%type  SummandTail
+%type  Primary
+%type  ModifiablePrimary
+%type  ElementCall
+%type  Identifier
 
 %start Program
 
@@ -152,7 +152,7 @@ TypeDeclaration
 
 RoutineDeclaration
     : ROUTINE Identifier LPAREN Parameters RPAREN IS Body END OptionalSemicolon {
-    	$$ = new RoutineDeclaration($2, $4, $7);
+    	$$ = new RoutineDeclaration($2, $4, $7, null);
     }
     | ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon {
     	$$ = new RoutineDeclaration($2, $4, $7, $9);
@@ -165,7 +165,7 @@ Return
 
 
 Parameters
-    : ParameterDeclaration { $$ = $1; }
+    : ParameterDeclaration { $$ = new Parameters($1);}
     | ParameterDeclaration COMMA Parameters { $$ = $3; $3.add($1); }
     ;
 
@@ -316,7 +316,6 @@ Factor
 SummandTail
     : /* empty */ { $$ = new Factor(); }
     | SummandSign Summand SummandTail { $$ = $3; $3.add2($2, $1); }
-
 
 SummandSign
     : PLUS { $$ = new SummandSign("+"); }
