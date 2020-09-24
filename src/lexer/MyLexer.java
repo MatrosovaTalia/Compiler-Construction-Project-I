@@ -2,8 +2,7 @@ package lexer;
 
 import lexems.*;
 import misc.Pair;
-import parser.YYParser;
-
+import parser.YYParser.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -68,7 +67,7 @@ import java.math.BigInteger;
  */
 
 
-public class MyLexer implements YYParser.Lexer {
+public class MyLexer implements Lexer {
     private StringReaderWithPosition in;
     private CharacterBuffer buffer;
     private int c;
@@ -87,34 +86,35 @@ public class MyLexer implements YYParser.Lexer {
     public Token lex() {
         while (c != -1 || enqueuedToken != null) {
             if (enqueuedToken != null) {
-                Token tok = enqueuedToken;
+                currentToken = enqueuedToken;
                 enqueuedToken = null;
-                return tok;
+                return currentToken;
             }
             if (Character.isLetter(c) || c == '_') {
-                return scanKeywordOrIdentifier();
+                return currentToken = scanKeywordOrIdentifier();
             } else if (Character.isDigit(c)) {
-                return scanRealOrIntegerLiteral();
+                return currentToken = scanRealOrIntegerLiteral();
             } else if (c == '.') {
-                return scanAmbiguousWithDot();
+                return currentToken = scanAmbiguousWithDot();
             } else if (c == '<' || c == '>' || c == ':') {
-                return scanAmbiguousWithEquals();
+                return currentToken = scanAmbiguousWithEquals();
             } else if (c == '/') {
-                return scanAmbiguousWithSlash();
+                return currentToken = scanAmbiguousWithSlash();
             } else if (c == '(' || c == ')' || c == '[' || c == ']' ||
                     c == '+' || c == '-' || c == '*' || c == '%' ||
-                    c == '=' || c == ',' || c == ';') {
-                return scanSingleCharacterToken();
-            } else if (c == '\n') {
-                return scanNewlineSeparator();
-            } else if (Character.isWhitespace(c)) {
+                    c == '=' || c == ',') {
+                return currentToken = scanSingleCharacterToken();
+//            } else if (c == '\n') {
+//                return scanNewlineSeparator();
+            } else if (Character.isWhitespace(c) || c == ';') {
                 // skip it
                 c = in.read();
             } else if (c != -1) {
-                return scanIllegalCharacter();
+                return currentToken = scanIllegalCharacter();
             }
         }
-        return new Token("", TokenType.YYEOF, new Pair<>(in.line(), in.pos()));
+        Position pos = new Position(in.line(), in.pos());
+        return currentToken = new Token("", TokenType.YYEOF, pos);
     }
 
 
@@ -127,7 +127,7 @@ public class MyLexer implements YYParser.Lexer {
      */
     private Token scanKeywordOrIdentifier() {
         Token tok;
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Position pos = new Position(in.line(), in.pos());
         while ((Character.isLetterOrDigit(c) || c == '_') && c != -1) {
             buffer.add(c);
             c = in.read();
@@ -155,7 +155,7 @@ public class MyLexer implements YYParser.Lexer {
      */
     private Token scanRealOrIntegerLiteral() {
         Token tok;
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Position pos = new Position(in.line(), in.pos());
         while (Character.isDigit(c) && c != '.' && c != -1) {
             buffer.add(c);
             c = in.read();
@@ -204,7 +204,7 @@ public class MyLexer implements YYParser.Lexer {
      */
     private Token scanAmbiguousWithDot() {
         Token tok;
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Position pos = new Position(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
 
@@ -248,7 +248,7 @@ public class MyLexer implements YYParser.Lexer {
      * @return a new lexer.Token object of one of the listed types
      */
     private Token scanAmbiguousWithEquals() {
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Position pos = new Position(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
         TokenType type;
@@ -290,7 +290,7 @@ public class MyLexer implements YYParser.Lexer {
      */
     private Token scanAmbiguousWithSlash() {
         Token tok;
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Position pos = new Position(in.line(), in.pos());
         buffer.add(c);
         int nextChar = in.read();
 
@@ -323,9 +323,6 @@ public class MyLexer implements YYParser.Lexer {
                 // with comment text in this loop
             }
             // when the '\n' or eof is reached, proceed further
-            if (c == '\n') {
-                enqueuedToken = new Token("\n", TokenType.NEWLINE, pos);
-            }
             buffer.flush();
             c = in.read();
             return lex(); // scanning next token
@@ -342,13 +339,13 @@ public class MyLexer implements YYParser.Lexer {
     /**
      * this clause handles:
      * single-character tokens, such as:
-     * '(', ')', '[', ']', '+', '-', '*', '%', '=', ',', ';'
+     * '(', ')', '[', ']', '+', '-', '*', '%', '=', ','
      *
      * @return a new lexer.Token object of one of the listed types
      */
     private Token scanSingleCharacterToken() {
         TokenType type;
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
+        Position pos = new Position(in.line(), in.pos());
         switch (c) {
             case '(' -> type = TokenType.LPAREN;
             case ')' -> type = TokenType.RPAREN;
@@ -360,7 +357,7 @@ public class MyLexer implements YYParser.Lexer {
             case '%' -> type = TokenType.REMAINDER;
             case '=' -> type = TokenType.EQUALS;
             case ',' -> type = TokenType.COMMA;
-            case ';' -> type = TokenType.SEMICOLON;
+//            case ';' -> type = TokenType.SEMICOLON;
             default -> type = null;
         }
 
@@ -371,17 +368,17 @@ public class MyLexer implements YYParser.Lexer {
         return tok;
     }
 
-    /**
-     * this method handles:
-     * 1. newline separator
-     *
-     * @return a new lexer.Token object of one of the listed types
-     */
-    private Token scanNewlineSeparator() {
-        Pair<Integer, Integer> pos = new Pair<>(in.line(), in.pos());
-        c = in.read();
-        return new Token("\n", TokenType.NEWLINE, pos);
-    }
+//    /**
+//     * this method handles:
+//     * 1. newline separator
+//     *
+//     * @return a new lexer.Token object of one of the listed types
+//     */
+//    private Token scanNewlineSeparator() {
+//        Position pos = new Position(in.line(), in.pos());
+//        c = in.read();
+//        return new Token("\n", TokenType.NEWLINE, pos);
+//    }
 
     /**
      * this method handles:
@@ -391,31 +388,27 @@ public class MyLexer implements YYParser.Lexer {
      */
     private Token scanIllegalCharacter() {
         buffer.add(c);
-        Token tok = new Token(buffer.toString(), TokenType.YYUNDEF, new Pair<>(in.line(), in.pos()));
+        Position pos = new Position(in.line(), in.pos());
+        Token tok = new Token(buffer.toString(), TokenType.YYUNDEF, pos);
         buffer.flush();
         c = in.read();
         return tok;
     }
 
 
-
-    public void reportSyntaxError(YYParser.Context ctx) {
-        yyerror(ctx.getToken().getName() + ": syntax error");
-//        yyerror(ctx.getToken());
-//        final int TOKENMAX = 308;
-
-//        YYParser.SymbolKind[] arg = new YYParser.SymbolKind[TOKENMAX];
-//        int n = ctx.getExpectedTokens(arg, TOKENMAX);
-//        for (int i = 0; i < n; ++i) {
-//            System.err.print((i == 0 ? ": expected " : " or ") + arg[i].getName());
-//        }
-//        YYParser.SymbolKind lookahead = ctx.getToken();
-//        if (lookahead != null && lookahead != YYParser.SymbolKind.S_YYUNDEF) {
-//            System.err.println(" before " + lookahead.getName());
-//        } else {
-//            System.err.println(", got invalid token " + getValue() + " instead");
-//        }
+    @Override
+    public Position getStartPos() {
+        return currentToken.getPosition();
     }
+
+    @Override
+    public Position getEndPos() {
+        var position = currentToken.getPosition();
+        var line = position.getLine();
+        var pos = position.getPos() + currentToken.getBody().length();
+        return new Position(line, pos);
+    }
+
     @Override
     public ILexem getLVal() {
         TokenType type = currentToken.getType();
@@ -468,9 +461,11 @@ public class MyLexer implements YYParser.Lexer {
     }
 
     @Override
-    public void yyerror(String msg) {
-        System.out.println(msg);
+    public void yyerror(Location loc, String msg) {
+        System.out.println("An error occurred at position " +
+                currentToken.getPosition() + ":\n" + msg);
     }
+
 }
 
 

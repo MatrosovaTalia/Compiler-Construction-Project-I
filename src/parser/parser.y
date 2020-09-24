@@ -4,7 +4,7 @@
 %define api.parser.class {YYParser}
 %define api.parser.public
 %define api.package {parser}
-%define api.value.type {ASTNode}
+%define api.value.type {ILexem}
 
 %locations
 %code imports {
@@ -42,8 +42,8 @@ import reader.Reader;
 %token OR NOT XOR PRINT RETURN
 
 // Separators
-%token  NEWLINE
-%token SEMICOLON
+//%token  NEWLINE
+//%token SEMICOLON
 
 // Delimiters
 %token LPAREN
@@ -128,7 +128,6 @@ GlobalDeclarations
 GlobalDeclaration
     : SimpleDeclaration {$$ = $1;}
     | RoutineDeclaration {$$ = $1;}
-    | NEWLINE
     ;
 
 SimpleDeclaration
@@ -137,13 +136,9 @@ SimpleDeclaration
     ;
 
 VariableDeclaration
-    : VAR Identifier COLON Type OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
-    | VAR Identifier COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
-    | VAR Identifier IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
-    ;
-OptionalSemicolon
-    : NEWLINE
-    | SEMICOLON
+    : VAR Identifier COLON Type  {$$ = new VariableDeclaration($2, $4);}
+    | VAR Identifier COLON Type IS Expression  { $$ = new VariableDeclaration($2, $4, $6); }
+    | VAR Identifier IS Expression  {$$ = new VariableDeclaration($2, $4);}
     ;
 
 TypeDeclaration
@@ -151,10 +146,10 @@ TypeDeclaration
     ;
 
 RoutineDeclaration
-    : ROUTINE Identifier LPAREN Parameters RPAREN IS Body END OptionalSemicolon {
+    : ROUTINE Identifier LPAREN Parameters RPAREN IS Body END  {
     	$$ = new RoutineDeclaration($2, $4, $7, null);
     }
-    | ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon {
+    | ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END  {
     	$$ = new RoutineDeclaration($2, $4, $7, $9);
     }
     ;
@@ -185,13 +180,12 @@ PrimitiveType
     ;
 
 RecordType
-    : RECORD NEWLINE VariableDeclarations END {$$ = $3;}
+    : RECORD VariableDeclarations END {$$ = $3;}
     ;
 
 VariableDeclarations
     : /* empty */ { $$ = new RecordType(); }
     | VariableDeclaration VariableDeclarations { $$ = $2; $2.add($1);}
-    | NEWLINE VariableDeclarations { $$ = $2; }
     ;
 
 
@@ -210,14 +204,13 @@ BodyDeclaration
     ;
 
 Statement
-    : Assignment OptionalSemicolon {$$ = $1;}
-    | RoutineCall OptionalSemicolon {$$ = $1; }
-    | WhileLoop OptionalSemicolon {$$ = $1;}
-    | ForLoop OptionalSemicolon {$$ = $1;}
-    | IfStatement OptionalSemicolon{$$ = $1;}
-    | Print OptionalSemicolon {$$ = $1;}
-    | Return OptionalSemicolon {$$ = $1;}
-    | NEWLINE
+    : Assignment  {$$ = $1;}
+    | RoutineCall  {$$ = $1; }
+    | WhileLoop  {$$ = $1;}
+    | ForLoop  {$$ = $1;}
+    | IfStatement {$$ = $1;}
+    | Print  {$$ = $1;}
+    | Return  {$$ = $1;}
     ;
 
 Return
@@ -353,97 +346,3 @@ Print
 
 Identifier:
 	IDENTIFIER {$$ = yylexer.getLVal();}
-
-%%
-//
-//
-//Lexer lexer;
-//
-//GlobalDeclarations ast;
-//
-//int yylex() {
-//	Token tok = lexer.lex();
-//	TokenType type = tok.getType();
-//	System.out.println(tok.toString());
-//    int code;
-//    switch (type) {
-//	case VAR -> code = VAR;
-//	case TYPE -> code = TYPE;
-//	case IS -> code = IS;
-//	case END -> code = END;
-//	case INTEGER -> code = INTEGER;
-//	case REAL -> code = REAL;
-//	case BOOLEAN -> code = BOOLEAN;
-//	case TRUE -> code = TRUE;
-//	case FALSE -> code = FALSE;
-//	case RECORD -> code = RECORD;
-//	case ARRAY -> code = ARRAY;
-//	case WHILE -> code = WHILE;
-//	case LOOP -> code = LOOP;
-//	case FOR -> code = FOR;
-//	case IN -> code = IN;
-//	case REVERSE -> code = REVERSE;
-//	case IF -> code = IF;
-//	case THEN -> code = THEN;
-//	case ELSE -> code = ELSE;
-//	case ROUTINE -> code = ROUTINE;
-//	case AND -> code = AND;
-//	case OR -> code = OR;
-//	case NOT -> code = NOT;
-//	case XOR -> code = XOR;
-//	case PRINT -> code = PRINT;
-//	case RETURN -> code = RETURN;
-//	case RANGE -> code = RANGE;
-//	case ADD -> code = PLUS;
-//	case MINUS -> code = MINUS;
-//	case MULTIPLY -> code = MULTIPLY;
-//	case DIVIDE -> code = DIVIDE;
-//	case REMAINDER -> code = REMAINDER;
-//	case RBRACKET -> code = RBRACKET;
-//	case LBRACKET -> code = LBRACKET;
-//	case LESS -> code = LESS;
-//	case LEQUALS -> code = LEQUALS;
-//	case GREATER -> code = GREATER;
-//	case GEQUALS -> code = GEQUALS;
-//	case EQUALS -> code = EQUALS;
-//	case NEQUALS -> code = NEQUALS;
-//	case DOT -> code = DOT;
-//	case COMMA -> code = COMMA;
-//	case ASSIGN -> code = ASSIGN;
-//	case COLON -> code = COLON;
-//	case LPAREN -> code = LPAREN;
-//	case RPAREN -> code = RPAREN;
-//	case SLCOMMENT -> code = SLCOMMENT;
-//	case MLCOMMENT_START -> code = MLCOMMENT_START;
-//	case MLCOMMENT_END -> code = MLCOMMENT_END;
-//	case IDENTIFIER -> code = IDENTIFIER;
-//	case INTEGER_LITERAL -> code = INTEGER_LITERAL;
-//	case REAL_LITERAL -> code = REAL_LITERAL;
-//	case NEWLINE -> code = NEWLINE;
-//	case SEMICOLON -> code = SEMICOLON;
-////	case EOF -> code = 0;
-//	default -> code = -1;
-//    }
-//    return code;
-//}
-//
-//void yyerror(String mes) {
-//    System.out.println(mes);
-//}
-//
-//void dotest(int i)
-//{
-//	Reader reader = new Reader();
-//	this.lexer = new Lexer();
-//	reader.read("tests/" + i + ".txt");
-//	lexer.tokenize(reader.sourceText);
-//	yyparse();
-//}
-//
-//
-//
-//public static void main(String args[])
-//{
-// Parser par = new Parser(false);
-// par.dotest(6);
-//}

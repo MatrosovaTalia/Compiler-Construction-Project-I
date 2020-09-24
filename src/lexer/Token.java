@@ -13,9 +13,9 @@ public class Token {
     public static final HashMap<String, TokenType> KEYWORD_TABLE = initKeywordTable();
     private final String body;
     private final TokenType type;
-    public final Pair<Integer, Integer> position;
+    public final Position position;
 
-    Token(String body, TokenType type, Pair<Integer, Integer> position) {
+    Token(String body, TokenType type, Position position) {
         this.body = body;
         this.type = type;
         this.position = position;
@@ -50,7 +50,7 @@ public class Token {
         return type;
     }
 
-    public Pair<Integer, Integer> getPosition() {
+    public Position getPosition() {
         return position;
     }
 
@@ -68,8 +68,8 @@ public class Token {
         return "{'" +
                 (body.equals("\n") ? "\\n" : body)
                 + "' :" +
-                type.toString() + "("+ type.getValue() +")" + ", position: [" + position.key() + " " + position.value() + "]}"
-                + (body.equals("\n") ? "\n" : "");
+                type.toString() + "("+ type.getValue() +")" + ", position: [" + position.getLine() + " " + position.getPos() + "]}"
+                + "\n";
     }
 
 }
