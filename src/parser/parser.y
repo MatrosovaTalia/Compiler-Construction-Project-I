@@ -6,7 +6,7 @@
 %define api.package {parser}
 %define api.value.type {ILexem}
 
-%locations
+//%locations
 %code imports {
 import lexems.*;
 import lexer.*;

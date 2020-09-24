@@ -41,8 +41,8 @@ public class Main {
 
         Declarations ast = YYParser.makeAST("17");
 
-//        Identifier id = new Identifier("id1");
-//        System.out.println(id);
+        Identifier id = new Identifier("id1");
+        System.out.println(id);
         System.out.println("Is Ast built?    "+ Boolean.toString(ast != null));
         for (int i =0; i < ast.size(); i++){
             System.out.println(ast.get(i));

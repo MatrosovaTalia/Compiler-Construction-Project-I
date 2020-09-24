@@ -2,6 +2,7 @@ package lexer;
 
 import lexems.*;
 import misc.Pair;
+import parser.YYParser;
 import parser.YYParser.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -396,12 +397,12 @@ public class MyLexer implements Lexer {
     }
 
 
-    @Override
+//    @Override
     public Position getStartPos() {
         return currentToken.getPosition();
     }
 
-    @Override
+//    @Override
     public Position getEndPos() {
         var position = currentToken.getPosition();
         var line = position.getLine();
@@ -461,9 +462,34 @@ public class MyLexer implements Lexer {
     }
 
     @Override
-    public void yyerror(Location loc, String msg) {
-        System.out.println("An error occurred at position " +
-                currentToken.getPosition() + ":\n" + msg);
+    public void yyerror(String msg) {
+        System.out.println(msg);
+    }
+//
+//    @Override
+//    public void yyerror(Location loc, String msg) {
+//        System.out.println("An error occurred at position " +
+//                currentToken.getPosition() + ":\n" + msg);
+//    }
+
+
+
+    public void reportSyntaxError(Context ctx) {
+        yyerror(ctx.getToken().getName() + ": syntax error");
+//        yyerror(ctx.getToken());
+//        final int TOKENMAX = 308;
+
+//        YYParser.SymbolKind[] arg = new YYParser.SymbolKind[TOKENMAX];
+//        int n = ctx.getExpectedTokens(arg, TOKENMAX);
+//        for (int i = 0; i < n; ++i) {
+//            System.err.print((i == 0 ? ": expected " : " or ") + arg[i].getName());
+//        }
+//        YYParser.SymbolKind lookahead = ctx.getToken();
+//        if (lookahead != null && lookahead != YYParser.SymbolKind.S_YYUNDEF) {
+//            System.err.println(" before " + lookahead.getName());
+//        } else {
+//            System.err.println(", got invalid token " + getValue() + " instead");
+//        }
     }
 
 }
