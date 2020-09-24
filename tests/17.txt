@@ -1,0 +1,4 @@
+type c is integer;
+type b is boolean;
+var ab : integer;
+type a is real;

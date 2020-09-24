@@ -13,7 +13,7 @@ public class Token {
     public static final HashMap<String, TokenType> KEYWORD_TABLE = initKeywordTable();
     private final String body;
     private final TokenType type;
-    private final Pair<Integer, Integer> position;
+    public final Pair<Integer, Integer> position;
 
     Token(String body, TokenType type, Pair<Integer, Integer> position) {
         this.body = body;

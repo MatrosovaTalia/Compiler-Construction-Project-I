@@ -1,8 +1,8 @@
 package lexems;
 
 public class TypeDeclaration implements ILexem {
-    ILexem identifier;
-    Type type;
+    public ILexem identifier;
+    public Type type;
 
     public TypeDeclaration(ILexem identifier, Type type){
         this.identifier = identifier;

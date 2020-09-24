@@ -4,6 +4,7 @@ import lexer.TokenType;
 import reader.Reader;
 import lexems.*;
 import parser.*;
+import simple.Declarations;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,9 +39,15 @@ public class Main {
 
 //         testNToFile(15);
 
-        GlobalDeclarations ast = YYParser.makeAST("3");
+        Declarations ast = YYParser.makeAST("17");
 
-        System.out.println(ast == null);
+//        Identifier id = new Identifier("id1");
+//        System.out.println(id);
+        System.out.println("Is Ast built?    "+ Boolean.toString(ast != null));
+        for (int i =0; i < ast.size(); i++){
+            System.out.println(ast.get(i));
+
+        }
 
     }
 }

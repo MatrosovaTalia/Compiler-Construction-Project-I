@@ -4,11 +4,8 @@ import lexems.*;
 import misc.Pair;
 import parser.YYParser;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import static lexer.TokenType.IDENTIFIER;
 
 /*
     DONE: Keywords:
@@ -79,7 +76,7 @@ public class MyLexer implements YYParser.Lexer {
     private Token currentToken = null;
 
 
-    public MyLexer() {}
+    public MyLexer () {}
 
     public void tokenize(String sourceText) {
         this.in = new StringReaderWithPosition(sourceText);
@@ -401,6 +398,24 @@ public class MyLexer implements YYParser.Lexer {
     }
 
 
+
+    public void reportSyntaxError(YYParser.Context ctx) {
+        yyerror(ctx.getToken().getName() + ": syntax error");
+//        yyerror(ctx.getToken());
+//        final int TOKENMAX = 308;
+
+//        YYParser.SymbolKind[] arg = new YYParser.SymbolKind[TOKENMAX];
+//        int n = ctx.getExpectedTokens(arg, TOKENMAX);
+//        for (int i = 0; i < n; ++i) {
+//            System.err.print((i == 0 ? ": expected " : " or ") + arg[i].getName());
+//        }
+//        YYParser.SymbolKind lookahead = ctx.getToken();
+//        if (lookahead != null && lookahead != YYParser.SymbolKind.S_YYUNDEF) {
+//            System.err.println(" before " + lookahead.getName());
+//        } else {
+//            System.err.println(", got invalid token " + getValue() + " instead");
+//        }
+    }
     @Override
     public ILexem getLVal() {
         TokenType type = currentToken.getType();

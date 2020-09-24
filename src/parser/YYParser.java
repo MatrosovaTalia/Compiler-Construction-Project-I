@@ -40,16 +40,19 @@ package parser;
 
 import java.text.MessageFormat;
 /* "%code imports" blocks.  */
-/* "parser.y":10  */
+/* "smallgrammar.y":14  */
 
-import lexems.*;
+import lexems.Identifier;
+import lexems.ILexem;
 import lexer.*;
 import reader.Reader;
+import simple.*;
+import java.util.ArrayList;
 
-/* "YYParser.java":50  */
+/* "YYParser.java":53  */
 
 /**
- * A Bison parser, automatically generated from <tt>parser.y</tt>.
+ * A Bison parser, automatically generated from <tt>smallgrammar.y</tt>.
  *
  * @author LALR (1) parser skeleton written by Paolo Bonzini.
  */
@@ -130,42 +133,9 @@ public class YYParser
     S_VariableDeclaration(59),     /* VariableDeclaration  */
     S_OptionalSemicolon(60),       /* OptionalSemicolon  */
     S_TypeDeclaration(61),         /* TypeDeclaration  */
-    S_RoutineDeclaration(62),      /* RoutineDeclaration  */
-    S_Return(63),                  /* Return  */
-    S_Parameters(64),              /* Parameters  */
-    S_ParameterDeclaration(65),    /* ParameterDeclaration  */
-    S_Type(66),                    /* Type  */
-    S_PrimitiveType(67),           /* PrimitiveType  */
-    S_RecordType(68),              /* RecordType  */
-    S_VariableDeclarations(69),    /* VariableDeclarations  */
-    S_ArrayType(70),               /* ArrayType  */
-    S_Body(71),                    /* Body  */
-    S_BodyDeclaration(72),         /* BodyDeclaration  */
-    S_Statement(73),               /* Statement  */
-    S_Assignment(74),              /* Assignment  */
-    S_RoutineCall(75),             /* RoutineCall  */
-    S_Expressions(76),             /* Expressions  */
-    S_WhileLoop(77),               /* WhileLoop  */
-    S_ForLoop(78),                 /* ForLoop  */
-    S_IfStatement(79),             /* IfStatement  */
-    S_Expression(80),              /* Expression  */
-    S_Relations(81),               /* Relations  */
-    S_LogicWord(82),               /* LogicWord  */
-    S_Relation(83),                /* Relation  */
-    S_SimpleTail(84),              /* SimpleTail  */
-    S_RelationSign(85),            /* RelationSign  */
-    S_Simple(86),                  /* Simple  */
-    S_FactorTail(87),              /* FactorTail  */
-    S_FactorSign(88),              /* FactorSign  */
-    S_Factor(89),                  /* Factor  */
-    S_SummandTail(90),             /* SummandTail  */
-    S_SummandSign(91),             /* SummandSign  */
-    S_Summand(92),                 /* Summand  */
-    S_Primary(93),                 /* Primary  */
-    S_ModifiablePrimary(94),       /* ModifiablePrimary  */
-    S_ElementCall(95),             /* ElementCall  */
-    S_Print(96),                   /* Print  */
-    S_Identifier(97);              /* Identifier  */
+    S_Type(62),                    /* Type  */
+    S_PrimitiveType(63),           /* PrimitiveType  */
+    S_Identifier(64);              /* Identifier  */
 
 
     private final int yycode_;
@@ -237,41 +207,8 @@ public class YYParser
       SymbolKind.S_VariableDeclaration,
       SymbolKind.S_OptionalSemicolon,
       SymbolKind.S_TypeDeclaration,
-      SymbolKind.S_RoutineDeclaration,
-      SymbolKind.S_Return,
-      SymbolKind.S_Parameters,
-      SymbolKind.S_ParameterDeclaration,
       SymbolKind.S_Type,
       SymbolKind.S_PrimitiveType,
-      SymbolKind.S_RecordType,
-      SymbolKind.S_VariableDeclarations,
-      SymbolKind.S_ArrayType,
-      SymbolKind.S_Body,
-      SymbolKind.S_BodyDeclaration,
-      SymbolKind.S_Statement,
-      SymbolKind.S_Assignment,
-      SymbolKind.S_RoutineCall,
-      SymbolKind.S_Expressions,
-      SymbolKind.S_WhileLoop,
-      SymbolKind.S_ForLoop,
-      SymbolKind.S_IfStatement,
-      SymbolKind.S_Expression,
-      SymbolKind.S_Relations,
-      SymbolKind.S_LogicWord,
-      SymbolKind.S_Relation,
-      SymbolKind.S_SimpleTail,
-      SymbolKind.S_RelationSign,
-      SymbolKind.S_Simple,
-      SymbolKind.S_FactorTail,
-      SymbolKind.S_FactorSign,
-      SymbolKind.S_Factor,
-      SymbolKind.S_SummandTail,
-      SymbolKind.S_SummandSign,
-      SymbolKind.S_Summand,
-      SymbolKind.S_Primary,
-      SymbolKind.S_ModifiablePrimary,
-      SymbolKind.S_ElementCall,
-      SymbolKind.S_Print,
       SymbolKind.S_Identifier
     };
 
@@ -283,46 +220,14 @@ public class YYParser
       return this.yycode_;
     }
 
-    /* Return YYSTR after stripping away unnecessary quotes and
-       backslashes, so that it's suitable for yyerror.  The heuristic is
-       that double-quoting is unnecessary unless the string contains an
-       apostrophe, a comma, or backslash (other than backslash-backslash).
-       YYSTR is taken from yytname.  */
-    private static String yytnamerr_(String yystr)
-    {
-      if (yystr.charAt (0) == '"')
-        {
-          StringBuffer yyr = new StringBuffer();
-          strip_quotes: for (int i = 1; i < yystr.length(); i++)
-            switch (yystr.charAt(i))
-              {
-              case '\'':
-              case ',':
-                break strip_quotes;
-
-              case '\\':
-                if (yystr.charAt(++i) != '\\')
-                  break strip_quotes;
-                /* Fall through.  */
-              default:
-                yyr.append(yystr.charAt(i));
-                break;
-
-              case '"':
-                return yyr.toString();
-              }
-        }
-      return yystr;
-    }
-
-    /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
+    /* YYNAMES_[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
        First, the terminals, then, starting at \a YYNTOKENS_, nonterminals.  */
-    private static final String[] yytname_ = yytname_init();
-  private static final String[] yytname_init()
+    private static final String[] yynames_ = yynames_init();
+  private static final String[] yynames_init()
   {
     return new String[]
     {
-  "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER",
+  "end of file", "error", "invalid token", "IDENTIFIER",
   "INTEGER_LITERAL", "REAL_LITERAL", "TRUE", "FALSE", "VAR", "TYPE", "IS",
   "END", "RECORD", "INTEGER", "REAL", "BOOLEAN", "ARRAY", "WHILE", "LOOP",
   "FOR", "IN", "REVERSE", "IF", "THEN", "ELSE", "ROUTINE", "AND", "OR",
@@ -331,23 +236,15 @@ public class YYParser
   "EQUALS", "ASSIGN", "NEQUALS", "GREATER", "LESS", "LEQUALS", "GEQUALS",
   "PLUS", "MINUS", "MULTIPLY", "DIVIDE", "REMAINDER", "$accept", "Program",
   "GlobalDeclarations", "GlobalDeclaration", "SimpleDeclaration",
-  "VariableDeclaration", "OptionalSemicolon", "TypeDeclaration",
-  "RoutineDeclaration", "Return", "Parameters", "ParameterDeclaration",
-  "Type", "PrimitiveType", "RecordType", "VariableDeclarations",
-  "ArrayType", "Body", "BodyDeclaration", "Statement", "Assignment",
-  "RoutineCall", "Expressions", "WhileLoop", "ForLoop", "IfStatement",
-  "Expression", "Relations", "LogicWord", "Relation", "SimpleTail",
-  "RelationSign", "Simple", "FactorTail", "FactorSign", "Factor",
-  "SummandTail", "SummandSign", "Summand", "Primary", "ModifiablePrimary",
-  "ElementCall", "Print", "Identifier", null
+  "VariableDeclaration", "OptionalSemicolon", "TypeDeclaration", "Type",
+  "PrimitiveType", "Identifier", null
     };
   }
 
     /* The user-facing name of this symbol.  */
     public final String getName() {
-      return yytnamerr_(yytname_[yycode_]);
+      return yynames_[yycode_];
     }
-
   };
 
 
@@ -474,7 +371,7 @@ public class YYParser
      * Method to retrieve the semantic value of the last scanned token.
      * @return the semantic value of the last scanned token.
      */
-    ASTNode getLVal();
+    ILexem getLVal();
 
     /**
      * Entry point for the scanner.  Returns the token identifier corresponding
@@ -492,6 +389,13 @@ public class YYParser
      */
      void yyerror(String msg);
 
+
+    /**
+     * Build and emit a "syntax error" message in a user-defined way.
+     *
+     * @param ctx  The context of the error.
+     */
+     void reportSyntaxError (Context ctx);
 
   }
 
@@ -517,6 +421,34 @@ public class YYParser
   }
 
 
+  private java.io.PrintStream yyDebugStream = System.err;
+
+  /**
+   * The <tt>PrintStream</tt> on which the debugging output is printed.
+   */
+  public final java.io.PrintStream getDebugStream () { return yyDebugStream; }
+
+  /**
+   * Set the <tt>PrintStream</tt> on which the debug output is printed.
+   * @param s The stream that is used for debugging output.
+   */
+  public final void setDebugStream (java.io.PrintStream s) { yyDebugStream = s; }
+
+  private int yydebug = 0;
+
+  /**
+   * Answer the verbosity of the debugging output; 0 means that all kinds of
+   * output from the parser are suppressed.
+   */
+  public final int getDebugLevel () { return yydebug; }
+
+  /**
+   * Set the verbosity of the debugging output; 0 means that all kinds of
+   * output from the parser are suppressed.
+   * @param level The verbosity level for debugging output.
+   */
+  public final void setDebugLevel (int level) { yydebug = level; }
+
 
   private int yynerrs = 0;
 
@@ -535,15 +467,19 @@ public class YYParser
   }
 
 
+  protected final void yycdebug (String s) {
+    if (0 < yydebug)
+      yyDebugStream.println (s);
+  }
 
   private final class YYStack {
     private int[] stateStack = new int[16];
-    private ASTNode[] valueStack = new ASTNode[16];
+    private ILexem[] valueStack = new ILexem[16];
 
     public int size = 16;
     public int height = -1;
 
-    public final void push (int state, ASTNode value) {
+    public final void push (int state, ILexem value) {
       height++;
       if (size == height)
         {
@@ -551,7 +487,7 @@ public class YYParser
           System.arraycopy (stateStack, 0, newStateStack, 0, height);
           stateStack = newStateStack;
 
-          ASTNode[] newValueStack = new ASTNode[size * 2];
+          ILexem[] newValueStack = new ILexem[size * 2];
           System.arraycopy (valueStack, 0, newValueStack, 0, height);
           valueStack = newValueStack;
 
@@ -578,7 +514,7 @@ public class YYParser
       return stateStack[height - i];
     }
 
-    public final ASTNode valueAt (int i) {
+    public final ILexem valueAt (int i) {
       return valueStack[height - i];
     }
 
@@ -661,670 +597,117 @@ public class YYParser
        Otherwise, the following line sets YYVAL to garbage.
        This behavior is undocumented and Bison
        users should not rely upon it.  */
-    ASTNode yyval = (0 < yylen) ? yystack.valueAt(yylen - 1) : yystack.valueAt(0);
+    ILexem yyval = (0 < yylen) ? yystack.valueAt(yylen - 1) : yystack.valueAt(0);
+
+    yyReducePrint(yyn, yystack);
 
     switch (yyn)
       {
           case 2: /* Program: GlobalDeclarations  */
   if (yyn == 2)
-    /* "parser.y":120  */
-                         {ast = yystack.valueAt (0);};
+    /* "smallgrammar.y":95  */
+                         {ast = ((Declarations)(yystack.valueAt (0)));};
   break;
 
 
   case 3: /* GlobalDeclarations: %empty  */
   if (yyn == 3)
-    /* "parser.y":124  */
-                  { yyval = new GlobalDeclarations();};
+    /* "smallgrammar.y":99  */
+                  { yyval = new Declarations();};
   break;
 
 
   case 4: /* GlobalDeclarations: GlobalDeclaration GlobalDeclarations  */
   if (yyn == 4)
-    /* "parser.y":125  */
-                                           {yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1));};
+    /* "smallgrammar.y":100  */
+                                           {yyval = ((Declarations)(yystack.valueAt (0))); ((Declarations)(yystack.valueAt (0))).add(((IDeclaration)(yystack.valueAt (1))));};
   break;
 
 
   case 5: /* GlobalDeclaration: SimpleDeclaration  */
   if (yyn == 5)
-    /* "parser.y":129  */
-                        {yyval = yystack.valueAt (0);};
+    /* "smallgrammar.y":104  */
+                        {yyval = ((IDeclaration)(yystack.valueAt (0)));};
   break;
 
 
-  case 6: /* GlobalDeclaration: RoutineDeclaration  */
+  case 6: /* SimpleDeclaration: VariableDeclaration  */
   if (yyn == 6)
-    /* "parser.y":130  */
-                         {yyval = yystack.valueAt (0);};
+    /* "smallgrammar.y":110  */
+                          { yyval = ((VariableDeclaration)(yystack.valueAt (0)));};
   break;
 
 
-  case 8: /* SimpleDeclaration: VariableDeclaration  */
+  case 7: /* SimpleDeclaration: TypeDeclaration  */
+  if (yyn == 7)
+    /* "smallgrammar.y":111  */
+                      { yyval = ((TypeDeclaration)(yystack.valueAt (0)));};
+  break;
+
+
+  case 8: /* VariableDeclaration: VAR Identifier COLON Type OptionalSemicolon  */
   if (yyn == 8)
-    /* "parser.y":135  */
-                          { yyval = yystack.valueAt (0);};
+    /* "smallgrammar.y":115  */
+                                                  {yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (3))), ((IType)(yystack.valueAt (1))));};
   break;
 
 
-  case 9: /* SimpleDeclaration: TypeDeclaration  */
-  if (yyn == 9)
-    /* "parser.y":136  */
-                      { yyval = yystack.valueAt (0);};
-  break;
-
-
-  case 10: /* VariableDeclaration: VAR Identifier COLON Type OptionalSemicolon  */
-  if (yyn == 10)
-    /* "parser.y":140  */
-                                                  {yyval = new VariableDeclaration(yystack.valueAt (3), yystack.valueAt (1));};
-  break;
-
-
-  case 11: /* VariableDeclaration: VAR Identifier COLON Type IS Expression OptionalSemicolon  */
+  case 11: /* TypeDeclaration: TYPE Identifier IS Type OptionalSemicolon  */
   if (yyn == 11)
-    /* "parser.y":141  */
-                                                                { yyval = new VariableDeclaration(yystack.valueAt (5), yystack.valueAt (3), yystack.valueAt (1)); };
+    /* "smallgrammar.y":125  */
+                                               {yyval = new TypeDeclaration(((Identifier)(yystack.valueAt (3))), ((IType)(yystack.valueAt (1))));};
   break;
 
 
-  case 12: /* VariableDeclaration: VAR Identifier IS Expression OptionalSemicolon  */
+  case 12: /* Type: PrimitiveType  */
   if (yyn == 12)
-    /* "parser.y":142  */
-                                                     {yyval = new VariableDeclaration(yystack.valueAt (3), yystack.valueAt (1));};
+    /* "smallgrammar.y":130  */
+                    { yyval = ((PrimitiveType)(yystack.valueAt (0))); };
   break;
 
 
-  case 15: /* TypeDeclaration: TYPE Identifier IS Type  */
-  if (yyn == 15)
-    /* "parser.y":150  */
-                              {yyval = new TypeDeclaration(yystack.valueAt (2), yystack.valueAt (0));};
+  case 13: /* Type: Identifier  */
+  if (yyn == 13)
+    /* "smallgrammar.y":133  */
+                 { yyval = ((Identifier)(yystack.valueAt (0))); };
   break;
 
 
-  case 16: /* RoutineDeclaration: ROUTINE Identifier LPAREN Parameters RPAREN IS Body END OptionalSemicolon  */
-  if (yyn == 16)
-    /* "parser.y":154  */
-                                                                                {
-    	yyval = new RoutineDeclaration(yystack.valueAt (7), yystack.valueAt (5), yystack.valueAt (2), null);
-    };
-  break;
-
-
-  case 17: /* RoutineDeclaration: ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END OptionalSemicolon  */
-  if (yyn == 17)
-    /* "parser.y":157  */
-                                                                                           {
-    	yyval = new RoutineDeclaration(yystack.valueAt (9), yystack.valueAt (7), yystack.valueAt (4), yystack.valueAt (2));
-    };
-  break;
-
-
-  case 18: /* Return: RETURN Expression  */
-  if (yyn == 18)
-    /* "parser.y":163  */
-                        {yyval = new Return(yystack.valueAt (0));};
-  break;
-
-
-  case 19: /* Parameters: ParameterDeclaration  */
-  if (yyn == 19)
-    /* "parser.y":168  */
-                           { yyval = new Parameters(yystack.valueAt (0));};
-  break;
-
-
-  case 20: /* Parameters: ParameterDeclaration COMMA Parameters  */
-  if (yyn == 20)
-    /* "parser.y":169  */
-                                            { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (2)); };
-  break;
-
-
-  case 21: /* ParameterDeclaration: Identifier COLON Type  */
-  if (yyn == 21)
-    /* "parser.y":174  */
-                            { yyval = new Parameter(yystack.valueAt (2), yystack.valueAt (0)); };
-  break;
-
-
-  case 22: /* Type: PrimitiveType  */
-  if (yyn == 22)
-    /* "parser.y":178  */
-                    { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 23: /* Type: ArrayType  */
-  if (yyn == 23)
-    /* "parser.y":179  */
-                { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 24: /* Type: RecordType  */
-  if (yyn == 24)
-    /* "parser.y":180  */
-                 { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 25: /* Type: Identifier  */
-  if (yyn == 25)
-    /* "parser.y":181  */
-                 { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 26: /* PrimitiveType: INTEGER  */
-  if (yyn == 26)
-    /* "parser.y":185  */
+  case 14: /* PrimitiveType: INTEGER  */
+  if (yyn == 14)
+    /* "smallgrammar.y":137  */
               { yyval = new PrimitiveType("integer");};
   break;
 
 
-  case 27: /* PrimitiveType: REAL  */
-  if (yyn == 27)
-    /* "parser.y":186  */
+  case 15: /* PrimitiveType: REAL  */
+  if (yyn == 15)
+    /* "smallgrammar.y":138  */
            { yyval = new PrimitiveType("real"); };
   break;
 
 
-  case 28: /* PrimitiveType: BOOLEAN  */
-  if (yyn == 28)
-    /* "parser.y":187  */
+  case 16: /* PrimitiveType: BOOLEAN  */
+  if (yyn == 16)
+    /* "smallgrammar.y":139  */
               { yyval = new PrimitiveType("boolean"); };
   break;
 
 
-  case 29: /* RecordType: RECORD NEWLINE VariableDeclarations END  */
-  if (yyn == 29)
-    /* "parser.y":191  */
-                                              {yyval = yystack.valueAt (1);};
+  case 17: /* Identifier: IDENTIFIER  */
+  if (yyn == 17)
+    /* "smallgrammar.y":143  */
+                   {yyval = ((Identifier)(yystack.valueAt (0)));};
   break;
 
 
-  case 30: /* VariableDeclarations: %empty  */
-  if (yyn == 30)
-    /* "parser.y":195  */
-                  { yyval = new RecordType(); };
-  break;
-
-
-  case 31: /* VariableDeclarations: VariableDeclaration VariableDeclarations  */
-  if (yyn == 31)
-    /* "parser.y":196  */
-                                               { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1));};
-  break;
-
-
-  case 32: /* VariableDeclarations: NEWLINE VariableDeclarations  */
-  if (yyn == 32)
-    /* "parser.y":197  */
-                                   { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 33: /* ArrayType: ARRAY LBRACKET Expression RBRACKET Type  */
-  if (yyn == 33)
-    /* "parser.y":202  */
-                                              { yyval = new ArrayType(yystack.valueAt (2), yystack.valueAt (0)); };
-  break;
-
-
-  case 34: /* Body: %empty  */
-  if (yyn == 34)
-    /* "parser.y":206  */
-                  { yyval = new Body();};
-  break;
-
-
-  case 35: /* Body: BodyDeclaration Body  */
-  if (yyn == 35)
-    /* "parser.y":207  */
-                           {yyval = yystack.valueAt (0); yystack.valueAt (0).addBody(yystack.valueAt (1));};
-  break;
-
-
-  case 36: /* BodyDeclaration: SimpleDeclaration  */
-  if (yyn == 36)
-    /* "parser.y":211  */
-                        {yyval = new BodyDeclaration(yystack.valueAt (0));};
-  break;
-
-
-  case 37: /* BodyDeclaration: Statement  */
-  if (yyn == 37)
-    /* "parser.y":212  */
-                {yyval = new BodyDeclaration(yystack.valueAt (0));};
-  break;
-
-
-  case 38: /* Statement: Assignment OptionalSemicolon  */
-  if (yyn == 38)
-    /* "parser.y":216  */
-                                   {yyval = yystack.valueAt (1);};
-  break;
-
-
-  case 39: /* Statement: RoutineCall OptionalSemicolon  */
-  if (yyn == 39)
-    /* "parser.y":217  */
-                                    {yyval = yystack.valueAt (1); };
-  break;
-
-
-  case 40: /* Statement: WhileLoop OptionalSemicolon  */
-  if (yyn == 40)
-    /* "parser.y":218  */
-                                  {yyval = yystack.valueAt (1);};
-  break;
-
-
-  case 41: /* Statement: ForLoop OptionalSemicolon  */
-  if (yyn == 41)
-    /* "parser.y":219  */
-                                {yyval = yystack.valueAt (1);};
-  break;
-
-
-  case 42: /* Statement: IfStatement OptionalSemicolon  */
-  if (yyn == 42)
-    /* "parser.y":220  */
-                                   {yyval = yystack.valueAt (1);};
-  break;
-
-
-  case 43: /* Statement: Print OptionalSemicolon  */
-  if (yyn == 43)
-    /* "parser.y":221  */
-                              {yyval = yystack.valueAt (1);};
-  break;
-
-
-  case 44: /* Statement: Return OptionalSemicolon  */
-  if (yyn == 44)
-    /* "parser.y":222  */
-                               {yyval = yystack.valueAt (1);};
-  break;
-
-
-  case 46: /* Assignment: ModifiablePrimary ASSIGN Expression  */
-  if (yyn == 46)
-    /* "parser.y":227  */
-                                          {yyval = new Assignment(yystack.valueAt (2), yystack.valueAt (0));};
-  break;
-
-
-  case 47: /* RoutineCall: Identifier LPAREN Expressions RPAREN  */
-  if (yyn == 47)
-    /* "parser.y":231  */
-                                           {yyval = new RoutineCall(yystack.valueAt (3), yystack.valueAt (1)); };
-  break;
-
-
-  case 48: /* Expressions: Expression  */
-  if (yyn == 48)
-    /* "parser.y":235  */
-                 { yyval = new Expressions(yystack.valueAt (0)); };
-  break;
-
-
-  case 49: /* Expressions: Expression COMMA Expressions  */
-  if (yyn == 49)
-    /* "parser.y":236  */
-                                   { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (2)); };
-  break;
-
-
-  case 50: /* WhileLoop: WHILE Expression LOOP Body END  */
-  if (yyn == 50)
-    /* "parser.y":240  */
-                                     {yyval = new WhileLoop(yystack.valueAt (3), yystack.valueAt (1)); };
-  break;
-
-
-  case 51: /* ForLoop: FOR Identifier IN Expression RANGE Expression LOOP Body END  */
-  if (yyn == 51)
-    /* "parser.y":245  */
-    {yyval = new ForLoop(yystack.valueAt (7), yystack.valueAt (5), yystack.valueAt (3), yystack.valueAt (1), false);};
-  break;
-
-
-  case 52: /* ForLoop: FOR Identifier IN REVERSE Expression RANGE Expression LOOP Body END  */
-  if (yyn == 52)
-    /* "parser.y":247  */
-    {yyval = new ForLoop(yystack.valueAt (8), yystack.valueAt (5), yystack.valueAt (3), yystack.valueAt (1), true);};
-  break;
-
-
-  case 53: /* IfStatement: IF Expression THEN Body END  */
-  if (yyn == 53)
-    /* "parser.y":251  */
-                                  {yyval = new IfStatement(yystack.valueAt (3), yystack.valueAt (1));};
-  break;
-
-
-  case 54: /* IfStatement: IF Expression THEN Body ELSE Body END  */
-  if (yyn == 54)
-    /* "parser.y":252  */
-                                            {yyval = new IfStatement(yystack.valueAt (5), yystack.valueAt (3), yystack.valueAt (1));};
-  break;
-
-
-  case 55: /* Expression: Relation Relations  */
-  if (yyn == 55)
-    /* "parser.y":257  */
-                         { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 56: /* Expression: SummandSign Relation Relations  */
-  if (yyn == 56)
-    /* "parser.y":258  */
-                                     { yyval = yystack.valueAt (0);  yystack.valueAt (1).setSummandSign(yystack.valueAt (2)); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 57: /* Expression: NOT Relation Relations  */
-  if (yyn == 57)
-    /* "parser.y":259  */
-                             { yyval = yystack.valueAt (0); yystack.valueAt (1).setNot(); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 58: /* Expression: NOT SummandSign Relation Relations  */
-  if (yyn == 58)
-    /* "parser.y":260  */
-                                         { yyval = yystack.valueAt (0); yystack.valueAt (1).setSummandSign(yystack.valueAt (2)); yystack.valueAt (1).setNot(); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 59: /* Relations: %empty  */
-  if (yyn == 59)
-    /* "parser.y":264  */
-                   { yyval = new Expression();};
-  break;
-
-
-  case 60: /* Relations: LogicWord Relation Relations  */
-  if (yyn == 60)
-    /* "parser.y":265  */
-                                   { yyval = yystack.valueAt (0); yystack.valueAt (0).add2(yystack.valueAt (1), yystack.valueAt (2)); };
-  break;
-
-
-  case 61: /* Relations: LogicWord NOT Relation Relations  */
-  if (yyn == 61)
-    /* "parser.y":266  */
-                                       {yyval = yystack.valueAt (0); yystack.valueAt (1).setNot(); yystack.valueAt (0).add2(yystack.valueAt (1), yystack.valueAt (3));};
-  break;
-
-
-  case 62: /* LogicWord: AND  */
-  if (yyn == 62)
-    /* "parser.y":272  */
-          { yyval = new LogicWord("and"); };
-  break;
-
-
-  case 63: /* LogicWord: OR  */
-  if (yyn == 63)
-    /* "parser.y":273  */
-         { yyval = new LogicWord("or"); };
-  break;
-
-
-  case 64: /* LogicWord: XOR  */
-  if (yyn == 64)
-    /* "parser.y":274  */
-          { yyval = new LogicWord("xor"); };
-  break;
-
-
-  case 65: /* Relation: Simple SimpleTail  */
-  if (yyn == 65)
-    /* "parser.y":278  */
-                        { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 66: /* SimpleTail: %empty  */
-  if (yyn == 66)
-    /* "parser.y":283  */
-                  { yyval = new IRelation(); };
-  break;
-
-
-  case 67: /* SimpleTail: RelationSign Simple SimpleTail  */
-  if (yyn == 67)
-    /* "parser.y":284  */
-                                     { yyval = yystack.valueAt (0); yystack.valueAt (0).add2(yystack.valueAt (1), yystack.valueAt (2)); };
-  break;
-
-
-  case 68: /* RelationSign: LESS  */
-  if (yyn == 68)
-    /* "parser.y":289  */
-           { yyval = new RelationSign("<"); };
-  break;
-
-
-  case 69: /* RelationSign: GREATER  */
-  if (yyn == 69)
-    /* "parser.y":290  */
-              { yyval = new RelationSign(">"); };
-  break;
-
-
-  case 70: /* RelationSign: LEQUALS  */
-  if (yyn == 70)
-    /* "parser.y":291  */
-              { yyval = new RelationSign("<="); };
-  break;
-
-
-  case 71: /* RelationSign: GEQUALS  */
-  if (yyn == 71)
-    /* "parser.y":292  */
-              { yyval = new RelationSign(">="); };
-  break;
-
-
-  case 72: /* RelationSign: EQUALS  */
-  if (yyn == 72)
-    /* "parser.y":293  */
-             { yyval =  new RelationSign("="); };
-  break;
-
-
-  case 73: /* RelationSign: NEQUALS  */
-  if (yyn == 73)
-    /* "parser.y":294  */
-              { yyval = new RelationSign("/="); };
-  break;
-
-
-  case 74: /* Simple: Factor FactorTail  */
-  if (yyn == 74)
-    /* "parser.y":298  */
-                        { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 75: /* FactorTail: %empty  */
-  if (yyn == 75)
-    /* "parser.y":302  */
-                  {yyval = new Simple(); };
-  break;
-
-
-  case 76: /* FactorTail: FactorSign Factor FactorTail  */
-  if (yyn == 76)
-    /* "parser.y":303  */
-                                   { yyval = yystack.valueAt (0); yystack.valueAt (0).add2(yystack.valueAt (1), yystack.valueAt (2)); };
-  break;
-
-
-  case 77: /* FactorSign: MULTIPLY  */
-  if (yyn == 77)
-    /* "parser.y":307  */
-               { yyval = new FactorSign("*"); };
-  break;
-
-
-  case 78: /* FactorSign: DIVIDE  */
-  if (yyn == 78)
-    /* "parser.y":308  */
-             { yyval = new FactorSign("/"); };
-  break;
-
-
-  case 79: /* FactorSign: REMAINDER  */
-  if (yyn == 79)
-    /* "parser.y":309  */
-                { yyval = new FactorSign("%"); };
-  break;
-
-
-  case 80: /* Factor: Summand SummandTail  */
-  if (yyn == 80)
-    /* "parser.y":313  */
-                          { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 81: /* SummandTail: %empty  */
-  if (yyn == 81)
-    /* "parser.y":317  */
-                  { yyval = new Factor(); };
-  break;
-
-
-  case 82: /* SummandTail: SummandSign Summand SummandTail  */
-  if (yyn == 82)
-    /* "parser.y":318  */
-                                      { yyval = yystack.valueAt (0); yystack.valueAt (0).add2(yystack.valueAt (1), yystack.valueAt (2)); };
-  break;
-
-
-  case 83: /* SummandSign: PLUS  */
-  if (yyn == 83)
-    /* "parser.y":321  */
-           { yyval = new SummandSign("+"); };
-  break;
-
-
-  case 84: /* SummandSign: MINUS  */
-  if (yyn == 84)
-    /* "parser.y":322  */
-            { yyval = new SummandSign("-"); };
-  break;
-
-
-  case 85: /* Summand: Primary  */
-  if (yyn == 85)
-    /* "parser.y":326  */
-              { yyval = new Summand(yystack.valueAt (0)); };
-  break;
-
-
-  case 86: /* Summand: LPAREN Expression RPAREN  */
-  if (yyn == 86)
-    /* "parser.y":327  */
-                               { yyval = new Summand(yystack.valueAt (1)); };
-  break;
-
-
-  case 87: /* Primary: INTEGER_LITERAL  */
-  if (yyn == 87)
-    /* "parser.y":331  */
-                      { yyval = yystack.valueAt (0);};
-  break;
-
-
-  case 88: /* Primary: REAL_LITERAL  */
-  if (yyn == 88)
-    /* "parser.y":332  */
-                   { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 89: /* Primary: TRUE  */
-  if (yyn == 89)
-    /* "parser.y":333  */
-           { yyval = new BooleanLiteral(true); };
-  break;
-
-
-  case 90: /* Primary: FALSE  */
-  if (yyn == 90)
-    /* "parser.y":334  */
-            { yyval = new BooleanLiteral(false); };
-  break;
-
-
-  case 91: /* Primary: ModifiablePrimary  */
-  if (yyn == 91)
-    /* "parser.y":335  */
-                        { yyval = yystack.valueAt (0); };
-  break;
-
-
-  case 92: /* Primary: RoutineCall  */
-  if (yyn == 92)
-    /* "parser.y":336  */
-                  { yyval = yystack.valueAt (0);};
-  break;
-
-
-  case 93: /* ModifiablePrimary: Identifier ElementCall  */
-  if (yyn == 93)
-    /* "parser.y":340  */
-                             { yyval = new ModifiablePrimary(yystack.valueAt (1), yystack.valueAt (0)); };
-  break;
-
-
-  case 94: /* ElementCall: %empty  */
-  if (yyn == 94)
-    /* "parser.y":344  */
-                  { yyval = new ElementCall(); };
-  break;
-
-
-  case 95: /* ElementCall: DOT Identifier ElementCall  */
-  if (yyn == 95)
-    /* "parser.y":345  */
-                                 { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (1)); };
-  break;
-
-
-  case 96: /* ElementCall: LBRACKET Expression RBRACKET ElementCall  */
-  if (yyn == 96)
-    /* "parser.y":346  */
-                                               { yyval = yystack.valueAt (0); yystack.valueAt (0).add(yystack.valueAt (2));};
-  break;
-
-
-  case 97: /* Print: PRINT LPAREN Expressions RPAREN  */
-  if (yyn == 97)
-    /* "parser.y":350  */
-                                      {yyval = new Print(yystack.valueAt (1));};
-  break;
-
-
-  case 98: /* Identifier: IDENTIFIER  */
-  if (yyn == 98)
-    /* "parser.y":354  */
-                   {yyval = yylexer.getLVal();};
-  break;
-
-
 
-/* "YYParser.java":1325  */
+/* "YYParser.java":706  */
 
         default: break;
       }
+
+    yySymbolPrint("-> $$ =", SymbolKind.get(yyr1_[yyn]), yyval);
 
     yystack.pop(yylen);
     yylen = 0;
@@ -1335,6 +718,19 @@ public class YYParser
   }
 
 
+  /*--------------------------------.
+  | Print this symbol on YYOUTPUT.  |
+  `--------------------------------*/
+
+  private void yySymbolPrint(String s, SymbolKind yykind,
+                             ILexem yyvalue) {
+      if (0 < yydebug) {
+          yycdebug(s
+                   + (yykind.getCode() < YYNTOKENS_ ? " token " : " nterm ")
+                   + yykind.getName() + " ("
+                   + (yyvalue == null ? "(null)" : yyvalue.toString()) + ")");
+      }
+  }
 
 
   /**
@@ -1364,8 +760,9 @@ public class YYParser
 
 
     /* Semantic value of the lookahead.  */
-    ASTNode yylval = null;
+    ILexem yylval = null;
 
+    yycdebug ("Starting parse");
     yyerrstatus_ = 0;
     yynerrs = 0;
 
@@ -1380,6 +777,9 @@ public class YYParser
         /* New state.  Unlike in the C/C++ skeletons, the state is already
            pushed when we come here.  */
       case YYNEWSTATE:
+        yycdebug ("Entering state " + yystate);
+        if (0 < yydebug)
+          yystack.print (yyDebugStream);
 
         /* Accept?  */
         if (yystate == YYFINAL_)
@@ -1397,6 +797,7 @@ public class YYParser
         if (yychar == YYEMPTY_)
           {
 
+            yycdebug ("Reading a token");
             yychar = yylexer.yylex ();
             yylval = yylexer.getLVal();
 
@@ -1404,6 +805,8 @@ public class YYParser
 
         /* Convert token to internal form.  */
         yytoken = yytranslate_ (yychar);
+        yySymbolPrint("Next token is", yytoken,
+                      yylval);
 
         if (yytoken == SymbolKind.S_YYerror)
           {
@@ -1438,6 +841,9 @@ public class YYParser
             else
               {
                 /* Shift the lookahead token.  */
+                yySymbolPrint("Shifting", yytoken,
+                              yylval);
+
                 /* Discard the token being shifted.  */
                 yychar = YYEMPTY_;
 
@@ -1548,6 +954,8 @@ public class YYParser
 
             yystack.pop ();
             yystate = yystack.stateAt (0);
+            if (0 < yydebug)
+              yystack.print (yyDebugStream);
           }
 
         if (label == YYABORT)
@@ -1557,6 +965,8 @@ public class YYParser
 
 
         /* Shift the error token.  */
+        yySymbolPrint("Shifting", SymbolKind.get(yystos_[yyn]),
+                      yylval);
 
         yystate = yyn;
         yystack.push (yyn, yylval);
@@ -1653,7 +1063,7 @@ public class YYParser
    * @param ctx  The context of the error.
    */
   private void yyreportSyntaxError(Context yyctx) {
-      yyerror("syntax error");
+      yylexer.reportSyntaxError(yyctx);
   }
 
   /**
@@ -1675,36 +1085,19 @@ public class YYParser
     return yyvalue == yytable_ninf_;
   }
 
-  private static final short yypact_ninf_ = -113;
-  private static final short yytable_ninf_ = -1;
+  private static final byte yypact_ninf_ = -34;
+  private static final byte yytable_ninf_ = -1;
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-  private static final short[] yypact_ = yypact_init();
-  private static final short[] yypact_init()
+  private static final byte[] yypact_ = yypact_init();
+  private static final byte[] yypact_init()
   {
-    return new short[]
+    return new byte[]
     {
-     112,     5,     5,     5,  -113,    13,  -113,   112,  -113,  -113,
-    -113,  -113,  -113,     8,     7,   -11,  -113,  -113,   136,   185,
-     185,     5,  -113,  -113,  -113,  -113,    37,   136,  -113,  -113,
-    -113,    34,    90,   164,   108,   120,    39,  -113,  -113,    15,
-      -7,  -113,  -113,  -113,    -5,     0,  -113,  -113,  -113,  -113,
-    -113,    22,    23,    40,    90,   120,    28,  -113,  -113,  -113,
-    -113,  -113,  -113,  -113,   168,  -113,  -113,  -113,  -113,  -113,
-    -113,  -113,   120,  -113,  -113,  -113,  -113,   120,    90,  -113,
-     120,   136,   136,     5,  -113,    -3,   136,   136,  -113,    12,
-       5,   185,  -113,    90,  -113,   120,    90,   164,   108,  -113,
-      39,    49,    44,    56,    67,    -3,    -3,    84,    75,    34,
-     173,   185,  -113,  -113,  -113,    90,  -113,  -113,  -113,  -113,
-    -113,   136,    67,  -113,  -113,  -113,  -113,   185,  -113,   136,
-       5,   136,   104,   136,  -113,  -113,    34,   107,   173,  -113,
-      34,    34,    34,    34,    34,   103,    34,   140,  -113,  -113,
-    -113,  -113,   137,   143,   134,   136,  -113,  -113,    34,  -113,
-    -113,  -113,  -113,  -113,  -113,   136,  -113,   173,   173,   128,
-     173,   131,  -113,  -113,   156,   157,   136,   138,     4,  -113,
-      34,  -113,   139,   136,  -113,   173,  -113,   136,   165,   176,
-     166,   173,  -113,   173,   178,   180,  -113,  -113
+      -7,     3,     3,     5,   -34,    -7,   -34,   -34,   -34,   -34,
+     -33,    -2,   -34,   -34,    -3,    -3,   -34,   -34,   -34,   -24,
+     -34,   -34,   -24,   -34,   -34,   -34
     };
   }
 
@@ -1716,119 +1109,54 @@ public class YYParser
   {
     return new byte[]
     {
-       3,     0,     0,     0,     7,     0,     2,     3,     5,     8,
-       9,     6,    98,     0,     0,     0,     1,     4,     0,     0,
-       0,     0,    87,    88,    89,    90,     0,     0,    83,    84,
-      92,     0,    59,    66,    75,     0,    81,    85,    91,    94,
-       0,    26,    27,    28,     0,     0,    22,    24,    23,    25,
-      15,     0,    19,     0,    59,     0,     0,    13,    14,    12,
-      62,    63,    64,    55,     0,    72,    73,    69,    68,    70,
-      71,    65,     0,    77,    78,    79,    74,     0,    59,    80,
-       0,     0,     0,     0,    93,    30,     0,     0,    10,     0,
-       0,     0,    57,    59,    86,     0,    59,    66,    75,    56,
-      81,     0,    48,     0,    94,    30,    30,     0,     0,     0,
-      34,     0,    20,    21,    58,    59,    60,    67,    76,    82,
-      47,     0,    94,    95,    32,    31,    29,     0,    11,     0,
-       0,     0,     0,     0,    45,    36,     0,     0,    34,    37,
-       0,     0,     0,     0,     0,     0,     0,     0,    61,    49,
-      96,    33,     0,     0,     0,     0,    18,    44,     0,    35,
-      38,    39,    40,    41,    42,     0,    43,    34,    34,     0,
-      34,     0,    16,    46,     0,     0,     0,     0,     0,    97,
-       0,    50,     0,     0,    53,    34,    17,     0,     0,     0,
-       0,    34,    54,    34,     0,     0,    51,    52
+       3,     0,     0,     0,     2,     3,     5,     6,     7,    17,
+       0,     0,     1,     4,     0,     0,    14,    15,    16,     9,
+      12,    13,     9,    10,     8,    11
     };
   }
 
 /* YYPGOTO[NTERM-NUM].  */
-  private static final short[] yypgoto_ = yypgoto_init();
-  private static final short[] yypgoto_init()
+  private static final byte[] yypgoto_ = yypgoto_init();
+  private static final byte[] yypgoto_init()
   {
-    return new short[]
+    return new byte[]
     {
-    -113,  -113,   186,  -113,    27,   -15,   -44,  -113,  -113,  -113,
-     117,  -113,   -17,  -113,  -113,    47,  -113,  -112,  -113,  -113,
-    -113,  -108,  -109,  -113,  -113,  -113,   -18,   -43,  -113,   -19,
-      97,  -113,   141,   116,  -113,   142,   115,   -22,   144,  -113,
-     -63,   -98,  -113,    18
+     -34,   -34,     8,   -34,   -34,   -34,    -8,   -34,     0,   -34,
+       2
     };
   }
 
 /* YYDEFGOTO[NTERM-NUM].  */
-  private static final short[] yydefgoto_ = yydefgoto_init();
-  private static final short[] yydefgoto_init()
+  private static final byte[] yydefgoto_ = yydefgoto_init();
+  private static final byte[] yydefgoto_init()
   {
-    return new short[]
+    return new byte[]
     {
-      -1,     5,     6,     7,   135,     9,    59,    10,    11,   136,
-      51,    52,    45,    46,    47,   107,    48,   137,   138,   139,
-     140,    30,   101,   142,   143,   144,   102,    63,    64,    32,
-      71,    72,    33,    76,    77,    34,    79,    35,    36,    37,
-      38,    84,   146,    39
+      -1,     3,     4,     5,     6,     7,    24,     8,    19,    20,
+      21
     };
   }
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-  private static final short[] yytable_ = yytable_init();
-  private static final short[] yytable_init()
+  private static final byte[] yytable_ = yytable_init();
+  private static final byte[] yytable_init()
   {
-    return new short[]
+    return new byte[]
     {
-      31,    88,   141,    50,    55,     1,   123,    54,    12,    56,
-      87,    92,   149,    16,    80,   184,    78,    20,    18,    13,
-      14,    15,   110,    21,   150,    85,   159,     8,   185,   105,
-     141,    86,    57,    58,     8,    99,    93,    49,    49,    53,
-      12,    22,    23,    24,    25,    96,   171,   145,    19,    81,
-     114,    82,   111,   116,    83,   174,   175,    89,   178,   141,
-     141,    90,   141,    94,   103,   128,    57,    58,   108,   109,
-     106,    27,   148,   189,   113,   145,   115,   141,    80,   194,
-      91,   195,   121,   141,   120,   141,    28,    29,    28,    29,
-     106,   106,   157,   122,   147,   126,   160,   161,   162,   163,
-     164,   104,   166,    82,   145,   145,    83,   145,    53,    49,
-     151,   152,   127,   154,   172,   156,    60,    61,   158,    62,
-       1,     2,   145,    12,    22,    23,    24,    25,   145,    49,
-     145,    12,    22,    23,    24,    25,   186,     3,   155,    12,
-      22,    23,    24,    25,     4,    49,   165,   173,   153,   176,
-     167,   177,   124,   125,    27,   168,    26,   170,   182,    73,
-      74,    75,    27,   169,    26,   188,   179,   180,   181,   190,
-      27,    12,    22,    23,    24,    25,    12,    28,    29,   183,
-     187,     1,     2,   191,   193,    28,    29,   192,    12,   196,
-     129,   197,   130,    17,   117,   131,    95,    40,    41,    42,
-      43,    44,    27,   132,   133,   134,    65,   112,    66,    67,
-      68,    69,    70,    97,   118,   119,     0,     0,     0,    98,
-       0,     0,     0,     0,   100
+       9,     1,     2,    10,    11,    12,     9,    14,    15,    23,
+      16,    17,    18,    13,    25,    22
     };
   }
 
-private static final short[] yycheck_ = yycheck_init();
-  private static final short[] yycheck_init()
+private static final byte[] yycheck_ = yycheck_init();
+  private static final byte[] yycheck_init()
   {
-    return new short[]
+    return new byte[]
     {
-      18,    45,   110,    20,    26,     8,   104,    26,     3,    27,
-      10,    54,   121,     0,    36,    11,    35,    10,    10,     1,
-       2,     3,    10,    34,   122,    32,   138,     0,    24,    32,
-     138,    36,    32,    33,     7,    78,    55,    19,    20,    21,
-       3,     4,     5,     6,     7,    64,   155,   110,    40,    34,
-      93,    36,    40,    96,    39,   167,   168,    35,   170,   167,
-     168,    38,   170,    35,    82,   109,    32,    33,    86,    87,
-      85,    34,   115,   185,    91,   138,    95,   185,   100,   191,
-      40,   193,    38,   191,    35,   193,    49,    50,    49,    50,
-     105,   106,   136,    37,   111,    11,   140,   141,   142,   143,
-     144,    83,   146,    36,   167,   168,    39,   170,    90,    91,
-     127,   129,    37,   131,   158,   133,    26,    27,    11,    29,
-       8,     9,   185,     3,     4,     5,     6,     7,   191,   111,
-     193,     3,     4,     5,     6,     7,   180,    25,    34,     3,
-       4,     5,     6,     7,    32,   127,    43,   165,   130,    21,
-      10,   169,   105,   106,    34,    18,    28,    23,   176,    51,
-      52,    53,    34,    20,    28,   183,    35,    11,    11,   187,
-      34,     3,     4,     5,     6,     7,     3,    49,    50,    41,
-      41,     8,     9,    18,    18,    49,    50,    11,     3,    11,
-      17,    11,    19,     7,    97,    22,    28,    12,    13,    14,
-      15,    16,    34,    30,    31,    32,    42,    90,    44,    45,
-      46,    47,    48,    72,    98,   100,    -1,    -1,    -1,    77,
-      -1,    -1,    -1,    -1,    80
+       3,     8,     9,     1,     2,     0,     3,    40,    10,    33,
+      13,    14,    15,     5,    22,    15
     };
   }
 
@@ -1839,26 +1167,9 @@ private static final short[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       0,     8,     9,    25,    32,    55,    56,    57,    58,    59,
-      61,    62,     3,    97,    97,    97,     0,    56,    10,    40,
-      10,    34,     4,     5,     6,     7,    28,    34,    49,    50,
-      75,    80,    83,    86,    89,    91,    92,    93,    94,    97,
-      12,    13,    14,    15,    16,    66,    67,    68,    70,    97,
-      66,    64,    65,    97,    83,    91,    80,    32,    33,    60,
-      26,    27,    29,    81,    82,    42,    44,    45,    46,    47,
-      48,    84,    85,    51,    52,    53,    87,    88,    83,    90,
-      91,    34,    36,    39,    95,    32,    36,    10,    60,    35,
-      38,    40,    81,    83,    35,    28,    83,    86,    89,    81,
-      92,    76,    80,    80,    97,    32,    59,    69,    80,    80,
-      10,    40,    64,    66,    81,    83,    81,    84,    87,    90,
-      35,    38,    37,    95,    69,    69,    11,    37,    60,    17,
-      19,    22,    30,    31,    32,    58,    63,    71,    72,    73,
-      74,    75,    77,    78,    79,    94,    96,    66,    81,    76,
-      95,    66,    80,    97,    80,    34,    80,    60,    11,    71,
-      60,    60,    60,    60,    60,    43,    60,    10,    18,    20,
-      23,    76,    60,    80,    71,    71,    21,    80,    71,    35,
-      11,    11,    80,    41,    11,    24,    60,    41,    80,    71,
-      80,    18,    11,    18,    71,    71,    11,    11
+       0,     8,     9,    55,    56,    57,    58,    59,    61,     3,
+      64,    64,     0,    56,    40,    10,    13,    14,    15,    62,
+      63,    64,    62,    33,    60,    60
     };
   }
 
@@ -1868,16 +1179,8 @@ private static final short[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       0,    54,    55,    56,    56,    57,    57,    57,    58,    58,
-      59,    59,    59,    60,    60,    61,    62,    62,    63,    64,
-      64,    65,    66,    66,    66,    66,    67,    67,    67,    68,
-      69,    69,    69,    70,    71,    71,    72,    72,    73,    73,
-      73,    73,    73,    73,    73,    73,    74,    75,    76,    76,
-      77,    78,    78,    79,    79,    80,    80,    80,    80,    81,
-      81,    81,    82,    82,    82,    83,    84,    84,    85,    85,
-      85,    85,    85,    85,    86,    87,    87,    88,    88,    88,
-      89,    90,    90,    91,    91,    92,    92,    93,    93,    93,
-      93,    93,    93,    94,    95,    95,    95,    96,    97
+       0,    54,    55,    56,    56,    57,    58,    58,    59,    60,
+      60,    61,    62,    62,    63,    63,    63,    64
     };
   }
 
@@ -1887,21 +1190,43 @@ private static final short[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       0,     2,     1,     0,     2,     1,     1,     1,     1,     1,
-       5,     7,     5,     1,     1,     4,     9,    11,     2,     1,
-       3,     3,     1,     1,     1,     1,     1,     1,     1,     4,
-       0,     2,     2,     5,     0,     2,     1,     1,     2,     2,
-       2,     2,     2,     2,     2,     1,     3,     4,     1,     3,
-       5,     9,    10,     5,     7,     2,     3,     3,     4,     0,
-       3,     4,     1,     1,     1,     2,     0,     3,     1,     1,
-       1,     1,     1,     1,     2,     0,     3,     1,     1,     1,
-       2,     0,     3,     1,     1,     1,     3,     1,     1,     1,
-       1,     1,     1,     2,     0,     3,     4,     4,     1
+       0,     2,     1,     0,     2,     1,     1,     1,     5,     0,
+       1,     5,     1,     1,     1,     1,     1,     1
     };
   }
 
 
 
+  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+  private static final short[] yyrline_ = yyrline_init();
+  private static final short[] yyrline_init()
+  {
+    return new short[]
+    {
+       0,    95,    95,    99,   100,   104,   110,   111,   115,   120,
+     121,   125,   130,   133,   137,   138,   139,   143
+    };
+  }
+
+
+  // Report on the debug stream that the rule yyrule is going to be reduced.
+  private void yyReducePrint (int yyrule, YYStack yystack)
+  {
+    if (yydebug == 0)
+      return;
+
+    int yylno = yyrline_[yyrule];
+    int yynrhs = yyr2_[yyrule];
+    /* Print the symbols being reduced, and their result.  */
+    yycdebug ("Reducing stack by rule " + (yyrule - 1)
+              + " (line " + yylno + "):");
+
+    /* The symbols being reduced.  */
+    for (int yyi = 0; yyi < yynrhs; yyi++)
+      yySymbolPrint("   $" + (yyi + 1) + " =",
+                    SymbolKind.get(yystos_[yystack.stateAt (yynrhs - (yyi + 1))]),
+                    yystack.valueAt ((yynrhs) - (yyi + 1)));
+  }
 
   /* YYTRANSLATE_(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
      as returned by yylex, with out-of-bounds checking.  */
@@ -1956,32 +1281,32 @@ private static final short[] yycheck_ = yycheck_init();
   }
 
 
-  private static final int YYLAST_ = 224;
+  private static final int YYLAST_ = 15;
   private static final int YYEMPTY_ = -2;
-  private static final int YYFINAL_ = 16;
+  private static final int YYFINAL_ = 12;
   private static final int YYNTOKENS_ = 54;
 
 /* Unqualified %code blocks.  */
-/* "parser.y":16  */
+/* "smallgrammar.y":23  */
 
-    private static GlobalDeclarations ast;
-    public static GlobalDeclarations makeAST(String i) {
-        ast = new lexems.GlobalDeclarations();
-        MyLexer l = new MyLexer();
+    private static Declarations ast;
+    public static Declarations makeAST(String i) {
+        ast = new Declarations();
+        MyLexer lexer = new MyLexer();
         Reader reader = new Reader();
         reader.read("tests/" + i + ".txt");
-        l.tokenize(reader.sourceText);
-        YYParser p = new YYParser(l);
-        if (!p.parse()) {
+        lexer.tokenize(reader.sourceText);
+        YYParser parser = new YYParser(lexer);
+        if (!parser.parse()) {
             System.exit(1);
         }
         return ast;
     }
 
-/* "YYParser.java":1982  */
+/* "YYParser.java":1307  */
 
 }
-/* "parser.y":356  */
+/* "smallgrammar.y":146  */
 
 //
 //
@@ -2010,7 +1335,7 @@ private static final short[] yycheck_ = yycheck_init();
 //	case LOOP -> code = LOOP;
 //	case FOR -> code = FOR;
 //	case IN -> code = IN;
-//	case REVERSE -> code = REVERSE;
+//	case REVERSE -> code = REVE	RSE;
 //	case IF -> code = IF;
 //	case THEN -> code = THEN;
 //	case ELSE -> code = ELSE;

@@ -6,7 +6,7 @@
 %define api.package {parser}
 %define api.value.type {ASTNode}
 
-
+%locations
 %code imports {
 import lexems.*;
 import lexer.*;
@@ -159,9 +159,6 @@ RoutineDeclaration
     }
     ;
 
-Return
-    : RETURN Expression {$$ = new Return($2);}
-    ;
 
 
 Parameters
@@ -208,8 +205,8 @@ Body
     ;
 
 BodyDeclaration
-    : SimpleDeclaration {$$ = new BodyDeclaration($1);}
-    | Statement {$$ = new BodyDeclaration($1);}
+    : SimpleDeclaration {$$ = $1;}
+    | Statement {$$ = $1;}
     ;
 
 Statement
@@ -221,6 +218,10 @@ Statement
     | Print OptionalSemicolon {$$ = $1;}
     | Return OptionalSemicolon {$$ = $1;}
     | NEWLINE
+    ;
+
+Return
+    : RETURN Expression {$$ = new Return($2);}
     ;
 
 Assignment
