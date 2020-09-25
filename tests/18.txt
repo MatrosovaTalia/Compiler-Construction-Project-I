@@ -1,5 +1,6 @@
 type c is integer;
 type b is boolean;
 
+routine my_routine(v: integer) : integer is
 var ab : integer;
-type a is real;
+end

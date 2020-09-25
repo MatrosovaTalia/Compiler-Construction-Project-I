@@ -462,9 +462,14 @@ public class MyLexer implements Lexer {
     }
 
     @Override
-    public void yyerror(String msg) {
-        System.out.println(msg);
+    public void yyerror(Location loc, String msg) {
+        System.out.println(msg + loc);
     }
+
+//    @Override
+//    public void yyerror(String msg) {
+//        System.out.println(msg);
+//    }
 //
 //    @Override
 //    public void yyerror(Location loc, String msg) {
@@ -475,7 +480,7 @@ public class MyLexer implements Lexer {
 
 
     public void reportSyntaxError(Context ctx) {
-        yyerror(ctx.getToken().getName() + ": syntax error");
+        yyerror(ctx.getLocation(), ctx.getToken().getName() + ": syntax error");
 //        yyerror(ctx.getToken());
 //        final int TOKENMAX = 308;
 

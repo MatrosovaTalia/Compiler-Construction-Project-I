@@ -9,7 +9,7 @@
 %define parse.trace
 
 
-//%locations
+%locations
 
 %code imports {
 import lexems.Identifier;
@@ -83,9 +83,15 @@ import java.util.ArrayList;
 %type <IDeclaration> SimpleDeclaration
 %type <VariableDeclaration> VariableDeclaration
 %type <TypeDeclaration> TypeDeclaration
+%type <RoutineDeclaration>RoutineDeclaration
+%type <Parameters>Parameters
+%type <Parameter>ParameterDeclaration
+%type <Body>Body
+%type <IStatement>BodyDeclaration
 %type <IType> Type
 %type <PrimitiveType> PrimitiveType
 %type <Identifier> Identifier
+
 
 %start Program
 
@@ -102,7 +108,7 @@ GlobalDeclarations
 
 GlobalDeclaration
     : SimpleDeclaration {$$ = $1;}
-    //| RoutineDeclaration {$$ = $1;}
+    | RoutineDeclaration {$$ = $1;}
 //    | NEWLINE {$$ = $$;}
     ;
 
@@ -116,13 +122,50 @@ VariableDeclaration
     //| VAR Identifier COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
     //| VAR Identifier IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
     ;
-OptionalSemicolon
-    : /* empty */
-    | SEMICOLON
-    ;
 
 TypeDeclaration
     : TYPE Identifier IS Type OptionalSemicolon{$$ = new TypeDeclaration($2, $4);}
+    ;
+
+RoutineDeclaration
+    : ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END  {$$ = new RoutineDeclaration($2, $4, $7, $9);}
+    | ROUTINE Identifier LPAREN Parameters RPAREN IS Body END  {$$ = new RoutineDeclaration($2, $4, null, $7);}
+   ;
+
+Parameters
+//    : /* empty */ {$$ = new Parameters();}
+    : ParameterDeclaration { Parameters x = new Parameters(); x.add($1); $$ = x;}
+    | ParameterDeclaration COMMA Parameters { $$ = $3; $3.add($1); }
+    ;
+
+
+ParameterDeclaration
+    : Identifier COLON Type { $$ = new Parameter($1, $3); }
+    ;
+
+Body
+    : /* empty */ { $$ = new Body();}
+    | BodyDeclaration Body {$$ = $2; $2.add($1);}
+    ;
+
+BodyDeclaration
+    : SimpleDeclaration {$$ = $1;}
+//    | Statement {$$ = $1;}
+    ;
+
+//Statement
+//    : Assignment  {$$ = $1;}
+//    | RoutineCall  {$$ = $1; }
+//    | WhileLoop  {$$ = $1;}
+//    | ForLoop  {$$ = $1;}
+//    | IfStatement {$$ = $1;}
+//    | Print  {$$ = $1;}
+//    : Return  {$$ = $1;}
+//    ;
+
+OptionalSemicolon
+    : /* empty */
+    | SEMICOLON
     ;
 
 
@@ -130,7 +173,7 @@ Type
     : PrimitiveType { $$ = $1; }
 //    | ArrayType { $$ = $1; }
     //| RecordType { $$ = $1; }
-    | Identifier { $$ = $1; }
+//    | Identifier { $$ = $1; }
     ;
 
 PrimitiveType

@@ -37,14 +37,17 @@ public class Main {
 
     public static void main(String[] args) {
 
-//         testNToFile(15);
+//         testNToFile(18);
+//        Reader reader = new Reader();
+//        MyLexer myLexer = new MyLexer();
 
-        Declarations ast = YYParser.makeAST("17");
+
+        Declarations ast = YYParser.makeAST("19");
 
         Identifier id = new Identifier("id1");
         System.out.println(id);
         System.out.println("Is Ast built?    "+ Boolean.toString(ast != null));
-        for (int i =0; i < ast.size(); i++){
+        for (int i = 0; i < ast.size(); i++){
             System.out.println(ast.get(i));
 
         }

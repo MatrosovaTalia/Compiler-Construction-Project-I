@@ -68,6 +68,62 @@ public class YYParser
 
 
 
+  /**
+   * A class defining a pair of positions.  Positions, defined by the
+   * <code>Position</code> class, denote a point in the input.
+   * Locations represent a part of the input through the beginning
+   * and ending positions.
+   */
+  public static class Location {
+    /**
+     * The first, inclusive, position in the range.
+     */
+    public Position begin;
+
+    /**
+     * The first position beyond the range.
+     */
+    public Position end;
+
+    /**
+     * Create a <code>Location</code> denoting an empty range located at
+     * a given point.
+     * @param loc The position at which the range is anchored.
+     */
+    public Location (Position loc) {
+      this.begin = this.end = loc;
+    }
+
+    /**
+     * Create a <code>Location</code> from the endpoints of the range.
+     * @param begin The first position included in the range.
+     * @param end   The first position beyond the range.
+     */
+    public Location (Position begin, Position end) {
+      this.begin = begin;
+      this.end = end;
+    }
+
+    /**
+     * Print a representation of the location.  For this to be correct,
+     * <code>Position</code> should override the <code>equals</code>
+     * method.
+     */
+    public String toString () {
+      if (begin.equals (end))
+        return begin.toString ();
+      else
+        return begin.toString () + "-" + end.toString ();
+    }
+  }
+
+  private Location yylloc(YYStack rhs, int n)
+  {
+    if (0 < n)
+      return new Location(rhs.locationAt(n-1).begin, rhs.locationAt(0).end);
+    else
+      return new Location(rhs.locationAt(0).end);
+  }
 
   public enum SymbolKind
   {
@@ -131,11 +187,16 @@ public class YYParser
     S_GlobalDeclaration(57),       /* GlobalDeclaration  */
     S_SimpleDeclaration(58),       /* SimpleDeclaration  */
     S_VariableDeclaration(59),     /* VariableDeclaration  */
-    S_OptionalSemicolon(60),       /* OptionalSemicolon  */
-    S_TypeDeclaration(61),         /* TypeDeclaration  */
-    S_Type(62),                    /* Type  */
-    S_PrimitiveType(63),           /* PrimitiveType  */
-    S_Identifier(64);              /* Identifier  */
+    S_TypeDeclaration(60),         /* TypeDeclaration  */
+    S_RoutineDeclaration(61),      /* RoutineDeclaration  */
+    S_Parameters(62),              /* Parameters  */
+    S_ParameterDeclaration(63),    /* ParameterDeclaration  */
+    S_Body(64),                    /* Body  */
+    S_BodyDeclaration(65),         /* BodyDeclaration  */
+    S_OptionalSemicolon(66),       /* OptionalSemicolon  */
+    S_Type(67),                    /* Type  */
+    S_PrimitiveType(68),           /* PrimitiveType  */
+    S_Identifier(69);              /* Identifier  */
 
 
     private final int yycode_;
@@ -205,8 +266,13 @@ public class YYParser
       SymbolKind.S_GlobalDeclaration,
       SymbolKind.S_SimpleDeclaration,
       SymbolKind.S_VariableDeclaration,
-      SymbolKind.S_OptionalSemicolon,
       SymbolKind.S_TypeDeclaration,
+      SymbolKind.S_RoutineDeclaration,
+      SymbolKind.S_Parameters,
+      SymbolKind.S_ParameterDeclaration,
+      SymbolKind.S_Body,
+      SymbolKind.S_BodyDeclaration,
+      SymbolKind.S_OptionalSemicolon,
       SymbolKind.S_Type,
       SymbolKind.S_PrimitiveType,
       SymbolKind.S_Identifier
@@ -236,8 +302,9 @@ public class YYParser
   "EQUALS", "ASSIGN", "NEQUALS", "GREATER", "LESS", "LEQUALS", "GEQUALS",
   "PLUS", "MINUS", "MULTIPLY", "DIVIDE", "REMAINDER", "$accept", "Program",
   "GlobalDeclarations", "GlobalDeclaration", "SimpleDeclaration",
-  "VariableDeclaration", "OptionalSemicolon", "TypeDeclaration", "Type",
-  "PrimitiveType", "Identifier", null
+  "VariableDeclaration", "TypeDeclaration", "RoutineDeclaration",
+  "Parameters", "ParameterDeclaration", "Body", "BodyDeclaration",
+  "OptionalSemicolon", "Type", "PrimitiveType", "Identifier", null
     };
   }
 
@@ -366,6 +433,17 @@ public class YYParser
     /** Deprecated, use YYEOF instead.  */
     public static final int EOF = YYEOF;
 
+    /**
+     * Method to retrieve the beginning position of the last scanned token.
+     * @return the position at which the last scanned token starts.
+     */
+    Position getStartPos();
+
+    /**
+     * Method to retrieve the ending position of the last scanned token.
+     * @return the first position beyond the last scanned token.
+     */
+    Position getEndPos();
 
     /**
      * Method to retrieve the semantic value of the last scanned token.
@@ -376,18 +454,19 @@ public class YYParser
     /**
      * Entry point for the scanner.  Returns the token identifier corresponding
      * to the next token and prepares to return the semantic value
-     * of the token.
+     * and beginning/ending positions of the token.
      * @return the token identifier corresponding to the next token.
      */
     int yylex();
 
     /**
-     * Emit an errorin a user-defined way.
+     * Emit an error referring to the given locationin a user-defined way.
      *
-     *
+     * @param loc The location of the element to which the
+     *                error message is related.
      * @param msg The string for the error message.
      */
-     void yyerror(String msg);
+     void yyerror(Location loc, String msg);
 
 
     /**
@@ -459,13 +538,30 @@ public class YYParser
 
   /**
    * Print an error message via the lexer.
-   *
+   * Use a <code>null</code> location.
    * @param msg The error message.
    */
   public final void yyerror(String msg) {
-      yylexer.yyerror(msg);
+      yylexer.yyerror((Location)null, msg);
   }
 
+  /**
+   * Print an error message via the lexer.
+   * @param loc The location associated with the message.
+   * @param msg The error message.
+   */
+  public final void yyerror(Location loc, String msg) {
+      yylexer.yyerror(loc, msg);
+  }
+
+  /**
+   * Print an error message via the lexer.
+   * @param pos The position associated with the message.
+   * @param msg The error message.
+   */
+  public final void yyerror(Position pos, String msg) {
+      yylexer.yyerror(new Location (pos), msg);
+  }
 
   protected final void yycdebug (String s) {
     if (0 < yydebug)
@@ -474,18 +570,22 @@ public class YYParser
 
   private final class YYStack {
     private int[] stateStack = new int[16];
+    private Location[] locStack = new Location[16];
     private ILexem[] valueStack = new ILexem[16];
 
     public int size = 16;
     public int height = -1;
 
-    public final void push (int state, ILexem value) {
+    public final void push (int state, ILexem value, Location loc) {
       height++;
       if (size == height)
         {
           int[] newStateStack = new int[size * 2];
           System.arraycopy (stateStack, 0, newStateStack, 0, height);
           stateStack = newStateStack;
+          Location[] newLocStack = new Location[size * 2];
+          System.arraycopy (locStack, 0, newLocStack, 0, height);
+          locStack = newLocStack;
 
           ILexem[] newValueStack = new ILexem[size * 2];
           System.arraycopy (valueStack, 0, newValueStack, 0, height);
@@ -495,6 +595,7 @@ public class YYParser
         }
 
       stateStack[height] = state;
+      locStack[height] = loc;
       valueStack[height] = value;
     }
 
@@ -506,12 +607,18 @@ public class YYParser
       // Avoid memory leaks... garbage collection is a white lie!
       if (0 < num) {
         java.util.Arrays.fill (valueStack, height - num + 1, height + 1, null);
+        java.util.Arrays.fill (locStack, height - num + 1, height + 1, null);
       }
       height -= num;
     }
 
     public final int stateAt (int i) {
       return stateStack[height - i];
+    }
+
+
+    public final Location locationAt (int i) {
+      return locStack[height - i];
     }
 
     public final ILexem valueAt (int i) {
@@ -598,6 +705,7 @@ public class YYParser
        This behavior is undocumented and Bison
        users should not rely upon it.  */
     ILexem yyval = (0 < yylen) ? yystack.valueAt(yylen - 1) : yystack.valueAt(0);
+    Location yyloc = yylloc(yystack, yylen);
 
     yyReducePrint(yyn, yystack);
 
@@ -605,115 +713,171 @@ public class YYParser
       {
           case 2: /* Program: GlobalDeclarations  */
   if (yyn == 2)
-    /* "smallgrammar.y":95  */
+    /* "smallgrammar.y":101  */
                          {ast = ((Declarations)(yystack.valueAt (0)));};
   break;
 
 
   case 3: /* GlobalDeclarations: %empty  */
   if (yyn == 3)
-    /* "smallgrammar.y":99  */
+    /* "smallgrammar.y":105  */
                   { yyval = new Declarations();};
   break;
 
 
   case 4: /* GlobalDeclarations: GlobalDeclaration GlobalDeclarations  */
   if (yyn == 4)
-    /* "smallgrammar.y":100  */
+    /* "smallgrammar.y":106  */
                                            {yyval = ((Declarations)(yystack.valueAt (0))); ((Declarations)(yystack.valueAt (0))).add(((IDeclaration)(yystack.valueAt (1))));};
   break;
 
 
   case 5: /* GlobalDeclaration: SimpleDeclaration  */
   if (yyn == 5)
-    /* "smallgrammar.y":104  */
+    /* "smallgrammar.y":110  */
                         {yyval = ((IDeclaration)(yystack.valueAt (0)));};
   break;
 
 
-  case 6: /* SimpleDeclaration: VariableDeclaration  */
+  case 6: /* GlobalDeclaration: RoutineDeclaration  */
   if (yyn == 6)
-    /* "smallgrammar.y":110  */
+    /* "smallgrammar.y":111  */
+                         {yyval = ((RoutineDeclaration)(yystack.valueAt (0)));};
+  break;
+
+
+  case 7: /* SimpleDeclaration: VariableDeclaration  */
+  if (yyn == 7)
+    /* "smallgrammar.y":116  */
                           { yyval = ((VariableDeclaration)(yystack.valueAt (0)));};
   break;
 
 
-  case 7: /* SimpleDeclaration: TypeDeclaration  */
-  if (yyn == 7)
-    /* "smallgrammar.y":111  */
+  case 8: /* SimpleDeclaration: TypeDeclaration  */
+  if (yyn == 8)
+    /* "smallgrammar.y":117  */
                       { yyval = ((TypeDeclaration)(yystack.valueAt (0)));};
   break;
 
 
-  case 8: /* VariableDeclaration: VAR Identifier COLON Type OptionalSemicolon  */
-  if (yyn == 8)
-    /* "smallgrammar.y":115  */
+  case 9: /* VariableDeclaration: VAR Identifier COLON Type OptionalSemicolon  */
+  if (yyn == 9)
+    /* "smallgrammar.y":121  */
                                                   {yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (3))), ((IType)(yystack.valueAt (1))));};
   break;
 
 
-  case 11: /* TypeDeclaration: TYPE Identifier IS Type OptionalSemicolon  */
-  if (yyn == 11)
-    /* "smallgrammar.y":125  */
+  case 10: /* TypeDeclaration: TYPE Identifier IS Type OptionalSemicolon  */
+  if (yyn == 10)
+    /* "smallgrammar.y":127  */
                                                {yyval = new TypeDeclaration(((Identifier)(yystack.valueAt (3))), ((IType)(yystack.valueAt (1))));};
   break;
 
 
-  case 12: /* Type: PrimitiveType  */
+  case 11: /* RoutineDeclaration: ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END  */
+  if (yyn == 11)
+    /* "smallgrammar.y":131  */
+                                                                          {yyval = new RoutineDeclaration(((Identifier)(yystack.valueAt (8))), ((Parameters)(yystack.valueAt (6))), ((IType)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))));};
+  break;
+
+
+  case 12: /* RoutineDeclaration: ROUTINE Identifier LPAREN Parameters RPAREN IS Body END  */
   if (yyn == 12)
-    /* "smallgrammar.y":130  */
+    /* "smallgrammar.y":132  */
+                                                               {yyval = new RoutineDeclaration(((Identifier)(yystack.valueAt (6))), ((Parameters)(yystack.valueAt (4))), null, ((Body)(yystack.valueAt (1))));};
+  break;
+
+
+  case 13: /* Parameters: ParameterDeclaration  */
+  if (yyn == 13)
+    /* "smallgrammar.y":137  */
+                           { Parameters x = new Parameters(); x.add(((Parameter)(yystack.valueAt (0)))); yyval = x;};
+  break;
+
+
+  case 14: /* Parameters: ParameterDeclaration COMMA Parameters  */
+  if (yyn == 14)
+    /* "smallgrammar.y":138  */
+                                            { yyval = ((Parameters)(yystack.valueAt (0))); ((Parameters)(yystack.valueAt (0))).add(((Parameter)(yystack.valueAt (2)))); };
+  break;
+
+
+  case 15: /* ParameterDeclaration: Identifier COLON Type  */
+  if (yyn == 15)
+    /* "smallgrammar.y":143  */
+                            { yyval = new Parameter(((Identifier)(yystack.valueAt (2))), ((IType)(yystack.valueAt (0)))); };
+  break;
+
+
+  case 16: /* Body: %empty  */
+  if (yyn == 16)
+    /* "smallgrammar.y":147  */
+                  { yyval = new Body();};
+  break;
+
+
+  case 17: /* Body: BodyDeclaration Body  */
+  if (yyn == 17)
+    /* "smallgrammar.y":148  */
+                           {yyval = ((Body)(yystack.valueAt (0))); ((Body)(yystack.valueAt (0))).add(((IStatement)(yystack.valueAt (1))));};
+  break;
+
+
+  case 18: /* BodyDeclaration: SimpleDeclaration  */
+  if (yyn == 18)
+    /* "smallgrammar.y":152  */
+                        {yyval = ((IDeclaration)(yystack.valueAt (0)));};
+  break;
+
+
+  case 21: /* Type: PrimitiveType  */
+  if (yyn == 21)
+    /* "smallgrammar.y":173  */
                     { yyval = ((PrimitiveType)(yystack.valueAt (0))); };
   break;
 
 
-  case 13: /* Type: Identifier  */
-  if (yyn == 13)
-    /* "smallgrammar.y":133  */
-                 { yyval = ((Identifier)(yystack.valueAt (0))); };
-  break;
-
-
-  case 14: /* PrimitiveType: INTEGER  */
-  if (yyn == 14)
-    /* "smallgrammar.y":137  */
+  case 22: /* PrimitiveType: INTEGER  */
+  if (yyn == 22)
+    /* "smallgrammar.y":180  */
               { yyval = new PrimitiveType("integer");};
   break;
 
 
-  case 15: /* PrimitiveType: REAL  */
-  if (yyn == 15)
-    /* "smallgrammar.y":138  */
+  case 23: /* PrimitiveType: REAL  */
+  if (yyn == 23)
+    /* "smallgrammar.y":181  */
            { yyval = new PrimitiveType("real"); };
   break;
 
 
-  case 16: /* PrimitiveType: BOOLEAN  */
-  if (yyn == 16)
-    /* "smallgrammar.y":139  */
+  case 24: /* PrimitiveType: BOOLEAN  */
+  if (yyn == 24)
+    /* "smallgrammar.y":182  */
               { yyval = new PrimitiveType("boolean"); };
   break;
 
 
-  case 17: /* Identifier: IDENTIFIER  */
-  if (yyn == 17)
-    /* "smallgrammar.y":143  */
+  case 25: /* Identifier: IDENTIFIER  */
+  if (yyn == 25)
+    /* "smallgrammar.y":186  */
                    {yyval = ((Identifier)(yystack.valueAt (0)));};
   break;
 
 
 
-/* "YYParser.java":706  */
+/* "YYParser.java":870  */
 
         default: break;
       }
 
-    yySymbolPrint("-> $$ =", SymbolKind.get(yyr1_[yyn]), yyval);
+    yySymbolPrint("-> $$ =", SymbolKind.get(yyr1_[yyn]), yyval, yyloc);
 
     yystack.pop(yylen);
     yylen = 0;
     /* Shift the result of the reduction.  */
     int yystate = yyLRGotoState(yystack.stateAt(0), yyr1_[yyn]);
-    yystack.push(yystate, yyval);
+    yystack.push(yystate, yyval, yyloc);
     return YYNEWSTATE;
   }
 
@@ -723,11 +887,12 @@ public class YYParser
   `--------------------------------*/
 
   private void yySymbolPrint(String s, SymbolKind yykind,
-                             ILexem yyvalue) {
+                             ILexem yyvalue, Location yylocation) {
       if (0 < yydebug) {
           yycdebug(s
                    + (yykind.getCode() < YYNTOKENS_ ? " token " : " nterm ")
                    + yykind.getName() + " ("
+                   + yylocation + ": "
                    + (yyvalue == null ? "(null)" : yyvalue.toString()) + ")");
       }
   }
@@ -743,6 +908,8 @@ public class YYParser
   public boolean parse()
 
   {
+    /* @$.  */
+    Location yyloc;
 
 
     /* Lookahead token kind.  */
@@ -758,6 +925,11 @@ public class YYParser
     int label = YYNEWSTATE;
 
 
+    /* The location where the error started.  */
+    Location yyerrloc = null;
+
+    /* Location. */
+    Location yylloc = new Location (null, null);
 
     /* Semantic value of the lookahead.  */
     ILexem yylval = null;
@@ -767,7 +939,7 @@ public class YYParser
     yynerrs = 0;
 
     /* Initialize the stack.  */
-    yystack.push (yystate, yylval);
+    yystack.push (yystate, yylval, yylloc);
 
 
 
@@ -800,13 +972,15 @@ public class YYParser
             yycdebug ("Reading a token");
             yychar = yylexer.yylex ();
             yylval = yylexer.getLVal();
+            yylloc = new Location(yylexer.getStartPos(),
+                                          yylexer.getEndPos());
 
           }
 
         /* Convert token to internal form.  */
         yytoken = yytranslate_ (yychar);
         yySymbolPrint("Next token is", yytoken,
-                      yylval);
+                      yylval, yylloc);
 
         if (yytoken == SymbolKind.S_YYerror)
           {
@@ -816,6 +990,7 @@ public class YYParser
             // loop in error recovery. */
             yychar = Lexer.YYUNDEF;
             yytoken = SymbolKind.S_YYUNDEF;
+            yyerrloc = yylloc;
             label = YYERRLAB1;
           }
         else
@@ -842,7 +1017,7 @@ public class YYParser
               {
                 /* Shift the lookahead token.  */
                 yySymbolPrint("Shifting", yytoken,
-                              yylval);
+                              yylval, yylloc);
 
                 /* Discard the token being shifted.  */
                 yychar = YYEMPTY_;
@@ -853,7 +1028,7 @@ public class YYParser
                   --yyerrstatus_;
 
                 yystate = yyn;
-                yystack.push (yystate, yylval);
+                yystack.push (yystate, yylval, yylloc);
                 label = YYNEWSTATE;
               }
           }
@@ -889,9 +1064,10 @@ public class YYParser
             ++yynerrs;
             if (yychar == YYEMPTY_)
               yytoken = null;
-            yyreportSyntaxError (new Context (yystack, yytoken));
+            yyreportSyntaxError (new Context (yystack, yytoken, yylloc));
           }
 
+        yyerrloc = yylloc;
         if (yyerrstatus_ == 3)
           {
             /* If just tried and failed to reuse lookahead token after an
@@ -916,6 +1092,7 @@ public class YYParser
       | errorlab -- error raised explicitly by YYERROR.  |
       `-------------------------------------------------*/
       case YYERROR:
+        yyerrloc = yystack.locationAt (yylen - 1);
         /* Do not reclaim the symbols of the rule which action triggered
            this YYERROR.  */
         yystack.pop (yylen);
@@ -952,6 +1129,7 @@ public class YYParser
               return false;
 
 
+            yyerrloc = yystack.locationAt (0);
             yystack.pop ();
             yystate = yystack.stateAt (0);
             if (0 < yydebug)
@@ -963,13 +1141,18 @@ public class YYParser
           break;
 
 
+        /* Muck with the stack to setup for yylloc.  */
+        yystack.push (0, null, yylloc);
+        yystack.push (0, null, yyerrloc);
+        yyloc = yylloc (yystack, 2);
+        yystack.pop (2);
 
         /* Shift the error token.  */
         yySymbolPrint("Shifting", SymbolKind.get(yystos_[yyn]),
-                      yylval);
+                      yylval, yyloc);
 
         yystate = yyn;
-        yystack.push (yyn, yylval);
+        yystack.push (yyn, yylval, yyloc);
         label = YYNEWSTATE;
         break;
 
@@ -992,10 +1175,11 @@ public class YYParser
    */
   public static final class Context
   {
-    Context (YYStack stack, SymbolKind token)
+    Context (YYStack stack, SymbolKind token, Location loc)
     {
       yystack = stack;
       yytoken = token;
+      yylocation = loc;
     }
 
     private YYStack yystack;
@@ -1010,6 +1194,16 @@ public class YYParser
     }
 
     private SymbolKind yytoken;
+
+    /**
+     * The location of the lookahead.
+     */
+    public final Location getLocation ()
+    {
+      return yylocation;
+    }
+
+    private Location yylocation;
     static final int NTOKENS = YYParser.YYNTOKENS_;
 
     /**
@@ -1085,7 +1279,7 @@ public class YYParser
     return yyvalue == yytable_ninf_;
   }
 
-  private static final byte yypact_ninf_ = -34;
+  private static final byte yypact_ninf_ = -37;
   private static final byte yytable_ninf_ = -1;
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -1095,9 +1289,11 @@ public class YYParser
   {
     return new byte[]
     {
-      -7,     3,     3,     5,   -34,    -7,   -34,   -34,   -34,   -34,
-     -33,    -2,   -34,   -34,    -3,    -3,   -34,   -34,   -34,   -24,
-     -34,   -34,   -24,   -34,   -34,   -34
+      -5,    13,    13,    13,    18,   -37,    -5,   -37,   -37,   -37,
+     -37,   -37,   -19,    14,   -12,   -37,   -37,    -3,    -3,    13,
+     -37,   -37,   -37,    -8,   -37,    -8,    -9,   -15,   -13,   -37,
+     -37,   -37,   -10,    13,    -3,    -2,    -3,   -37,   -37,   -37,
+      17,    -2,    19,   -37,   -37,    -2,    20,   -37
     };
   }
 
@@ -1109,9 +1305,11 @@ public class YYParser
   {
     return new byte[]
     {
-       3,     0,     0,     0,     2,     3,     5,     6,     7,    17,
-       0,     0,     1,     4,     0,     0,    14,    15,    16,     9,
-      12,    13,     9,    10,     8,    11
+       3,     0,     0,     0,     0,     2,     3,     5,     7,     8,
+       6,    25,     0,     0,     0,     1,     4,     0,     0,     0,
+      22,    23,    24,    19,    21,    19,     0,    13,     0,    20,
+       9,    10,     0,     0,     0,    16,     0,    14,    15,    18,
+       0,    16,     0,    12,    17,    16,     0,    11
     };
   }
 
@@ -1121,8 +1319,8 @@ public class YYParser
   {
     return new byte[]
     {
-     -34,   -34,     8,   -34,   -34,   -34,    -8,   -34,     0,   -34,
-       2
+     -37,   -37,    26,   -37,     2,   -37,   -37,   -37,     0,   -37,
+     -36,   -37,     9,   -17,   -37,    12
     };
   }
 
@@ -1132,8 +1330,8 @@ public class YYParser
   {
     return new byte[]
     {
-      -1,     3,     4,     5,     6,     7,    24,     8,    19,    20,
-      21
+      -1,     4,     5,     6,    39,     8,     9,    10,    26,    27,
+      40,    41,    30,    23,    24,    28
     };
   }
 
@@ -1145,8 +1343,10 @@ public class YYParser
   {
     return new byte[]
     {
-       9,     1,     2,    10,    11,    12,     9,    14,    15,    23,
-      16,    17,    18,    13,    25,    22
+      35,    25,     7,     1,     2,    44,     1,     2,     7,    46,
+      20,    21,    22,    12,    13,    14,    11,    38,    15,    42,
+       3,    17,    19,    33,    18,    29,    32,    34,    43,    45,
+      36,    47,    16,    37,    31
     };
   }
 
@@ -1155,8 +1355,10 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       3,     8,     9,     1,     2,     0,     3,    40,    10,    33,
-      13,    14,    15,     5,    22,    15
+      10,    18,     0,     8,     9,    41,     8,     9,     6,    45,
+      13,    14,    15,     1,     2,     3,     3,    34,     0,    36,
+      25,    40,    34,    38,    10,    33,    35,    40,    11,    10,
+      40,    11,     6,    33,    25
     };
   }
 
@@ -1167,9 +1369,11 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       0,     8,     9,    55,    56,    57,    58,    59,    61,     3,
-      64,    64,     0,    56,    40,    10,    13,    14,    15,    62,
-      63,    64,    62,    33,    60,    60
+       0,     8,     9,    25,    55,    56,    57,    58,    59,    60,
+      61,     3,    69,    69,    69,     0,    56,    40,    10,    34,
+      13,    14,    15,    67,    68,    67,    62,    63,    69,    33,
+      66,    66,    35,    38,    40,    10,    40,    62,    67,    58,
+      64,    65,    67,    11,    64,    10,    64,    11
     };
   }
 
@@ -1179,8 +1383,9 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       0,    54,    55,    56,    56,    57,    58,    58,    59,    60,
-      60,    61,    62,    62,    63,    63,    63,    64
+       0,    54,    55,    56,    56,    57,    57,    58,    58,    59,
+      60,    61,    61,    62,    62,    63,    64,    64,    65,    66,
+      66,    67,    68,    68,    68,    69
     };
   }
 
@@ -1190,8 +1395,9 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       0,     2,     1,     0,     2,     1,     1,     1,     5,     0,
-       1,     5,     1,     1,     1,     1,     1,     1
+       0,     2,     1,     0,     2,     1,     1,     1,     1,     5,
+       5,    10,     8,     1,     3,     3,     0,     2,     1,     0,
+       1,     1,     1,     1,     1,     1
     };
   }
 
@@ -1203,8 +1409,9 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new short[]
     {
-       0,    95,    95,    99,   100,   104,   110,   111,   115,   120,
-     121,   125,   130,   133,   137,   138,   139,   143
+       0,   101,   101,   105,   106,   110,   111,   116,   117,   121,
+     127,   131,   132,   137,   138,   143,   147,   148,   152,   167,
+     168,   173,   180,   181,   182,   186
     };
   }
 
@@ -1225,7 +1432,8 @@ private static final byte[] yycheck_ = yycheck_init();
     for (int yyi = 0; yyi < yynrhs; yyi++)
       yySymbolPrint("   $" + (yyi + 1) + " =",
                     SymbolKind.get(yystos_[yystack.stateAt (yynrhs - (yyi + 1))]),
-                    yystack.valueAt ((yynrhs) - (yyi + 1)));
+                    yystack.valueAt ((yynrhs) - (yyi + 1)),
+                    yystack.locationAt ((yynrhs) - (yyi + 1)));
   }
 
   /* YYTRANSLATE_(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -1281,9 +1489,9 @@ private static final byte[] yycheck_ = yycheck_init();
   }
 
 
-  private static final int YYLAST_ = 15;
+  private static final int YYLAST_ = 34;
   private static final int YYEMPTY_ = -2;
-  private static final int YYFINAL_ = 12;
+  private static final int YYFINAL_ = 15;
   private static final int YYNTOKENS_ = 54;
 
 /* Unqualified %code blocks.  */
@@ -1303,10 +1511,10 @@ private static final byte[] yycheck_ = yycheck_init();
         return ast;
     }
 
-/* "YYParser.java":1307  */
+/* "YYParser.java":1515  */
 
 }
-/* "smallgrammar.y":146  */
+/* "smallgrammar.y":189  */
 
 //
 //

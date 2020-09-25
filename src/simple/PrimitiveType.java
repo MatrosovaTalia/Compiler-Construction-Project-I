@@ -2,7 +2,7 @@ package simple;
 
 import lexems.ILexem;
 
-public class PrimitiveType implements ILexem, IType {
+public class PrimitiveType implements IType {
     String primitivetype;
     public PrimitiveType(String type){
         this.primitivetype = type;
