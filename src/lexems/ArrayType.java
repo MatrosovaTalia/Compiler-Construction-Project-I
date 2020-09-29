@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class ArrayType implements ILexem {
     public Expression size;
     public Type type;

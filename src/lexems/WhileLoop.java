@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class WhileLoop implements ILexem {
     public Expression expression;
     public Body body;

@@ -1,5 +1,10 @@
 package lexems;
 
+import simple.ForLoop;
+import simple.ILexem;
+import simple.IfStatement;
+import simple.Print;
+
 public class Statement implements ILexem {
     public ILexem statement;
     public Statement(Assignment assignment) {

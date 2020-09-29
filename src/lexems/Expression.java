@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 import java.util.ArrayList;
 
 public class Expression implements IList2 {

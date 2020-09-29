@@ -1,6 +1,6 @@
 package lexer;
 
-import lexems.*;
+import simple.*;
 import misc.Pair;
 import parser.YYParser;
 import parser.YYParser.*;
@@ -35,7 +35,6 @@ import java.math.BigInteger;
     xor
     print
     return
-
     Symbolic Tokens:
     DONE: .. - range
     DONE: + - addition, can be unary to indicate the value is > 0
@@ -60,7 +59,6 @@ import java.math.BigInteger;
     DONE: // - single-line comment
     DONE: /* - enclose multiline comments
     DONE: ; - statement separator
-
     Complex Tokens:
     DONE: Identifier
     DONE: IntegralLiteral
@@ -68,7 +66,7 @@ import java.math.BigInteger;
  */
 
 
-public class MyLexer implements Lexer {
+public class MyLexer implements YYParser.Lexer {
     private StringReaderWithPosition in;
     private CharacterBuffer buffer;
     private int c;
@@ -397,12 +395,12 @@ public class MyLexer implements Lexer {
     }
 
 
-//    @Override
+    //    @Override
     public Position getStartPos() {
         return currentToken.getPosition();
     }
 
-//    @Override
+    //    @Override
     public Position getEndPos() {
         var position = currentToken.getPosition();
         var line = position.getLine();
@@ -461,21 +459,24 @@ public class MyLexer implements Lexer {
         return currentToken.getType().getValue();
     }
 
+
     @Override
-    public void yyerror(Location loc, String msg) {
-        System.out.println(msg + loc);
+    public void yyerror(String msg) {
+        System.out.println(msg);
     }
 
-//    @Override
-//    public void yyerror(String msg) {
-//        System.out.println(msg);
-//    }
-//
 //    @Override
 //    public void yyerror(Location loc, String msg) {
 //        System.out.println("An error occurred at position " +
 //                currentToken.getPosition() + ":\n" + msg);
+//
 //    }
+
+    @Override
+    public void yyerror(Location loc, String msg) {
+        System.out.println("An error occurred at position " +
+                currentToken.getPosition() + ":\n" + msg);
+    }
 
 
 
@@ -497,6 +498,6 @@ public class MyLexer implements Lexer {
 //        }
     }
 
-}
 
+}
 

@@ -12,8 +12,8 @@
 %locations
 
 %code imports {
-import lexems.Identifier;
-import lexems.ILexem;
+//import lexems.Identifier;
+//import lexems.ILexem;
 import lexer.*;
 import reader.Reader;
 import simple.*;
@@ -39,9 +39,11 @@ import java.util.ArrayList;
 
 // Identifiers & numbers
 %token  <Identifier>IDENTIFIER
-%token  INTEGER_LITERAL
-%token  REAL_LITERAL
-%token  TRUE FALSE
+%token  <IntegerLiteral>INTEGER_LITERAL
+%token  <RealLiteral>REAL_LITERAL
+%token  <BooleanLiteral>TRUE
+%token 	<BooleanLiteral>FALSE
+
 // Keywords
 %token VAR TYPE IS END RECORD
 %token INTEGER REAL BOOLEAN
@@ -91,7 +93,20 @@ import java.util.ArrayList;
 %type <IType> Type
 %type <PrimitiveType> PrimitiveType
 %type <Identifier> Identifier
+%type <IExpression>Expression
+%type <RecordType>RecordType
+%type <RecordType>RecordDeclarations
+%type <ArrayType>ArrayType
+%type <WhileStatement>WhileStatement
+%type <IStatement>Statement
+%type <ForLoop>ForLoop
+%type <IfStatement>IfStatement
+%type <Return>Return
+//%type <Print>Print
 
+
+%left MINUS PLUS
+%left MULTIPLY DIVIDE REMAINDER
 
 %start Program
 
@@ -109,7 +124,6 @@ GlobalDeclarations
 GlobalDeclaration
     : SimpleDeclaration {$$ = $1;}
     | RoutineDeclaration {$$ = $1;}
-//    | NEWLINE {$$ = $$;}
     ;
 
 SimpleDeclaration
@@ -118,9 +132,9 @@ SimpleDeclaration
     ;
 
 VariableDeclaration
-    : VAR Identifier COLON Type OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
-    //| VAR Identifier COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
-    //| VAR Identifier IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, $4);}
+    : VAR Identifier COLON Type OptionalSemicolon {$$ = new VariableDeclaration($2, $4, null);}
+    | VAR Identifier COLON Type IS Expression OptionalSemicolon { $$ = new VariableDeclaration($2, $4, $6); }
+    | VAR Identifier IS Expression OptionalSemicolon {$$ = new VariableDeclaration($2, null, $4);}
     ;
 
 TypeDeclaration
@@ -133,7 +147,6 @@ RoutineDeclaration
    ;
 
 Parameters
-//    : /* empty */ {$$ = new Parameters();}
     : ParameterDeclaration { Parameters x = new Parameters(); x.add($1); $$ = x;}
     | ParameterDeclaration COMMA Parameters { $$ = $3; $3.add($1); }
     ;
@@ -150,18 +163,58 @@ Body
 
 BodyDeclaration
     : SimpleDeclaration {$$ = $1;}
-//    | Statement {$$ = $1;}
+    | Statement {$$ = $1;}
     ;
 
-//Statement
+Statement
 //    : Assignment  {$$ = $1;}
 //    | RoutineCall  {$$ = $1; }
-//    | WhileLoop  {$$ = $1;}
-//    | ForLoop  {$$ = $1;}
-//    | IfStatement {$$ = $1;}
+    : WhileStatement  {$$ = $1;}
+    | ForLoop  {$$ = $1;}
+    | IfStatement {$$ = $1;}
 //    | Print  {$$ = $1;}
-//    : Return  {$$ = $1;}
+    | Return  {$$ = $1;}
+    ;
+
+WhileStatement
+    : WHILE Expression LOOP Body END {$$ = new WhileStatement($2, $4); }
+    ;
+
+ForLoop
+    : FOR Identifier IN Expression RANGE Expression LOOP Body END
+    {$$ = new ForLoop($2, $4, $6, $8, false);}
+    | FOR Identifier IN REVERSE Expression RANGE Expression LOOP Body END
+    {$$ = new ForLoop($2, $5, $7, $9, true);}
+    ;
+
+IfStatement
+    : IF Expression THEN Body END {$$ = new IfStatement($2, $4, null);}
+    | IF Expression THEN Body ELSE Body END {$$ = new IfStatement($2, $4, $6);}
+    ;
+
+Return
+    : RETURN Expression {$$ = new Return($2);}
+    ;
+
+//Print
+//    : PRINT LPAREN Expressions RPAREN {$$ = new Print($3);}
 //    ;
+
+
+Expression
+    : INTEGER_LITERAL {$$ = $1;}
+    | REAL_LITERAL {$$ = $1;}
+    | TRUE {$$ = $1;}
+    | FALSE {$$ = $1;}
+    | Expression PLUS Expression {$$ = new BinaryExpression("PLUS", $1, $3);}
+    | Expression MINUS Expression {$$ = new BinaryExpression("MINUS", $1, $3);}
+    | Expression MULTIPLY Expression {$$ = new BinaryExpression("MULTIPLY", $1, $3);}
+    | Expression DIVIDE Expression {$$ = new BinaryExpression("DIVIDE", $1, $3);}
+    | Expression REMAINDER Expression {$$ = new BinaryExpression("REMAINDER", $1, $3);}
+    ;
+
+
+
 
 OptionalSemicolon
     : /* empty */
@@ -171,9 +224,9 @@ OptionalSemicolon
 
 Type
     : PrimitiveType { $$ = $1; }
-//    | ArrayType { $$ = $1; }
-    //| RecordType { $$ = $1; }
-//    | Identifier { $$ = $1; }
+    | ArrayType { $$ = $1; }
+    | RecordType { $$ = $1; }
+    | Identifier { $$ = $1; }
     ;
 
 PrimitiveType
@@ -181,6 +234,21 @@ PrimitiveType
     | REAL { $$ = new PrimitiveType("real"); }
     | BOOLEAN { $$ = new PrimitiveType("boolean"); }
     ;
+
+RecordType
+    : RECORD RecordDeclarations END {$$ = $2;}
+    ;
+
+RecordDeclarations
+    : /* empty */ { $$ = new RecordType(); }
+    | VariableDeclaration RecordDeclarations { $$ = $2; $2.add($1);}
+    ;
+
+ArrayType
+    : ARRAY LBRACKET Expression RBRACKET Type { $$ = new ArrayType($3, $5); }
+    ;
+
+
 
 Identifier:
 	IDENTIFIER {$$ = $1;}

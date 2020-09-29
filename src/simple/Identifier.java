@@ -1,6 +1,8 @@
-package lexems;
+package simple;
 
-public class Identifier implements ILexem{
+import simple.ILexem;
+
+public class Identifier implements ILexem {
     public String v;
 
     public Identifier(String v) {
@@ -10,7 +12,7 @@ public class Identifier implements ILexem{
     @Override
     public String toString() {
         return "Identifier{" +
-                "v='" + v + '\'' +
+                "id=" + v + '\'' +
                 '}';
     }
 }

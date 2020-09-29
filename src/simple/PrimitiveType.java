@@ -1,7 +1,5 @@
 package simple;
 
-import lexems.ILexem;
-
 public class PrimitiveType implements IType {
     String primitivetype;
     public PrimitiveType(String type){
@@ -10,8 +8,8 @@ public class PrimitiveType implements IType {
 
     @Override
     public String toString() {
-        return "Primitive type{" +
-                "primitive type=" + primitivetype + '\'' +
+        return "Primitive_type{" +
+                "primitive_type=" + primitivetype + '\'' +
                 '}';
     }
 }

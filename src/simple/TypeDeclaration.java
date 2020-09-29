@@ -1,7 +1,5 @@
 package simple;
 
-import lexems.Identifier;
-
 public class TypeDeclaration implements IDeclaration{
     public Identifier id;
     public IType type;
@@ -12,8 +10,8 @@ public class TypeDeclaration implements IDeclaration{
 
     @Override
     public String toString() {
-        return "Type Declaration {" +
-                "id=" + id + '\'' +
+        return "\nType Declaration {" +
+                "Type name=" + id + '\'' +
                 "type=" + type + '\'' +
                 '}';
     }

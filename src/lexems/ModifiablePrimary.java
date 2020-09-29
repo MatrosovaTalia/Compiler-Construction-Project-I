@@ -1,6 +1,6 @@
 package lexems;
 
-import java.util.ArrayList;
+import simple.ILexem;
 
 public class ModifiablePrimary implements ILexem {
     public ILexem identifier;

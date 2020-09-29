@@ -1,6 +1,6 @@
 package lexems;
 
-import java.util.ArrayList;
+import simple.ILexem;
 
 public class SimpleDeclaration implements ILexem {
     public ILexem simpleDeclaration;

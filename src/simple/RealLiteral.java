@@ -1,8 +1,9 @@
-package lexems;
+package simple;
+
 
 import java.math.BigDecimal;
 
-public class RealLiteral implements ILexem {
+public class RealLiteral implements IExpression {
     public final BigDecimal v;
 
     public RealLiteral(BigDecimal v){

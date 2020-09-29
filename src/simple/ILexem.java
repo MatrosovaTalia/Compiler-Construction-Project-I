@@ -1,4 +1,4 @@
-package lexems;
+package simple;
 
 public interface ILexem {
 }

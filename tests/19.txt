@@ -1,2 +1,2 @@
 var ab : integer;
-var av : hjjkl;
+var av hjjkl;

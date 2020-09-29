@@ -1,0 +1,6 @@
+type Student is record
+    var phone_number : integer;
+    var ab : integer;
+    var c is 3 + 8 * 2;
+    var d is false;
+    end

@@ -1,6 +1,8 @@
 package lexems;
 
-public class RoutineDeclaration implements ILexem{
+import simple.ILexem;
+
+public class RoutineDeclaration implements ILexem {
     public ILexem identifier;
     public Parameters parameters;
     public Type type = null;

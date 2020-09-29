@@ -1,8 +1,8 @@
 package lexems;
 
-import java.util.ArrayList;
+import simple.ILexem;
 
-public class GlobalDeclaration implements ILexem{
+public class GlobalDeclaration implements ILexem {
     public ILexem globalDeclaration;
 
     public GlobalDeclaration(SimpleDeclaration simpleDeclaration) {

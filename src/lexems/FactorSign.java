@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class FactorSign implements ILexem {
     public String sign;
 

@@ -1,8 +1,5 @@
 package simple;
 
-import lexems.ILexem;
-import lexems.Identifier;
-
 public class Parameter implements ILexem {
     Identifier id;
     IType type;
@@ -14,7 +11,7 @@ public class Parameter implements ILexem {
 
     @Override
     public String toString() {
-        return "Parameter{" +
+        return "\nParameter{" +
                 "id=" + id + '\'' +
                 "type=" + type +'\''+
                 '}';

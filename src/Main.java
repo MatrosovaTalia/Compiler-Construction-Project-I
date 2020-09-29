@@ -2,9 +2,10 @@ import lexer.MyLexer;
 import lexer.Token;
 import lexer.TokenType;
 import reader.Reader;
-import lexems.*;
 import parser.*;
 import simple.Declarations;
+import simple.Identifier;
+import simple.Operation;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,11 +43,16 @@ public class Main {
 //        MyLexer myLexer = new MyLexer();
 
 
-        Declarations ast = YYParser.makeAST("19");
+        Declarations ast = YYParser.makeAST("1");
 
-        Identifier id = new Identifier("id1");
-        System.out.println(id);
-        System.out.println("Is Ast built?    "+ Boolean.toString(ast != null));
+//        Identifier id = new Identifier("id1");
+//        System.out.println(id);
+//
+//        System.out.println( Operation.valueOf("PLUS"));
+
+
+
+        System.out.println("Is Ast built?    "+ Boolean.toString(ast != null) + '\n');
         for (int i = 0; i < ast.size(); i++){
             System.out.println(ast.get(i));
 

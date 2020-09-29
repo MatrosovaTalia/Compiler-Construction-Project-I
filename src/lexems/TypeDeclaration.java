@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class TypeDeclaration implements ILexem {
     public ILexem identifier;
     public Type type;

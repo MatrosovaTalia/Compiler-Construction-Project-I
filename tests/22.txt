@@ -1,0 +1,4 @@
+var marks : array [5] integer;
+var a is true;
+
+

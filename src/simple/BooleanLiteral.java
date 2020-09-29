@@ -1,6 +1,8 @@
-package lexems;
+package simple;
 
-public class BooleanLiteral implements ILexem{
+import simple.IExpression;
+
+public class BooleanLiteral implements IExpression {
     public final boolean v;
 
     public BooleanLiteral(boolean v) {

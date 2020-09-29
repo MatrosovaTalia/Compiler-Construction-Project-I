@@ -1,9 +1,5 @@
 package simple;
 
-import lexems.Identifier;
-
-import java.util.ArrayList;
-
 public class RoutineDeclaration implements IDeclaration {
     Identifier name;
     Parameters params;
@@ -20,7 +16,7 @@ public class RoutineDeclaration implements IDeclaration {
 
     @Override
     public String toString() {
-        return "Routine Declaration{" +
+        return "\nRoutine Declaration{" +
                 "name=" + name + '\'' +
                 "return type=" + returnType +'\''+
                 "parameters" + params + '\'' +

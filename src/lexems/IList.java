@@ -1,7 +1,7 @@
 package lexems;
 
-import java.util.ArrayList;
+import simple.ILexem;
 
-public interface IList extends ILexem{
+public interface IList extends ILexem {
     public void add(ILexem iLexem);
 }

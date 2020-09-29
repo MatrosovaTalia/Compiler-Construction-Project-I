@@ -1,6 +1,9 @@
 package lexems;
 
-public class Type implements ILexem{
+import simple.ILexem;
+import simple.Identifier;
+
+public class Type implements ILexem {
    public ILexem type = null;
 
    public Type(PrimitiveType type) {

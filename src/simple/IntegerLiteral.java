@@ -1,8 +1,9 @@
-package lexems;
+package simple;
+
 
 import java.math.BigInteger;
 
-public class IntegerLiteral implements ILexem{
+public class IntegerLiteral implements IExpression {
     public final BigInteger v;
 
     public IntegerLiteral(BigInteger v){
@@ -12,7 +13,7 @@ public class IntegerLiteral implements ILexem{
     @Override
     public String toString() {
         return "IntegerLiteral{" +
-                "v=" + v +
+                "int_value=" + v +
                 '}';
     }
 }

@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class LogicWord implements ILexem {
     public String word;
 

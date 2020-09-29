@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class Summand implements ILexem {
     public ILexem s;
 

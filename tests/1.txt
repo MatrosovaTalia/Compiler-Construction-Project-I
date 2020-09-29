@@ -1,7 +1,8 @@
 routine main (args: integer) : integer is
     for i in 1 .. 5 loop
-        print(i);
+        //print(i);
+        var a is 4;
 
     end
-    return 0
+    return 0;
 end;

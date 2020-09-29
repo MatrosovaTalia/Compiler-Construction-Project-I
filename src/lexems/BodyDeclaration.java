@@ -1,6 +1,8 @@
 package lexems;
 
 
+import simple.ILexem;
+
 public class BodyDeclaration implements ILexem {
     public ILexem body;
 

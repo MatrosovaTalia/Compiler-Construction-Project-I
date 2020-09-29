@@ -1,5 +1,7 @@
 package lexems;
 
+import simple.ILexem;
+
 public class Assignment implements ILexem {
     public ModifiablePrimary modifiablePrimary;
     public Expression expression;

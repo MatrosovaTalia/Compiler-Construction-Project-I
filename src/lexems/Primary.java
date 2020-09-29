@@ -1,6 +1,11 @@
 package lexems;
 
-public class Primary implements ILexem{
+import simple.BooleanLiteral;
+import simple.ILexem;
+import simple.IntegerLiteral;
+import simple.RealLiteral;
+
+public class Primary implements ILexem {
     public ILexem primary;
 
     public Primary(IntegerLiteral integerLiteral) {
