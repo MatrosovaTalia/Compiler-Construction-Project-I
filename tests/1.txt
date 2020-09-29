@@ -1,6 +1,6 @@
 routine main (args: integer) : integer is
     for i in 1 .. 5 loop
-        //print(i);
+        print(22, 33, 44);
         var a is 4;
 
     end

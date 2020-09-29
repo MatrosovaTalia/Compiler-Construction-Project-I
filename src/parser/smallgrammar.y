@@ -102,7 +102,8 @@ import java.util.ArrayList;
 %type <ForLoop>ForLoop
 %type <IfStatement>IfStatement
 %type <Return>Return
-//%type <Print>Print
+%type <Print>Print
+%type <Expressions>Expressions
 
 
 %left MINUS PLUS
@@ -172,7 +173,7 @@ Statement
     : WhileStatement  {$$ = $1;}
     | ForLoop  {$$ = $1;}
     | IfStatement {$$ = $1;}
-//    | Print  {$$ = $1;}
+    | Print  {$$ = $1;}
     | Return  {$$ = $1;}
     ;
 
@@ -196,10 +197,14 @@ Return
     : RETURN Expression {$$ = new Return($2);}
     ;
 
-//Print
-//    : PRINT LPAREN Expressions RPAREN {$$ = new Print($3);}
-//    ;
+Print
+    : PRINT LPAREN Expressions RPAREN {$$ = new Print($3);}
+    ;
 
+Expressions
+    : Expression { Expressions x = new Expressions(); x.add($1); $$ = x; }
+    | Expression COMMA Expressions { $$ = $3; $3.add($1); }
+    ;
 
 Expression
     : INTEGER_LITERAL {$$ = $1;}

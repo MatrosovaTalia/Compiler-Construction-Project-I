@@ -198,14 +198,16 @@ public class YYParser
     S_ForLoop(68),                 /* ForLoop  */
     S_IfStatement(69),             /* IfStatement  */
     S_Return(70),                  /* Return  */
-    S_Expression(71),              /* Expression  */
-    S_OptionalSemicolon(72),       /* OptionalSemicolon  */
-    S_Type(73),                    /* Type  */
-    S_PrimitiveType(74),           /* PrimitiveType  */
-    S_RecordType(75),              /* RecordType  */
-    S_RecordDeclarations(76),      /* RecordDeclarations  */
-    S_ArrayType(77),               /* ArrayType  */
-    S_Identifier(78);              /* Identifier  */
+    S_Print(71),                   /* Print  */
+    S_Expressions(72),             /* Expressions  */
+    S_Expression(73),              /* Expression  */
+    S_OptionalSemicolon(74),       /* OptionalSemicolon  */
+    S_Type(75),                    /* Type  */
+    S_PrimitiveType(76),           /* PrimitiveType  */
+    S_RecordType(77),              /* RecordType  */
+    S_RecordDeclarations(78),      /* RecordDeclarations  */
+    S_ArrayType(79),               /* ArrayType  */
+    S_Identifier(80);              /* Identifier  */
 
 
     private final int yycode_;
@@ -286,6 +288,8 @@ public class YYParser
       SymbolKind.S_ForLoop,
       SymbolKind.S_IfStatement,
       SymbolKind.S_Return,
+      SymbolKind.S_Print,
+      SymbolKind.S_Expressions,
       SymbolKind.S_Expression,
       SymbolKind.S_OptionalSemicolon,
       SymbolKind.S_Type,
@@ -323,8 +327,9 @@ public class YYParser
   "VariableDeclaration", "TypeDeclaration", "RoutineDeclaration",
   "Parameters", "ParameterDeclaration", "Body", "BodyDeclaration",
   "Statement", "WhileStatement", "ForLoop", "IfStatement", "Return",
-  "Expression", "OptionalSemicolon", "Type", "PrimitiveType", "RecordType",
-  "RecordDeclarations", "ArrayType", "Identifier", null
+  "Print", "Expressions", "Expression", "OptionalSemicolon", "Type",
+  "PrimitiveType", "RecordType", "RecordDeclarations", "ArrayType",
+  "Identifier", null
     };
   }
 
@@ -735,363 +740,391 @@ public class YYParser
       {
           case 2: /* Program: GlobalDeclarations  */
   if (yyn == 2)
-    /* "smallgrammar.y":116  */
+    /* "smallgrammar.y":117  */
                          {ast = ((Declarations)(yystack.valueAt (0)));};
   break;
 
 
   case 3: /* GlobalDeclarations: %empty  */
   if (yyn == 3)
-    /* "smallgrammar.y":120  */
+    /* "smallgrammar.y":121  */
                   { yyval = new Declarations();};
   break;
 
 
   case 4: /* GlobalDeclarations: GlobalDeclaration GlobalDeclarations  */
   if (yyn == 4)
-    /* "smallgrammar.y":121  */
+    /* "smallgrammar.y":122  */
                                            {yyval = ((Declarations)(yystack.valueAt (0))); ((Declarations)(yystack.valueAt (0))).add(((IDeclaration)(yystack.valueAt (1))));};
   break;
 
 
   case 5: /* GlobalDeclaration: SimpleDeclaration  */
   if (yyn == 5)
-    /* "smallgrammar.y":125  */
+    /* "smallgrammar.y":126  */
                         {yyval = ((IDeclaration)(yystack.valueAt (0)));};
   break;
 
 
   case 6: /* GlobalDeclaration: RoutineDeclaration  */
   if (yyn == 6)
-    /* "smallgrammar.y":126  */
+    /* "smallgrammar.y":127  */
                          {yyval = ((RoutineDeclaration)(yystack.valueAt (0)));};
   break;
 
 
   case 7: /* SimpleDeclaration: VariableDeclaration  */
   if (yyn == 7)
-    /* "smallgrammar.y":130  */
+    /* "smallgrammar.y":131  */
                           { yyval = ((VariableDeclaration)(yystack.valueAt (0)));};
   break;
 
 
   case 8: /* SimpleDeclaration: TypeDeclaration  */
   if (yyn == 8)
-    /* "smallgrammar.y":131  */
+    /* "smallgrammar.y":132  */
                       { yyval = ((TypeDeclaration)(yystack.valueAt (0)));};
   break;
 
 
   case 9: /* VariableDeclaration: VAR Identifier COLON Type OptionalSemicolon  */
   if (yyn == 9)
-    /* "smallgrammar.y":135  */
+    /* "smallgrammar.y":136  */
                                                   {yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (3))), ((IType)(yystack.valueAt (1))), null);};
   break;
 
 
   case 10: /* VariableDeclaration: VAR Identifier COLON Type IS Expression OptionalSemicolon  */
   if (yyn == 10)
-    /* "smallgrammar.y":136  */
+    /* "smallgrammar.y":137  */
                                                                 { yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (5))), ((IType)(yystack.valueAt (3))), ((IExpression)(yystack.valueAt (1)))); };
   break;
 
 
   case 11: /* VariableDeclaration: VAR Identifier IS Expression OptionalSemicolon  */
   if (yyn == 11)
-    /* "smallgrammar.y":137  */
+    /* "smallgrammar.y":138  */
                                                      {yyval = new VariableDeclaration(((Identifier)(yystack.valueAt (3))), null, ((IExpression)(yystack.valueAt (1))));};
   break;
 
 
   case 12: /* TypeDeclaration: TYPE Identifier IS Type OptionalSemicolon  */
   if (yyn == 12)
-    /* "smallgrammar.y":141  */
+    /* "smallgrammar.y":142  */
                                                {yyval = new TypeDeclaration(((Identifier)(yystack.valueAt (3))), ((IType)(yystack.valueAt (1))));};
   break;
 
 
   case 13: /* RoutineDeclaration: ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END  */
   if (yyn == 13)
-    /* "smallgrammar.y":145  */
+    /* "smallgrammar.y":146  */
                                                                           {yyval = new RoutineDeclaration(((Identifier)(yystack.valueAt (8))), ((Parameters)(yystack.valueAt (6))), ((IType)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))));};
   break;
 
 
   case 14: /* RoutineDeclaration: ROUTINE Identifier LPAREN Parameters RPAREN IS Body END  */
   if (yyn == 14)
-    /* "smallgrammar.y":146  */
+    /* "smallgrammar.y":147  */
                                                                {yyval = new RoutineDeclaration(((Identifier)(yystack.valueAt (6))), ((Parameters)(yystack.valueAt (4))), null, ((Body)(yystack.valueAt (1))));};
   break;
 
 
   case 15: /* Parameters: ParameterDeclaration  */
   if (yyn == 15)
-    /* "smallgrammar.y":150  */
+    /* "smallgrammar.y":151  */
                            { Parameters x = new Parameters(); x.add(((Parameter)(yystack.valueAt (0)))); yyval = x;};
   break;
 
 
   case 16: /* Parameters: ParameterDeclaration COMMA Parameters  */
   if (yyn == 16)
-    /* "smallgrammar.y":151  */
+    /* "smallgrammar.y":152  */
                                             { yyval = ((Parameters)(yystack.valueAt (0))); ((Parameters)(yystack.valueAt (0))).add(((Parameter)(yystack.valueAt (2)))); };
   break;
 
 
   case 17: /* ParameterDeclaration: Identifier COLON Type  */
   if (yyn == 17)
-    /* "smallgrammar.y":156  */
+    /* "smallgrammar.y":157  */
                             { yyval = new Parameter(((Identifier)(yystack.valueAt (2))), ((IType)(yystack.valueAt (0)))); };
   break;
 
 
   case 18: /* Body: %empty  */
   if (yyn == 18)
-    /* "smallgrammar.y":160  */
+    /* "smallgrammar.y":161  */
                   { yyval = new Body();};
   break;
 
 
   case 19: /* Body: BodyDeclaration Body  */
   if (yyn == 19)
-    /* "smallgrammar.y":161  */
+    /* "smallgrammar.y":162  */
                            {yyval = ((Body)(yystack.valueAt (0))); ((Body)(yystack.valueAt (0))).add(((IStatement)(yystack.valueAt (1))));};
   break;
 
 
   case 20: /* BodyDeclaration: SimpleDeclaration  */
   if (yyn == 20)
-    /* "smallgrammar.y":165  */
+    /* "smallgrammar.y":166  */
                         {yyval = ((IDeclaration)(yystack.valueAt (0)));};
   break;
 
 
   case 21: /* BodyDeclaration: Statement  */
   if (yyn == 21)
-    /* "smallgrammar.y":166  */
+    /* "smallgrammar.y":167  */
                 {yyval = ((IStatement)(yystack.valueAt (0)));};
   break;
 
 
   case 22: /* Statement: WhileStatement  */
   if (yyn == 22)
-    /* "smallgrammar.y":172  */
+    /* "smallgrammar.y":173  */
                       {yyval = ((WhileStatement)(yystack.valueAt (0)));};
   break;
 
 
   case 23: /* Statement: ForLoop  */
   if (yyn == 23)
-    /* "smallgrammar.y":173  */
+    /* "smallgrammar.y":174  */
                {yyval = ((ForLoop)(yystack.valueAt (0)));};
   break;
 
 
   case 24: /* Statement: IfStatement  */
   if (yyn == 24)
-    /* "smallgrammar.y":174  */
+    /* "smallgrammar.y":175  */
                   {yyval = ((IfStatement)(yystack.valueAt (0)));};
   break;
 
 
-  case 25: /* Statement: Return  */
+  case 25: /* Statement: Print  */
   if (yyn == 25)
     /* "smallgrammar.y":176  */
+             {yyval = ((Print)(yystack.valueAt (0)));};
+  break;
+
+
+  case 26: /* Statement: Return  */
+  if (yyn == 26)
+    /* "smallgrammar.y":177  */
               {yyval = ((Return)(yystack.valueAt (0)));};
   break;
 
 
-  case 26: /* WhileStatement: WHILE Expression LOOP Body END  */
-  if (yyn == 26)
-    /* "smallgrammar.y":180  */
+  case 27: /* WhileStatement: WHILE Expression LOOP Body END  */
+  if (yyn == 27)
+    /* "smallgrammar.y":181  */
                                      {yyval = new WhileStatement(((IExpression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1)))); };
   break;
 
 
-  case 27: /* ForLoop: FOR Identifier IN Expression RANGE Expression LOOP Body END  */
-  if (yyn == 27)
-    /* "smallgrammar.y":185  */
+  case 28: /* ForLoop: FOR Identifier IN Expression RANGE Expression LOOP Body END  */
+  if (yyn == 28)
+    /* "smallgrammar.y":186  */
     {yyval = new ForLoop(((Identifier)(yystack.valueAt (7))), ((IExpression)(yystack.valueAt (5))), ((IExpression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))), false);};
   break;
 
 
-  case 28: /* ForLoop: FOR Identifier IN REVERSE Expression RANGE Expression LOOP Body END  */
-  if (yyn == 28)
-    /* "smallgrammar.y":187  */
+  case 29: /* ForLoop: FOR Identifier IN REVERSE Expression RANGE Expression LOOP Body END  */
+  if (yyn == 29)
+    /* "smallgrammar.y":188  */
     {yyval = new ForLoop(((Identifier)(yystack.valueAt (8))), ((IExpression)(yystack.valueAt (5))), ((IExpression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))), true);};
   break;
 
 
-  case 29: /* IfStatement: IF Expression THEN Body END  */
-  if (yyn == 29)
-    /* "smallgrammar.y":191  */
+  case 30: /* IfStatement: IF Expression THEN Body END  */
+  if (yyn == 30)
+    /* "smallgrammar.y":192  */
                                   {yyval = new IfStatement(((IExpression)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))), null);};
   break;
 
 
-  case 30: /* IfStatement: IF Expression THEN Body ELSE Body END  */
-  if (yyn == 30)
-    /* "smallgrammar.y":192  */
+  case 31: /* IfStatement: IF Expression THEN Body ELSE Body END  */
+  if (yyn == 31)
+    /* "smallgrammar.y":193  */
                                             {yyval = new IfStatement(((IExpression)(yystack.valueAt (5))), ((Body)(yystack.valueAt (3))), ((Body)(yystack.valueAt (1))));};
   break;
 
 
-  case 31: /* Return: RETURN Expression  */
-  if (yyn == 31)
-    /* "smallgrammar.y":196  */
+  case 32: /* Return: RETURN Expression  */
+  if (yyn == 32)
+    /* "smallgrammar.y":197  */
                         {yyval = new Return(((IExpression)(yystack.valueAt (0))));};
   break;
 
 
-  case 32: /* Expression: INTEGER_LITERAL  */
-  if (yyn == 32)
+  case 33: /* Print: PRINT LPAREN Expressions RPAREN  */
+  if (yyn == 33)
+    /* "smallgrammar.y":201  */
+                                      {yyval = new Print(((Expressions)(yystack.valueAt (1))));};
+  break;
+
+
+  case 34: /* Expressions: Expression  */
+  if (yyn == 34)
     /* "smallgrammar.y":205  */
+                 { Expressions x = new Expressions(); x.add(((IExpression)(yystack.valueAt (0)))); yyval = x; };
+  break;
+
+
+  case 35: /* Expressions: Expression COMMA Expressions  */
+  if (yyn == 35)
+    /* "smallgrammar.y":206  */
+                                   { yyval = ((Expressions)(yystack.valueAt (0))); ((Expressions)(yystack.valueAt (0))).add(((IExpression)(yystack.valueAt (2)))); };
+  break;
+
+
+  case 36: /* Expression: INTEGER_LITERAL  */
+  if (yyn == 36)
+    /* "smallgrammar.y":210  */
                       {yyval = ((IntegerLiteral)(yystack.valueAt (0)));};
   break;
 
 
-  case 33: /* Expression: REAL_LITERAL  */
-  if (yyn == 33)
-    /* "smallgrammar.y":206  */
+  case 37: /* Expression: REAL_LITERAL  */
+  if (yyn == 37)
+    /* "smallgrammar.y":211  */
                    {yyval = ((RealLiteral)(yystack.valueAt (0)));};
   break;
 
 
-  case 34: /* Expression: TRUE  */
-  if (yyn == 34)
-    /* "smallgrammar.y":207  */
+  case 38: /* Expression: TRUE  */
+  if (yyn == 38)
+    /* "smallgrammar.y":212  */
            {yyval = ((BooleanLiteral)(yystack.valueAt (0)));};
   break;
 
 
-  case 35: /* Expression: FALSE  */
-  if (yyn == 35)
-    /* "smallgrammar.y":208  */
+  case 39: /* Expression: FALSE  */
+  if (yyn == 39)
+    /* "smallgrammar.y":213  */
             {yyval = ((BooleanLiteral)(yystack.valueAt (0)));};
   break;
 
 
-  case 36: /* Expression: Expression PLUS Expression  */
-  if (yyn == 36)
-    /* "smallgrammar.y":209  */
+  case 40: /* Expression: Expression PLUS Expression  */
+  if (yyn == 40)
+    /* "smallgrammar.y":214  */
                                  {yyval = new BinaryExpression("PLUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
-  case 37: /* Expression: Expression MINUS Expression  */
-  if (yyn == 37)
-    /* "smallgrammar.y":210  */
+  case 41: /* Expression: Expression MINUS Expression  */
+  if (yyn == 41)
+    /* "smallgrammar.y":215  */
                                   {yyval = new BinaryExpression("MINUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
-  case 38: /* Expression: Expression MULTIPLY Expression  */
-  if (yyn == 38)
-    /* "smallgrammar.y":211  */
+  case 42: /* Expression: Expression MULTIPLY Expression  */
+  if (yyn == 42)
+    /* "smallgrammar.y":216  */
                                      {yyval = new BinaryExpression("MULTIPLY", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
-  case 39: /* Expression: Expression DIVIDE Expression  */
-  if (yyn == 39)
-    /* "smallgrammar.y":212  */
+  case 43: /* Expression: Expression DIVIDE Expression  */
+  if (yyn == 43)
+    /* "smallgrammar.y":217  */
                                    {yyval = new BinaryExpression("DIVIDE", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
-  case 40: /* Expression: Expression REMAINDER Expression  */
-  if (yyn == 40)
-    /* "smallgrammar.y":213  */
+  case 44: /* Expression: Expression REMAINDER Expression  */
+  if (yyn == 44)
+    /* "smallgrammar.y":218  */
                                       {yyval = new BinaryExpression("REMAINDER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
-  case 43: /* Type: PrimitiveType  */
-  if (yyn == 43)
-    /* "smallgrammar.y":226  */
+  case 47: /* Type: PrimitiveType  */
+  if (yyn == 47)
+    /* "smallgrammar.y":231  */
                     { yyval = ((PrimitiveType)(yystack.valueAt (0))); };
   break;
 
 
-  case 44: /* Type: ArrayType  */
-  if (yyn == 44)
-    /* "smallgrammar.y":227  */
+  case 48: /* Type: ArrayType  */
+  if (yyn == 48)
+    /* "smallgrammar.y":232  */
                 { yyval = ((ArrayType)(yystack.valueAt (0))); };
   break;
 
 
-  case 45: /* Type: RecordType  */
-  if (yyn == 45)
-    /* "smallgrammar.y":228  */
+  case 49: /* Type: RecordType  */
+  if (yyn == 49)
+    /* "smallgrammar.y":233  */
                  { yyval = ((RecordType)(yystack.valueAt (0))); };
   break;
 
 
-  case 46: /* Type: Identifier  */
-  if (yyn == 46)
-    /* "smallgrammar.y":229  */
+  case 50: /* Type: Identifier  */
+  if (yyn == 50)
+    /* "smallgrammar.y":234  */
                  { yyval = ((Identifier)(yystack.valueAt (0))); };
   break;
 
 
-  case 47: /* PrimitiveType: INTEGER  */
-  if (yyn == 47)
-    /* "smallgrammar.y":233  */
+  case 51: /* PrimitiveType: INTEGER  */
+  if (yyn == 51)
+    /* "smallgrammar.y":238  */
               { yyval = new PrimitiveType("integer");};
   break;
 
 
-  case 48: /* PrimitiveType: REAL  */
-  if (yyn == 48)
-    /* "smallgrammar.y":234  */
+  case 52: /* PrimitiveType: REAL  */
+  if (yyn == 52)
+    /* "smallgrammar.y":239  */
            { yyval = new PrimitiveType("real"); };
   break;
 
 
-  case 49: /* PrimitiveType: BOOLEAN  */
-  if (yyn == 49)
-    /* "smallgrammar.y":235  */
+  case 53: /* PrimitiveType: BOOLEAN  */
+  if (yyn == 53)
+    /* "smallgrammar.y":240  */
               { yyval = new PrimitiveType("boolean"); };
   break;
 
 
-  case 50: /* RecordType: RECORD RecordDeclarations END  */
-  if (yyn == 50)
-    /* "smallgrammar.y":239  */
+  case 54: /* RecordType: RECORD RecordDeclarations END  */
+  if (yyn == 54)
+    /* "smallgrammar.y":244  */
                                     {yyval = ((RecordType)(yystack.valueAt (1)));};
   break;
 
 
-  case 51: /* RecordDeclarations: %empty  */
-  if (yyn == 51)
-    /* "smallgrammar.y":243  */
+  case 55: /* RecordDeclarations: %empty  */
+  if (yyn == 55)
+    /* "smallgrammar.y":248  */
                   { yyval = new RecordType(); };
   break;
 
 
-  case 52: /* RecordDeclarations: VariableDeclaration RecordDeclarations  */
-  if (yyn == 52)
-    /* "smallgrammar.y":244  */
+  case 56: /* RecordDeclarations: VariableDeclaration RecordDeclarations  */
+  if (yyn == 56)
+    /* "smallgrammar.y":249  */
                                              { yyval = ((RecordType)(yystack.valueAt (0))); ((RecordType)(yystack.valueAt (0))).add(((VariableDeclaration)(yystack.valueAt (1))));};
   break;
 
 
-  case 53: /* ArrayType: ARRAY LBRACKET Expression RBRACKET Type  */
-  if (yyn == 53)
-    /* "smallgrammar.y":248  */
+  case 57: /* ArrayType: ARRAY LBRACKET Expression RBRACKET Type  */
+  if (yyn == 57)
+    /* "smallgrammar.y":253  */
                                               { yyval = new ArrayType(((IExpression)(yystack.valueAt (2))), ((IType)(yystack.valueAt (0)))); };
   break;
 
 
-  case 54: /* Identifier: IDENTIFIER  */
-  if (yyn == 54)
-    /* "smallgrammar.y":254  */
+  case 58: /* Identifier: IDENTIFIER  */
+  if (yyn == 58)
+    /* "smallgrammar.y":259  */
                    {yyval = ((Identifier)(yystack.valueAt (0)));};
   break;
 
 
 
-/* "YYParser.java":1093  */
+/* "YYParser.java":1126  */
 
         default: break;
       }
@@ -1504,7 +1537,7 @@ public class YYParser
     return yyvalue == yytable_ninf_;
   }
 
-  private static final short yypact_ninf_ = -69;
+  private static final short yypact_ninf_ = -60;
   private static final byte yytable_ninf_ = -1;
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -1514,18 +1547,19 @@ public class YYParser
   {
     return new short[]
     {
-      13,    15,    15,    15,    27,   -69,    13,   -69,   -69,   -69,
-     -69,   -69,     3,    18,    -3,   -69,   -69,   104,   110,   110,
-      15,   -69,   -69,   -69,   -69,    28,    24,   -69,   -69,   -69,
-      20,     7,   -69,   -69,   -69,   -69,     1,     4,    25,    26,
-     -69,   104,   104,   104,   104,   104,   -69,    24,    53,   104,
-     104,   -69,   -69,     5,    15,   110,    48,    48,   -69,   -69,
-     -69,   -69,   -69,    68,    28,    85,   110,   -69,   -69,   110,
-     -69,   104,    15,   104,   104,   -69,    58,    85,   -69,   -69,
-     -69,   -69,   -69,    60,   -69,    -2,    62,    39,    79,   -69,
-     -69,    85,    85,    91,    85,    95,   103,   104,    86,    43,
-     -69,   -69,    92,   104,   -69,    85,   104,    23,   123,    34,
-      85,   -69,    85,   129,   135,   -69,   -69
+      69,     4,     4,     4,     9,   -60,    69,   -60,   -60,   -60,
+     -60,   -60,     5,     0,   -22,   -60,   -60,   138,   124,   124,
+       4,   -60,   -60,   -60,   -60,    19,    15,   -60,   -60,   -60,
+     -14,    -4,   -60,   -60,   -60,   -60,    -3,    11,    12,    17,
+     -60,   138,   138,   138,   138,   138,   -60,    15,    56,   138,
+     138,   -60,   -60,     7,     4,   124,    23,    23,   -60,   -60,
+     -60,   -60,   -60,    66,    19,    83,   124,   -60,   -60,   124,
+     -60,   138,     4,   138,    61,   138,   -60,    85,    83,   -60,
+     -60,   -60,   -60,   -60,   -60,    88,   -60,   -10,    79,    37,
+     138,   110,   -60,   -60,    83,    83,   102,    83,    75,    82,
+      90,    93,   138,   100,    -6,   -60,   138,   -60,   -60,   105,
+     138,   -60,    83,   -60,   138,    13,   101,    31,    83,   -60,
+      83,   111,   113,   -60,   -60
     };
   }
 
@@ -1538,17 +1572,18 @@ public class YYParser
     return new byte[]
     {
        3,     0,     0,     0,     0,     2,     3,     5,     7,     8,
-       6,    54,     0,     0,     0,     1,     4,     0,     0,     0,
-       0,    32,    33,    34,    35,    41,    51,    47,    48,    49,
-       0,    41,    43,    45,    44,    46,    41,     0,    15,     0,
-      42,     0,     0,     0,     0,     0,    11,    51,     0,     0,
-       0,     9,    12,     0,     0,     0,    36,    37,    38,    39,
-      40,    52,    50,     0,    41,    18,     0,    16,    17,     0,
-      10,     0,     0,     0,     0,    20,     0,    18,    21,    22,
-      23,    24,    25,     0,    53,     0,     0,     0,    31,    14,
-      19,    18,    18,     0,    18,     0,     0,     0,     0,     0,
-      13,    26,     0,     0,    29,    18,     0,     0,     0,     0,
-      18,    30,    18,     0,     0,    27,    28
+       6,    58,     0,     0,     0,     1,     4,     0,     0,     0,
+       0,    36,    37,    38,    39,    45,    55,    51,    52,    53,
+       0,    45,    47,    49,    48,    50,    45,     0,    15,     0,
+      46,     0,     0,     0,     0,     0,    11,    55,     0,     0,
+       0,     9,    12,     0,     0,     0,    40,    41,    42,    43,
+      44,    56,    54,     0,    45,    18,     0,    16,    17,     0,
+      10,     0,     0,     0,     0,     0,    20,     0,    18,    21,
+      22,    23,    24,    26,    25,     0,    57,     0,     0,     0,
+       0,    32,    14,    19,    18,    18,     0,    18,     0,    34,
+       0,     0,     0,     0,     0,    33,     0,    13,    27,     0,
+       0,    30,    18,    35,     0,     0,     0,     0,    18,    31,
+      18,     0,     0,    28,    29
     };
   }
 
@@ -1558,9 +1593,9 @@ public class YYParser
   {
     return new byte[]
     {
-     -69,   -69,    97,   -69,    14,   -18,   -69,   -69,    61,   -69,
-     -68,   -69,   -69,   -69,   -69,   -69,   -69,   -38,    -6,    -9,
-     -69,   -69,   100,   -69,    -1
+     -60,   -60,   115,   -60,    14,   -13,   -60,   -60,    57,   -60,
+     -59,   -60,   -60,   -60,   -60,   -60,   -60,   -60,    20,   -17,
+     -20,   -18,   -60,   -60,    78,   -60,     1
     };
   }
 
@@ -1570,9 +1605,9 @@ public class YYParser
   {
     return new byte[]
     {
-      -1,     4,     5,     6,    75,     8,     9,    10,    37,    38,
-      76,    77,    78,    79,    80,    81,    82,    25,    46,    31,
-      32,    33,    48,    34,    35
+      -1,     4,     5,     6,    76,     8,     9,    10,    37,    38,
+      77,    78,    79,    80,    81,    82,    83,    84,    98,    99,
+      46,    31,    32,    33,    48,    34,    35
     };
   }
 
@@ -1584,21 +1619,23 @@ public class YYParser
   {
     return new byte[]
     {
-      12,    13,    14,    56,    57,    58,    59,    60,    47,    90,
-      36,    63,    64,    17,     7,    65,    92,    50,    11,    39,
-       7,     1,     2,    95,    96,    51,    99,    15,    19,    47,
-      52,    20,     1,    85,    40,    87,    88,   108,     3,    53,
-      40,   110,   113,    18,   114,    66,    68,    41,    42,    43,
-      44,    45,   112,    39,   104,    98,    49,    83,    70,   102,
-      84,    40,    94,    54,    62,   107,    55,   105,   109,    89,
-      91,    86,    41,    42,    43,    44,    45,    41,    42,    43,
-      44,    45,    93,    41,    42,    43,    44,    45,    41,    42,
-      43,    44,    45,     1,     2,    21,    22,    23,    24,    43,
-      44,    45,    71,    16,    72,    69,   100,    73,    21,    22,
-      23,    24,    97,    11,   101,    67,    74,    41,    42,    43,
-      44,    45,    26,    27,    28,    29,    30,   103,    41,    42,
-      43,    44,    45,   106,   111,    41,    42,    43,    44,    45,
-     115,    41,    42,    43,    44,    45,   116,    61
+      25,    36,    12,    13,    14,   111,    50,    11,    95,    15,
+      19,    51,    20,    47,     7,    17,    52,    65,   112,    93,
+       7,    39,    49,     1,    56,    57,    58,    59,    60,    40,
+      40,   118,    63,    64,    47,   100,   101,    68,   104,    41,
+      42,    43,    44,    45,    70,    18,    53,    66,    85,   120,
+      54,    86,    40,   116,    87,    39,    89,    55,    91,   121,
+      97,   122,    41,    42,    43,    44,    45,    62,    41,    42,
+      43,    44,    45,    88,    43,    44,    45,     1,     2,   103,
+      41,    42,    43,    44,    45,   109,    41,    42,    43,    44,
+      45,     1,     2,   115,     3,    90,    92,   117,    94,    96,
+      71,   107,    72,    69,   108,    73,    21,    22,    23,    24,
+     105,    67,   119,    74,    75,    41,    42,    43,    44,    45,
+     106,    16,   123,   102,   124,    61,   113,    11,     0,     0,
+       0,    41,    42,    43,    44,    45,    26,    27,    28,    29,
+      30,   110,    21,    22,    23,    24,   114,     0,     0,    41,
+      42,    43,    44,    45,    41,    42,    43,    44,    45,    41,
+      42,    43,    44,    45
     };
   }
 
@@ -1607,21 +1644,23 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new byte[]
     {
-       1,     2,     3,    41,    42,    43,    44,    45,    26,    77,
-      19,    49,    50,    10,     0,    10,    18,    10,     3,    20,
-       6,     8,     9,    91,    92,    31,    94,     0,    10,    47,
-      36,    34,     8,    71,    33,    73,    74,   105,    25,    35,
-      33,    18,   110,    40,   112,    40,    55,    49,    50,    51,
-      52,    53,    18,    54,    11,    93,    36,    66,    64,    97,
-      69,    33,    23,    38,    11,   103,    40,    24,   106,    11,
-      10,    72,    49,    50,    51,    52,    53,    49,    50,    51,
-      52,    53,    20,    49,    50,    51,    52,    53,    49,    50,
-      51,    52,    53,     8,     9,     4,     5,     6,     7,    51,
-      52,    53,    17,     6,    19,    37,    11,    22,     4,     5,
-       6,     7,    21,     3,    11,    54,    31,    49,    50,    51,
-      52,    53,    12,    13,    14,    15,    16,    41,    49,    50,
-      51,    52,    53,    41,    11,    49,    50,    51,    52,    53,
-      11,    49,    50,    51,    52,    53,    11,    47
+      17,    19,     1,     2,     3,    11,    10,     3,    18,     0,
+      10,    31,    34,    26,     0,    10,    36,    10,    24,    78,
+       6,    20,    36,     8,    41,    42,    43,    44,    45,    33,
+      33,    18,    49,    50,    47,    94,    95,    55,    97,    49,
+      50,    51,    52,    53,    64,    40,    35,    40,    66,    18,
+      38,    69,    33,   112,    71,    54,    73,    40,    75,   118,
+      23,   120,    49,    50,    51,    52,    53,    11,    49,    50,
+      51,    52,    53,    72,    51,    52,    53,     8,     9,    96,
+      49,    50,    51,    52,    53,   102,    49,    50,    51,    52,
+      53,     8,     9,   110,    25,    34,    11,   114,    10,    20,
+      17,    11,    19,    37,    11,    22,     4,     5,     6,     7,
+      35,    54,    11,    30,    31,    49,    50,    51,    52,    53,
+      38,     6,    11,    21,    11,    47,   106,     3,    -1,    -1,
+      -1,    49,    50,    51,    52,    53,    12,    13,    14,    15,
+      16,    41,     4,     5,     6,     7,    41,    -1,    -1,    49,
+      50,    51,    52,    53,    49,    50,    51,    52,    53,    49,
+      50,    51,    52,    53
     };
   }
 
@@ -1633,17 +1672,18 @@ private static final byte[] yycheck_ = yycheck_init();
     return new byte[]
     {
        0,     8,     9,    25,    55,    56,    57,    58,    59,    60,
-      61,     3,    78,    78,    78,     0,    56,    10,    40,    10,
-      34,     4,     5,     6,     7,    71,    12,    13,    14,    15,
-      16,    73,    74,    75,    77,    78,    73,    62,    63,    78,
-      33,    49,    50,    51,    52,    53,    72,    59,    76,    36,
-      10,    72,    72,    35,    38,    40,    71,    71,    71,    71,
-      71,    76,    11,    71,    71,    10,    40,    62,    73,    37,
-      72,    17,    19,    22,    31,    58,    64,    65,    66,    67,
-      68,    69,    70,    73,    73,    71,    78,    71,    71,    11,
-      64,    10,    18,    20,    23,    64,    64,    21,    71,    64,
-      11,    11,    71,    41,    11,    24,    41,    71,    64,    71,
-      18,    11,    18,    64,    64,    11,    11
+      61,     3,    80,    80,    80,     0,    56,    10,    40,    10,
+      34,     4,     5,     6,     7,    73,    12,    13,    14,    15,
+      16,    75,    76,    77,    79,    80,    75,    62,    63,    80,
+      33,    49,    50,    51,    52,    53,    74,    59,    78,    36,
+      10,    74,    74,    35,    38,    40,    73,    73,    73,    73,
+      73,    78,    11,    73,    73,    10,    40,    62,    75,    37,
+      74,    17,    19,    22,    30,    31,    58,    64,    65,    66,
+      67,    68,    69,    70,    71,    75,    75,    73,    80,    73,
+      34,    73,    11,    64,    10,    18,    20,    23,    72,    73,
+      64,    64,    21,    73,    64,    35,    38,    11,    11,    73,
+      41,    11,    24,    72,    41,    73,    64,    73,    18,    11,
+      18,    64,    64,    11,    11
     };
   }
 
@@ -1655,10 +1695,10 @@ private static final byte[] yycheck_ = yycheck_init();
     {
        0,    54,    55,    56,    56,    57,    57,    58,    58,    59,
       59,    59,    60,    61,    61,    62,    62,    63,    64,    64,
-      65,    65,    66,    66,    66,    66,    67,    68,    68,    69,
-      69,    70,    71,    71,    71,    71,    71,    71,    71,    71,
-      71,    72,    72,    73,    73,    73,    73,    74,    74,    74,
-      75,    76,    76,    77,    78
+      65,    65,    66,    66,    66,    66,    66,    67,    68,    68,
+      69,    69,    70,    71,    72,    72,    73,    73,    73,    73,
+      73,    73,    73,    73,    73,    74,    74,    75,    75,    75,
+      75,    76,    76,    76,    77,    78,    78,    79,    80
     };
   }
 
@@ -1670,10 +1710,10 @@ private static final byte[] yycheck_ = yycheck_init();
     {
        0,     2,     1,     0,     2,     1,     1,     1,     1,     5,
        7,     5,     5,    10,     8,     1,     3,     3,     0,     2,
-       1,     1,     1,     1,     1,     1,     5,     9,    10,     5,
-       7,     2,     1,     1,     1,     1,     3,     3,     3,     3,
-       3,     0,     1,     1,     1,     1,     1,     1,     1,     1,
-       3,     0,     2,     5,     1
+       1,     1,     1,     1,     1,     1,     1,     5,     9,    10,
+       5,     7,     2,     4,     1,     3,     1,     1,     1,     1,
+       3,     3,     3,     3,     3,     0,     1,     1,     1,     1,
+       1,     1,     1,     1,     3,     0,     2,     5,     1
     };
   }
 
@@ -1685,12 +1725,12 @@ private static final byte[] yycheck_ = yycheck_init();
   {
     return new short[]
     {
-       0,   116,   116,   120,   121,   125,   126,   130,   131,   135,
-     136,   137,   141,   145,   146,   150,   151,   156,   160,   161,
-     165,   166,   172,   173,   174,   176,   180,   184,   186,   191,
-     192,   196,   205,   206,   207,   208,   209,   210,   211,   212,
-     213,   220,   221,   226,   227,   228,   229,   233,   234,   235,
-     239,   243,   244,   248,   254
+       0,   117,   117,   121,   122,   126,   127,   131,   132,   136,
+     137,   138,   142,   146,   147,   151,   152,   157,   161,   162,
+     166,   167,   173,   174,   175,   176,   177,   181,   185,   187,
+     192,   193,   197,   201,   205,   206,   210,   211,   212,   213,
+     214,   215,   216,   217,   218,   225,   226,   231,   232,   233,
+     234,   238,   239,   240,   244,   248,   249,   253,   259
     };
   }
 
@@ -1768,7 +1808,7 @@ private static final byte[] yycheck_ = yycheck_init();
   }
 
 
-  private static final int YYLAST_ = 147;
+  private static final int YYLAST_ = 163;
   private static final int YYEMPTY_ = -2;
   private static final int YYFINAL_ = 15;
   private static final int YYNTOKENS_ = 54;
@@ -1790,10 +1830,10 @@ private static final byte[] yycheck_ = yycheck_init();
         return ast;
     }
 
-/* "YYParser.java":1792  */
+/* "YYParser.java":1832  */
 
 }
-/* "smallgrammar.y":257  */
+/* "smallgrammar.y":262  */
 
 //
 //
