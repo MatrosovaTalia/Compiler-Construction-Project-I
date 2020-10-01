@@ -43,7 +43,7 @@ public class Main {
 //        MyLexer myLexer = new MyLexer();
 
 
-        Declarations ast = YYParser.makeAST("1");
+        Declarations ast = YYParser.makeAST("2");
 
 //        Identifier id = new Identifier("id1");
 //        System.out.println(id);

@@ -105,9 +105,10 @@ import java.util.ArrayList;
 %type <Print>Print
 %type <Expressions>Expressions
 
-
 %left MINUS PLUS
 %left MULTIPLY DIVIDE REMAINDER
+%left AND OR XOR
+%left LESS GREATER EQUALS NEQUALS LEQUALS GEQUALS
 
 %start Program
 
@@ -211,11 +212,21 @@ Expression
     | REAL_LITERAL {$$ = $1;}
     | TRUE {$$ = $1;}
     | FALSE {$$ = $1;}
+    | LPAREN Expression RPAREN  { $$ = $2; }
     | Expression PLUS Expression {$$ = new BinaryExpression("PLUS", $1, $3);}
     | Expression MINUS Expression {$$ = new BinaryExpression("MINUS", $1, $3);}
     | Expression MULTIPLY Expression {$$ = new BinaryExpression("MULTIPLY", $1, $3);}
     | Expression DIVIDE Expression {$$ = new BinaryExpression("DIVIDE", $1, $3);}
     | Expression REMAINDER Expression {$$ = new BinaryExpression("REMAINDER", $1, $3);}
+    | Expression AND Expression {$$ = new BinaryExpression("AND", $1, $3);}
+    | Expression OR Expression {$$ = new BinaryExpression("OR", $1, $3);}
+    | Expression XOR Expression  {$$ = new BinaryExpression("XOR", $1, $3);}
+    | Expression LESS Expression {$$ = new BinaryExpression("LESS", $1, $3);}
+    | Expression GREATER Expression {$$ = new BinaryExpression("GREATER", $1, $3);}
+    | Expression LEQUALS Expression {$$ = new BinaryExpression("LEQUALS", $1, $3);}
+    | Expression GEQUALS Expression {$$ = new BinaryExpression("GEQUALS", $1, $3);}
+    | Expression EQUALS Expression {$$ = new BinaryExpression("EQUALS", $1, $3);}
+    | Expression NEQUALS Expression {$$ = new BinaryExpression("NEQUALS", $1, $3);}
     ;
 
 
