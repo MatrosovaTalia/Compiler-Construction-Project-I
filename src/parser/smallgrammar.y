@@ -104,6 +104,11 @@ import java.util.ArrayList;
 %type <Return>Return
 %type <Print>Print
 %type <Expressions>Expressions
+%type <RoutineCall>RoutineCall
+%type <ModifiablePrimary>ModifiablePrimary
+%type <ElementCall>ElementCall
+%type <Assignment>Assignment
+
 
 %left MINUS PLUS
 %left MULTIPLY DIVIDE REMAINDER
@@ -146,7 +151,7 @@ TypeDeclaration
 RoutineDeclaration
     : ROUTINE Identifier LPAREN Parameters RPAREN COLON Type IS Body END  {$$ = new RoutineDeclaration($2, $4, $7, $9);}
     | ROUTINE Identifier LPAREN Parameters RPAREN IS Body END  {$$ = new RoutineDeclaration($2, $4, null, $7);}
-   ;
+    ;
 
 Parameters
     : ParameterDeclaration { Parameters x = new Parameters(); x.add($1); $$ = x;}
@@ -169,13 +174,22 @@ BodyDeclaration
     ;
 
 Statement
-//    : Assignment  {$$ = $1;}
-//    | RoutineCall  {$$ = $1; }
-    : WhileStatement  {$$ = $1;}
+    : Assignment  {$$ = $1;}
+    | RoutineCall  {$$ = $1; }
+    | WhileStatement  {$$ = $1;}
     | ForLoop  {$$ = $1;}
     | IfStatement {$$ = $1;}
     | Print  {$$ = $1;}
     | Return  {$$ = $1;}
+    ;
+
+Assignment
+    : ModifiablePrimary ASSIGN Expression {$$ = new Assignment($1, $3);}
+    ;
+
+
+RoutineCall
+    : Identifier LPAREN Expressions RPAREN {$$ = new RoutineCall($1, $3); }
     ;
 
 WhileStatement
@@ -212,6 +226,8 @@ Expression
     | REAL_LITERAL {$$ = $1;}
     | TRUE {$$ = $1;}
     | FALSE {$$ = $1;}
+    | RoutineCall {$$ = $1;}
+    | ModifiablePrimary {$$ = $1;}
     | LPAREN Expression RPAREN  { $$ = $2; }
     | Expression PLUS Expression {$$ = new BinaryExpression("PLUS", $1, $3);}
     | Expression MINUS Expression {$$ = new BinaryExpression("MINUS", $1, $3);}
@@ -228,7 +244,6 @@ Expression
     | Expression EQUALS Expression {$$ = new BinaryExpression("EQUALS", $1, $3);}
     | Expression NEQUALS Expression {$$ = new BinaryExpression("NEQUALS", $1, $3);}
     ;
-
 
 
 
@@ -262,6 +277,17 @@ RecordDeclarations
 
 ArrayType
     : ARRAY LBRACKET Expression RBRACKET Type { $$ = new ArrayType($3, $5); }
+    ;
+
+
+ModifiablePrimary
+    : Identifier ElementCall { $$ = new ModifiablePrimary($1, $2); }
+    ;
+
+ElementCall
+    : /* empty */ { $$ = new ElementCall(); }
+    | DOT Identifier ElementCall { $$ = $3; $3.add(new FieldAccess($2)); }
+    | LBRACKET Expression RBRACKET ElementCall { $$ = $4; $4.add(new IndexAccess($2));}
     ;
 
 

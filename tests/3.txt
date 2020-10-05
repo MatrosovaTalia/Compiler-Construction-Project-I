@@ -3,9 +3,9 @@ var c : real;
 
 routine main (args: integer) : integer is
     if a then
-    	c := 1.0;
+    c[0].one := 1.0;
     else
-    	c := 0.0;
+    c := 0.0;
     end
 
     print(c);

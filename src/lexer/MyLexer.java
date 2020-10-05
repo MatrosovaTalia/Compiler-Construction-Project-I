@@ -460,17 +460,6 @@ public class MyLexer implements YYParser.Lexer {
     }
 
 
-    @Override
-    public void yyerror(String msg) {
-        System.out.println(msg);
-    }
-
-//    @Override
-//    public void yyerror(Location loc, String msg) {
-//        System.out.println("An error occurred at position " +
-//                currentToken.getPosition() + ":\n" + msg);
-//
-//    }
 
     @Override
     public void yyerror(Location loc, String msg) {
