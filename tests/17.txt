@@ -3,3 +3,4 @@ type b is boolean;
 
 var ab : integer;
 type a is real;
+//var c is -2;

@@ -14,7 +14,9 @@ public enum Operation {
     LEQUALS(11),
     GEQUALS(12),
     EQUALS(13),
-    NEQUALS(14);
+    NEQUALS(14),
+    NEGATIVE(15),
+    POSITIVE(16);
 
 
     int value;
