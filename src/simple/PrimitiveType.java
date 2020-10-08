@@ -20,4 +20,15 @@ public class PrimitiveType implements IType {
     public void emit(ClassWriter cw, MethodVisitor mv) {
 
     }
+
+    @Override
+    public String resolve() {
+        String type;
+        switch (primitivetype) {
+            case "boolean" -> type = "Z";
+            case "real" -> type = "D";
+            default -> type = "I";
+        }
+        return type;
+    }
 }

@@ -11,4 +11,9 @@ public class RecordType extends ArrayList<VariableDeclaration> implements IType{
     public void emit(ClassWriter cw, MethodVisitor mv) {
 
     }
+
+    @Override
+    public String resolve() {
+        return null;
+    }
 }
