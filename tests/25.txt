@@ -1,0 +1,8 @@
+var a: integer is 5
+var b: boolean is false
+var z: real is 12.05
+
+/*routine main(argc: integer) is
+
+end
+*/

@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class WhileStatement implements IStatement{
     IExpression expression;
     Body body;
@@ -15,5 +18,10 @@ public class WhileStatement implements IStatement{
                 "while_exp=" + expression + '\'' +
                 "while_body=" + body + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

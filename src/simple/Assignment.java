@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class Assignment implements IStatement{
     ModifiablePrimary m_primary;
     IExpression expression;
@@ -15,5 +18,10 @@ public class Assignment implements IStatement{
                 "primary=" + m_primary + '\'' +
                 "expression=" + expression + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

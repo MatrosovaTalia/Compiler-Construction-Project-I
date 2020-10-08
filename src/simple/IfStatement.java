@@ -1,6 +1,8 @@
 package simple;
 
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 public class IfStatement implements IStatement {
     public IExpression expression;
@@ -22,5 +24,10 @@ public class IfStatement implements IStatement {
                 "if=" + ifBody +'\''+
                 "else=" + elseBody +'\''+
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class Parameter implements ILexem {
     Identifier id;
     IType type;
@@ -17,4 +20,8 @@ public class Parameter implements ILexem {
                 '}';
     }
 
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
+    }
 }

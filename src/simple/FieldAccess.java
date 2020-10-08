@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class FieldAccess implements IPrimary{
     Identifier id;
 
@@ -13,4 +16,13 @@ public class FieldAccess implements IPrimary{
                 '}';
     }
 
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
+    }
+
+    @Override
+    public Object resolve() {
+        return null;
+    }
 }

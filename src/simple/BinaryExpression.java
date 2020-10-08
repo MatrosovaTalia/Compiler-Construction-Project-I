@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class BinaryExpression implements IExpression{
     Operation operation;
     IExpression left;
@@ -20,4 +23,18 @@ public class BinaryExpression implements IExpression{
                 '}';
     }
 
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
+    }
+
+    @Override
+    public Object resolve() {
+        switch (operation) {
+            case PLUS -> {
+                return ((Double) left.resolve()) + ((Double) right.resolve());
+            }
+        }
+        return null;
+    }
 }

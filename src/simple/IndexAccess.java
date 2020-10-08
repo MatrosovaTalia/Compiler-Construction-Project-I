@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class IndexAccess implements IPrimary{
     IExpression expression;
 
@@ -12,5 +15,15 @@ public class IndexAccess implements IPrimary{
         return "\nIndex_Access{" +
                 "expression=" + expression + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
+    }
+
+    @Override
+    public Object resolve() {
+        return null;
     }
 }

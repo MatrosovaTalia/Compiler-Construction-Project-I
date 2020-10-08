@@ -1,5 +1,7 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import simple.ILexem;
 
 public class Identifier implements ILexem {
@@ -14,5 +16,10 @@ public class Identifier implements ILexem {
         return "Identifier{" +
                 "id=" + v + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

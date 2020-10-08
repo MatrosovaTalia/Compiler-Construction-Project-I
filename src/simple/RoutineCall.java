@@ -1,6 +1,9 @@
 package simple;
 
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class RoutineCall implements IStatement {
     Identifier id;
     Expressions expressions;
@@ -16,5 +19,10 @@ public class RoutineCall implements IStatement {
                 "id='" + id + '\'' +
                 "Parameters " + expressions + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

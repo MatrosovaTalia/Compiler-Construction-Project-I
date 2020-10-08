@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class ModifiablePrimary implements IExpression{
     Identifier id;
     ElementCall callList;
@@ -15,5 +18,15 @@ public class ModifiablePrimary implements IExpression{
                 "id=" + id + '\'' +
                 "Element_calls" + callList + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
+    }
+
+    @Override
+    public Object resolve() {
+        return null;
     }
 }

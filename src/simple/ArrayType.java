@@ -1,6 +1,9 @@
 package simple;
 
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class ArrayType implements IType {
     IExpression size;
     IType type;
@@ -16,5 +19,10 @@ public class ArrayType implements IType {
                 "Arr_size=" + size + '\'' +
                 "Arr_type=" + type + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

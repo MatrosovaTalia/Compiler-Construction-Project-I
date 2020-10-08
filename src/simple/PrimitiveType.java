@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class PrimitiveType implements IType {
     String primitivetype;
     public PrimitiveType(String type){
@@ -11,5 +14,10 @@ public class PrimitiveType implements IType {
         return "Primitive_type{" +
                 "primitive_type=" + primitivetype + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

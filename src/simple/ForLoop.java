@@ -1,6 +1,9 @@
 package simple;
 
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class ForLoop implements IStatement {
     public Identifier id;
     public IExpression from;
@@ -25,5 +28,10 @@ public class ForLoop implements IStatement {
                 "reverse?=" + reverse +'\''+
                 "Body=" + body +'\''+
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }

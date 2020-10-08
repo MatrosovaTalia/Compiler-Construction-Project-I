@@ -1,5 +1,8 @@
 package simple;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 public class RoutineDeclaration implements IDeclaration {
     Identifier name;
     Parameters params;
@@ -22,5 +25,10 @@ public class RoutineDeclaration implements IDeclaration {
                 "parameters" + params + '\'' +
                 "body=" + body + '\'' +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv) {
+
     }
 }
