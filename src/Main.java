@@ -3,9 +3,7 @@ import lexer.Token;
 import lexer.TokenType;
 import reader.Reader;
 import parser.*;
-import simple.Declarations;
-import simple.Identifier;
-import simple.Operation;
+import simple.*;
 import org.objectweb.asm.*;
 
 import java.io.FileOutputStream;
@@ -58,33 +56,21 @@ public class Main {
 
         System.out.println("Is Ast built?    "+ Boolean.toString(ast != null) + '\n');
         if (ast != null) {
-            for (simple.IDeclaration iDeclaration : ast) {
-                System.out.println(iDeclaration);
-                iDeclaration.emit(cw, mv);
+            for (simple.IDeclaration decl : ast) {
+                if (decl instanceof VariableDeclaration) {
+                    System.out.println(decl);
+                    decl.emit(cw, mv);
+                }
+            }
+            for (simple.IDeclaration decl : ast) {
+                if (decl instanceof RoutineDeclaration) {
+                    System.out.println(decl);
+                    decl.emit(cw, mv);
+                }
             }
         }
-        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        mv.visitFieldInsn(GETSTATIC, "MetaMain", "a", "I");
-        mv.visitMethodInsn(INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(I)V",
-                false);
-        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        mv.visitFieldInsn(GETSTATIC, "MetaMain", "b", "Z");
-        mv.visitMethodInsn(INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(Z)V",
-                false);
-        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        mv.visitFieldInsn(GETSTATIC, "MetaMain", "z", "D");
-        mv.visitMethodInsn(INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(D)V",
-                false);
-
+        mv.visitInsn(ICONST_0);
+        mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);
         mv.visitInsn(RETURN);
         mv.visitMaxs(-1, -1);
         mv.visitEnd();

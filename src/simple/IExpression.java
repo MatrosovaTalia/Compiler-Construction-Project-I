@@ -1,5 +1,6 @@
 package simple;
 
 public interface IExpression extends ILexem {
-    Object resolve();
+    Object resolve_value();
+    String resolve_type();
 }

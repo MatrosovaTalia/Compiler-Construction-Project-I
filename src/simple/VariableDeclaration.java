@@ -42,6 +42,7 @@ public class VariableDeclaration implements IDeclaration{
                     descriptor = "I";
                 }
             }
+            st.put(id.v, descriptor);
             cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, descriptor, null, null);
             if (value != null) {
                 value.emit(cw, mv);
@@ -49,7 +50,12 @@ public class VariableDeclaration implements IDeclaration{
             }
         }
         else if (type == null) {
-            // TODO: resolve types
+            var type = value.resolve_type();
+            cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, type, null, null);
+            if (value != null) {
+                value.emit(cw, mv);
+                mv.visitFieldInsn(PUTSTATIC, "MetaMain", id.v, type);
+            }
         }
     }
 }

@@ -29,12 +29,17 @@ public class BinaryExpression implements IExpression{
     }
 
     @Override
-    public Object resolve() {
+    public Object resolve_value() {
         switch (operation) {
             case PLUS -> {
-                return ((Double) left.resolve()) + ((Double) right.resolve());
+                return ((Double) left.resolve_value()) + ((Double) right.resolve_value());
             }
         }
         return null;
+    }
+
+    @Override
+    public String resolve_type() {
+        return "";
     }
 }

@@ -3,6 +3,6 @@ var b: boolean is false
 var z: real is 12.05
 
 routine main(argc: integer) is
-
+    print(a, b, z)
 end
 

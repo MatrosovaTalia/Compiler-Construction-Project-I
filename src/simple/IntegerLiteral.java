@@ -28,7 +28,12 @@ public class IntegerLiteral implements IExpression {
     }
 
     @Override
-    public Object resolve() {
+    public Object resolve_value() {
         return v.intValue();
+    }
+
+    @Override
+    public String resolve_type() {
+        return "I";
     }
 }

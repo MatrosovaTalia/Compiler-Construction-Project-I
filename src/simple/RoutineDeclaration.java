@@ -4,8 +4,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes.*;
 
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_STATIC;
+import static org.objectweb.asm.Opcodes.*;
 
 public class RoutineDeclaration implements IDeclaration {
     Identifier name;
@@ -35,13 +34,13 @@ public class RoutineDeclaration implements IDeclaration {
     public void emit(ClassWriter cw, MethodVisitor mv) {
         StringBuilder descriptor = new StringBuilder("(");
         for (var param: params) {
-            descriptor.append(param.type.resolve());
+            descriptor.append(param.type == null ? "V" : param.type.resolve());
         }
         descriptor.append(")");
-        descriptor.append(returnType.resolve());
+        descriptor.append(returnType == null ? "V" : returnType.resolve());
         MethodVisitor new_method = cw.visitMethod(
                 ACC_PUBLIC + ACC_STATIC,
-                name.v,
+                name.v + "_",
                 descriptor.toString(),
                 null,
                 new String[0]
@@ -49,6 +48,11 @@ public class RoutineDeclaration implements IDeclaration {
         for (var statement: body) {
             statement.emit(cw, new_method);
         }
+        if (returnType == null) {
+            new_method.visitInsn(RETURN);
+        }
+        new_method.visitMaxs(-1, -1);
+        new_method.visitEnd();
 
     }
 }

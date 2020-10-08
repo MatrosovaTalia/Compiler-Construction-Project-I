@@ -26,7 +26,12 @@ public class RealLiteral implements IExpression {
     }
 
     @Override
-    public Object resolve() {
+    public Object resolve_value() {
         return v.doubleValue();
+    }
+
+    @Override
+    public String resolve_type() {
+        return "D";
     }
 }

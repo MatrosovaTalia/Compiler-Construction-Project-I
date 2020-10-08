@@ -22,7 +22,12 @@ public class FieldAccess implements IPrimary{
     }
 
     @Override
-    public Object resolve() {
+    public Object resolve_value() {
         return null;
+    }
+
+    @Override
+    public String resolve_type() {
+        return "";
     }
 }

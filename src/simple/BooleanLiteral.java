@@ -32,7 +32,12 @@ public class BooleanLiteral implements IExpression {
     }
 
     @Override
-    public Object resolve() {
+    public Object resolve_value() {
         return v;
+    }
+
+    @Override
+    public String resolve_type() {
+        return "Z";
     }
 }
