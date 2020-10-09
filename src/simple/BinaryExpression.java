@@ -90,6 +90,643 @@ public class BinaryExpression implements IExpression{
                     mv.visitInsn(DADD);
                 }
             }
+
+            case MINUS -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(ISUB);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DSUB);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(ISUB);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DSUB);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(ISUB);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DSUB);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DSUB);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(ISUB);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DSUB);
+                }
+            }
+
+
+            case MULTIPLY -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IMUL);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DMUL);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IMUL);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DMUL);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IMUL);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DMUL);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DMUL);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IMUL);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DMUL);
+                }
+            }
+
+            case DIVIDE -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IDIV);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DDIV);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IDIV);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DDIV);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IDIV);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DDIV);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DDIV);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IDIV);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DDIV);
+                }
+            }
+
+            case REMAINDER -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IREM);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DREM);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IREM);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DREM);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IREM);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DREM);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DREM);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IREM);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DREM);
+                }
+            }
+
+            case AND -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IAND);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IAND);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IAND);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IAND);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+            }
+
+            case OR -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IOR);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IOR);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IOR);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IOR);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+            }
+
+            case XOR -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IXOR);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IXOR);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IXOR);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IXOR);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
+                }
+            }
+
+            case GREATER -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFGT);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DCMPG);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFGT);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DCMPG);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFGT);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DCMPG);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DCMPG);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFGT);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DCMPG);
+                }
+            }
+
+//            case GEQUALS -> {
+//                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//            }
+
+            case LESS -> {
+                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFLT);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DCMPL);
+                }
+                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFLT);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DCMPL);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFLT);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DCMPL);
+                }
+                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    mv.visitInsn(DCMPL);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+                    left.emit(cw, mv);
+                    right.emit(cw, mv);
+                    mv.visitInsn(IFLT);
+                }
+                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+                    left.emit(cw, mv);
+                    mv.visitInsn(I2D);
+                    right.emit(cw, mv);
+                    mv.visitInsn(DCMPL);
+                }
+            }
+
+//            case LEQUALS -> {
+//                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(IFLE);
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(IFLE);
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(IFLE);
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(IFLE);
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//            }
+
+//            case NEQUALS -> {
+//                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//            }
+
+//            case EQUALS -> {
+//                if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
+//                    left.emit(cw, mv);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//                else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
+//                    left.emit(cw, mv);
+//                    mv.visitInsn(I2D);
+//                    right.emit(cw, mv);
+//                    mv.visitInsn();
+//                }
+//            }
+
+
         }
     }
 
