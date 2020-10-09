@@ -3,8 +3,6 @@ package simple;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-
 public class ModifiablePrimary implements IExpression{
     Identifier id;
     ElementCall callList;
@@ -23,12 +21,8 @@ public class ModifiablePrimary implements IExpression{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
-//        mv.visitFieldInsn(GETSTATIC, "MetaMain", id.v, st.getVariable(id.v, ).getVariableType().resolve());
-    }
-
-    @Override
     public Object resolve_value() {
+        //        mv.visitFieldInsn(GETSTATIC, "MetaMain", id.v, st.getVariable(id.v, ).getVariableType().resolve());
         return null;
     }
 
@@ -36,5 +30,10 @@ public class ModifiablePrimary implements IExpression{
     public String resolve_type() {
         return null;
 //                st.getVariable(id.v, ).getVariableType().resolve();
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+
     }
 }
