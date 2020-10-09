@@ -24,7 +24,7 @@ public class ModifiablePrimary implements IExpression{
 
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv) {
-        mv.visitFieldInsn(GETSTATIC, "MetaMain", id.v, st.get(id.v));
+//        mv.visitFieldInsn(GETSTATIC, "MetaMain", id.v, st.getVariable(id.v, ).getVariableType().resolve());
     }
 
     @Override
@@ -34,6 +34,7 @@ public class ModifiablePrimary implements IExpression{
 
     @Override
     public String resolve_type() {
-        return st.get(id.v);
+        return null;
+//                st.getVariable(id.v, ).getVariableType().resolve();
     }
 }

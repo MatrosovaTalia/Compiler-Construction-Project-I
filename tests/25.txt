@@ -4,8 +4,8 @@ var z: real is 12.05
 
 routine main(argc: integer) is
     var d: integer
-    print(1)
-    print(2)
+    print(5/0)
+    print(12/4)
 end
 
 var k: integer is 10

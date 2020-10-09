@@ -42,7 +42,7 @@ public class VariableDeclaration implements IDeclaration{
                     descriptor = "I";
                 }
             }
-            st.put(id.v, descriptor);
+            st.addGlobalVariable(id.v, null, type, value);
             cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, descriptor, null, null);
             if (value != null) {
                 value.emit(cw, mv);
