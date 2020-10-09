@@ -170,7 +170,7 @@ Body
     ;
 
 BodyDeclaration
-    : SimpleDeclaration {$$ = $1;}
+    : VariableDeclaration {$$ = new LocalVariableDeclaration($1);}
     | Statement {$$ = $1;}
     ;
 
