@@ -3,6 +3,8 @@ package simple;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import java.util.Collections;
+
 public class WhileStatement implements IStatement{
     IExpression expression;
     Body body;
@@ -10,6 +12,7 @@ public class WhileStatement implements IStatement{
     public WhileStatement(IExpression expression, Body body){
         this.expression = expression;
         this.body = body;
+        Collections.reverse(this.body);
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.objectweb.asm.*;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -55,19 +56,11 @@ public class Main {
 
 
         System.out.println("Is Ast built?    "+ Boolean.toString(ast != null) + '\n');
-        if (ast != null) {
-            for (simple.IDeclaration decl : ast) {
-                if (decl instanceof VariableDeclaration) {
-                    System.out.println(decl);
-                    decl.emit(cw, mv);
-                }
-            }
-            for (simple.IDeclaration decl : ast) {
-                if (decl instanceof RoutineDeclaration) {
-                    System.out.println(decl);
-                    decl.emit(cw, mv);
-                }
-            }
+        assert ast != null;
+        Collections.reverse(ast);
+        for (var decl : ast) {
+            System.out.println(decl);
+            decl.emit(cw, mv);
         }
         mv.visitInsn(ICONST_0);
         mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);
