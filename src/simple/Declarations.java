@@ -13,18 +13,4 @@ public class Declarations extends ArrayList<IDeclaration> implements ILexem {
 
     }
 
-    @Override
-    public <T> T[] toArray(IntFunction<T[]> generator) {
-        return null;
-    }
-
-    @Override
-    public Stream<IDeclaration> stream() {
-        return null;
-    }
-
-    @Override
-    public Stream<IDeclaration> parallelStream() {
-        return null;
-    }
 }
