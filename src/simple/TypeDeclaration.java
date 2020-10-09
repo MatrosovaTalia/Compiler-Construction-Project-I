@@ -20,7 +20,7 @@ public class TypeDeclaration implements IDeclaration{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
     }
 }

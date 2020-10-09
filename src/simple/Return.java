@@ -21,8 +21,8 @@ public class Return implements IStatement {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
-        expression.emit(cw, mv);
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+        expression.emit(cw, mv, methodName);
         mv.visitInsn(RETURN);
     }
 }

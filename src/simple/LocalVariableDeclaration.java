@@ -25,7 +25,7 @@ public class LocalVariableDeclaration implements IDeclaration {
                 '}';
     }
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
 
     }

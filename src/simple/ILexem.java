@@ -5,5 +5,5 @@ import org.objectweb.asm.MethodVisitor;
 
 public interface ILexem {
     static SymbolTable st = new SymbolTable();
-    void emit(ClassWriter cw, MethodVisitor mv);
+    void emit(ClassWriter cw, MethodVisitor mv, String methodName);
 }

@@ -21,7 +21,7 @@ public class RealLiteral implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
         mv.visitLdcInsn(v.doubleValue());
     }
 

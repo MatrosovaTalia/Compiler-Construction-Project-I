@@ -1,11 +1,9 @@
 package simple;
 
-import misc.Pair;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.objectweb.asm.Opcodes.*;
@@ -37,58 +35,58 @@ public class BinaryExpression implements IExpression{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
 
         switch (operation) {
             case PLUS -> {
                 if (left.resolve_type().equals("I") && right.resolve_type().equals("I")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(IADD);
                 }
                 else if (left.resolve_type().equals("I") && right.resolve_type().equals("D")) {
-                    left.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
                     mv.visitInsn(I2D);
-                    right.emit(cw, mv);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(DADD);
                 }
                 else if (left.resolve_type().equals("I") && right.resolve_type().equals("Z")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(IADD);
                 }
                 else if (left.resolve_type().equals("D") && right.resolve_type().equals("D")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(DADD);
                 }
                 else if (left.resolve_type().equals("Z") && right.resolve_type().equals("Z")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(IADD);
                 }
                 else if (left.resolve_type().equals("D") && right.resolve_type().equals("I")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(I2D);
                     mv.visitInsn(DADD);
                 }
                 else if (left.resolve_type().equals("D") && right.resolve_type().equals("Z")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(I2D);
                     mv.visitInsn(DADD);
                 }
                 else if (left.resolve_type().equals("Z") && right.resolve_type().equals("I")) {
-                    left.emit(cw, mv);
-                    right.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(IADD);
                 }
                 else if (left.resolve_type().equals("Z") && right.resolve_type().equals("D")) {
-                    left.emit(cw, mv);
+                    left.emit(cw, mv, methodName);
                     mv.visitInsn(I2D);
-                    right.emit(cw, mv);
+                    right.emit(cw, mv, methodName);
                     mv.visitInsn(DADD);
                 }
             }

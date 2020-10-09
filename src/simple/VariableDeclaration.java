@@ -2,7 +2,6 @@ package simple;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes.*;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -27,7 +26,7 @@ public class VariableDeclaration implements IDeclaration{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
         String descriptor;
         if (type instanceof PrimitiveType) {
@@ -45,7 +44,7 @@ public class VariableDeclaration implements IDeclaration{
             st.put(id.v, descriptor);
             cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, descriptor, null, null);
             if (value != null) {
-                value.emit(cw, mv);
+                value.emit(cw, mv, methodName);
                 mv.visitFieldInsn(PUTSTATIC, "MetaMain", id.v, descriptor);
             }
         }
@@ -53,7 +52,7 @@ public class VariableDeclaration implements IDeclaration{
             var type = value.resolve_type();
             cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, type, null, null);
             if (value != null) {
-                value.emit(cw, mv);
+                value.emit(cw, mv, methodName);
                 mv.visitFieldInsn(PUTSTATIC, "MetaMain", id.v, type);
             }
         }

@@ -60,7 +60,7 @@ public class Main {
         Collections.reverse(ast);
         for (var decl : ast) {
             System.out.println(decl);
-            decl.emit(cw, mv);
+            decl.emit(cw, mv, "main");
         }
         mv.visitInsn(ICONST_0);
         mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);
@@ -76,9 +76,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
     }
 }
 

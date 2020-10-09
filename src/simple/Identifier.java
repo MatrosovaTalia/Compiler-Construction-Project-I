@@ -2,7 +2,6 @@ package simple;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import simple.ILexem;
 
 public class Identifier implements ILexem {
     public String v;
@@ -19,7 +18,7 @@ public class Identifier implements ILexem {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
     }
 }

@@ -23,7 +23,7 @@ public class ModifiablePrimary implements IExpression{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
         mv.visitFieldInsn(GETSTATIC, "MetaMain", id.v, st.get(id.v));
     }
 

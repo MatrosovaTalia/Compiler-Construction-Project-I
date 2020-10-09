@@ -24,7 +24,7 @@ public class WhileStatement implements IStatement{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
     }
 }

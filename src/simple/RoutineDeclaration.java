@@ -2,7 +2,6 @@ package simple;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes.*;
 
 import java.util.Collections;
 
@@ -34,11 +33,11 @@ public class RoutineDeclaration implements IDeclaration {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
         StringBuilder descriptor = new StringBuilder("(");
         if (params.size() > 0) {
             for (var param : params) {
-                descriptor.append(param.type == null ? "V" : param.type.resolve());
+                descriptor.append(param.type.resolve());
             }
         }
         else {
@@ -46,15 +45,16 @@ public class RoutineDeclaration implements IDeclaration {
         }
         descriptor.append(")");
         descriptor.append(returnType == null ? "V" : returnType.resolve());
+        String name = this.name.v.equals("main") ? this.name.v + "_" : this.name.v;
         MethodVisitor new_method = cw.visitMethod(
                 ACC_PUBLIC + ACC_STATIC,
-                (name.v.equals("main") ? name.v + "_" : name.v),
+                name,
                 descriptor.toString(),
                 null,
                 new String[0]
         );
         for (var statement: body) {
-            statement.emit(cw, new_method);
+            statement.emit(cw, new_method, name);
         }
         if (returnType == null) {
             new_method.visitInsn(RETURN);

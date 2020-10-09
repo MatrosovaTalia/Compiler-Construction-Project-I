@@ -11,7 +11,7 @@ public class Body extends ArrayList<IStatement> implements ILexem {
 
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
 
     }
 }

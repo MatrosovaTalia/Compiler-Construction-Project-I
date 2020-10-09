@@ -2,8 +2,6 @@ package simple;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes.*;
-import simple.IExpression;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -22,7 +20,7 @@ public class BooleanLiteral implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
         if (v) {
             mv.visitInsn(ICONST_1);
         }

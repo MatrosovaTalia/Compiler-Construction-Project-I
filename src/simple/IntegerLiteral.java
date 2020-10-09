@@ -6,8 +6,6 @@ import org.objectweb.asm.MethodVisitor;
 
 import java.math.BigInteger;
 
-import static org.objectweb.asm.Opcodes.BIPUSH;
-
 public class IntegerLiteral implements IExpression {
     public final BigInteger v;
 
@@ -23,7 +21,7 @@ public class IntegerLiteral implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
         mv.visitLdcInsn(v.intValue());
     }
 
