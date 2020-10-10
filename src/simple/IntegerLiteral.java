@@ -31,7 +31,7 @@ public class IntegerLiteral implements IExpression {
     }
 
     @Override
-    public String resolve_type() {
+    public String resolve_type(String methodName) {
         return "I";
     }
 }

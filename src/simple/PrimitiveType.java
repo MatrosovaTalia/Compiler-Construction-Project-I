@@ -26,7 +26,7 @@ public class PrimitiveType implements IType {
         String type;
         switch (primitivetype) {
             case "boolean" -> type = "Z";
-            case "real" -> type = "D";
+            case "real" -> type = "F";
             default -> type = "I";
         }
         return type;

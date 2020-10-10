@@ -35,17 +35,19 @@ public class RoutineDeclaration implements IDeclaration {
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
         StringBuilder descriptor = new StringBuilder("(");
+        String name = this.name.v.equals("main") ? this.name.v + "_" : this.name.v;
         if (params.size() > 0) {
             for (var param : params) {
                 descriptor.append(param.type.resolve());
+                param.emit(cw, mv, name);
             }
         }
         else {
             descriptor.append("V");
         }
+        st.addMethod(name, descriptor.toString(), params);
         descriptor.append(")");
         descriptor.append(returnType == null ? "V" : returnType.resolve());
-        String name = this.name.v.equals("main") ? this.name.v + "_" : this.name.v;
         MethodVisitor new_method = cw.visitMethod(
                 ACC_PUBLIC + ACC_STATIC,
                 name,

@@ -4,6 +4,8 @@ package simple;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import java.util.Collections;
+
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
@@ -12,6 +14,7 @@ public class Print  implements IStatement {
 
     public Print(Expressions expressions) {
         this.expressions = expressions;
+        Collections.reverse(this.expressions);
     }
 
     @Override
@@ -26,10 +29,11 @@ public class Print  implements IStatement {
         for (var exp: expressions) {
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             exp.emit(cw, mv, methodName);
+            String desc = "(" + exp.resolve_type(methodName) + ")V";
             mv.visitMethodInsn(INVOKEVIRTUAL,
                     "java/io/PrintStream",
                     "println",
-                    "(" + exp.resolve_type() + ")V",
+                    desc,
                     false);
         }
     }

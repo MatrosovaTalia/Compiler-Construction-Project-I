@@ -22,7 +22,7 @@ public class RealLiteral implements IExpression {
 
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
-        mv.visitLdcInsn(v.doubleValue());
+        mv.visitLdcInsn(v.floatValue());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class RealLiteral implements IExpression {
     }
 
     @Override
-    public String resolve_type() {
-        return "D";
+    public String resolve_type(String methodName) {
+        return "F";
     }
 }
