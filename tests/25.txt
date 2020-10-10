@@ -1,13 +1,154 @@
 var a: integer is 5
+var a1: integer
+var a2 is 5
 var b: boolean is false
-var z: real is 12.05
+var b1: boolean
+var b2 is false
+var c: real is 12.05
+var c1: real
+var c2 is 12.05
 
 routine main(argc: integer) is
-    if 0 then
-        print(0)
-    else
-        print(1)
-    end
+    var a: integer is 6
+    var a1: integer
+    var a2 is 6
+    var b: boolean is true
+    var b1: boolean
+    var b2 is true
+    var c: real is 11.09
+    var c1: real
+    var c2 is 11.91
+    print(a, c)
+    var temp is a
+    a := c
+    c := temp
+    print(a, c)
+    /*
+    print(1.0 - 1.0)
+    print(1.0 * 1.0)
+    print(1.0 / 1.0)
+    print(1.0 % 1.0)
+    print(1.0 + 2.0)
+    print(1.0 - 2.0)
+    print(1.0 * 2.0)
+    print(1.0 / 2.0)
+    print(1.0 % 2.0)
+    print(1.0 + 1)
+    print(1.0 - 1)
+    print(1.0 * 1)
+    print(1.0 / 1)
+    print(1.0 % 1)
+    print(1.0 + 2)
+    print(1.0 - 2)
+    print(1.0 * 2)
+    print(1.0 / 2)
+    print(1.0 % 2)
+    print(1.0 + true)
+    print(1.0 - true)
+    print(1.0 * true)
+    print(1.0 / true)
+    print(1.0 % true)
+    print(2.0 + 1.0)
+    print(2.0 - 1.0)
+    print(2.0 * 1.0)
+    print(2.0 / 1.0)
+    print(2.0 % 1.0)
+    print(2.0 + 2.0)
+    print(2.0 - 2.0)
+    print(2.0 * 2.0)
+    print(2.0 / 2.0)
+    print(2.0 % 2.0)
+    print(2.0 + 1)
+    print(2.0 - 1)
+    print(2.0 * 1)
+    print(2.0 / 1)
+    print(2.0 % 1)
+    print(2.0 + 2)
+    print(2.0 - 2)
+    print(2.0 * 2)
+    print(2.0 / 2)
+    print(2.0 % 2)
+    print(2.0 + true)
+    print(2.0 - true)
+    print(2.0 * true)
+    print(2.0 / true)
+    print(2.0 % true)
+    print(1 + 1.0)
+    print(1 - 1.0)
+    print(1 * 1.0)
+    print(1 / 1.0)
+    print(1 % 1.0)
+    print(1 + 2.0)
+    print(1 - 2.0)
+    print(1 * 2.0)
+    print(1 / 2.0)
+    print(1 % 2.0)
+    print(1 + 1)
+    print(1 - 1)
+    print(1 * 1)
+    print(1 / 1)
+    print(1 % 1)
+    print(1 + 2)
+    print(1 - 2)
+    print(1 * 2)
+    print(1 / 2)
+    print(1 % 2)
+    print(1 + true)
+    print(1 - true)
+    print(1 * true)
+    print(1 / true)
+    print(1 % true)
+    print(2 + 1.0)
+    print(2 - 1.0)
+    print(2 * 1.0)
+    print(2 / 1.0)
+    print(2 % 1.0)
+    print(2 + 2.0)
+    print(2 - 2.0)
+    print(2 * 2.0)
+    print(2 / 2.0)
+    print(2 % 2.0)
+    print(2 + 1)
+    print(2 - 1)
+    print(2 * 1)
+    print(2 / 1)
+    print(2 % 1)
+    print(2 + 2)
+    print(2 - 2)
+    print(2 * 2)
+    print(2 / 2)
+    print(2 % 2)
+    print(2 + true)
+    print(2 - true)
+    print(2 * true)
+    print(2 / true)
+    print(2 % true)
+    print(true + 1.0)
+    print(true - 1.0)
+    print(true * 1.0)
+    print(true / 1.0)
+    print(true % 1.0)
+    print(true + 2.0)
+    print(true - 2.0)
+    print(true * 2.0)
+    print(true / 2.0)
+    print(true % 2.0)
+    print(true + 1)
+    print(true - 1)
+    print(true * 1)
+    print(true / 1)
+    print(true % 1)
+    print(true + 2)
+    print(true - 2)
+    print(true * 2)
+    print(true / 2)
+    print(true % 2)
+    print(true + true)
+    print(true - true)
+    print(true * true)
+    print(true / true)
+    print(true % true)
+    */
 end
 
 var k: integer is 10
