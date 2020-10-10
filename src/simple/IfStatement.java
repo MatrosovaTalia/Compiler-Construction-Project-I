@@ -19,8 +19,10 @@ public class IfStatement implements IStatement {
         this.expression = expression;
         this.ifBody = ifBody;
         Collections.reverse(this.ifBody);
-        this.elseBody = elseBody;
-        Collections.reverse(this.elseBody);
+        if (elseBody != null) {
+            this.elseBody = elseBody;
+            Collections.reverse(this.elseBody);
+        }
     }
 
 
@@ -45,10 +47,11 @@ public class IfStatement implements IStatement {
         }
         mv.visitJumpInsn(GOTO, end);
         mv.visitLabel(if_false);
-        for (var st: elseBody) {
-            st.emit(cw, mv, methodName);
+        if (elseBody != null) {
+            for (var st : elseBody) {
+                st.emit(cw, mv, methodName);
+            }
         }
         mv.visitLabel(end);
-
     }
 }

@@ -1,9 +1,12 @@
 package simple;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import java.util.Collections;
+
+import static org.objectweb.asm.Opcodes.*;
 
 public class WhileStatement implements IStatement{
     IExpression expression;
@@ -25,6 +28,16 @@ public class WhileStatement implements IStatement{
 
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
-
+        Label start = new Label();
+        Label end = new Label();
+        mv.visitLabel(start);
+        expression.emit(cw, mv, methodName);
+        mv.visitInsn(ICONST_0);
+        mv.visitJumpInsn(IF_ICMPEQ, end);
+        for (var st: body) {
+            st.emit(cw, mv, methodName);
+        }
+        mv.visitJumpInsn(GOTO, start);
+        mv.visitLabel(end);
     }
 }
