@@ -4,6 +4,8 @@ package simple;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import java.util.Collections;
+
 public class ForLoop implements IStatement {
     public Identifier id;
     public IExpression from;
@@ -14,6 +16,7 @@ public class ForLoop implements IStatement {
     public ForLoop (Identifier identifier, IExpression from, IExpression to, Body body, boolean r) {
         this.id = identifier;
         this.body = body;
+        Collections.reverse(body);
         this.from = from;
         this.to = to;
         this.reverse = r;

@@ -27,7 +27,7 @@ public class FieldAccess implements IPrimary{
     }
 
     @Override
-    public String resolve_type() {
+    public String resolve_type(String methodName) {
         return "";
     }
 }

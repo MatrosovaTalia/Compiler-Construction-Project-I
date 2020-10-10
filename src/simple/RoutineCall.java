@@ -4,12 +4,15 @@ package simple;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import java.util.Collections;
+
 public class RoutineCall implements IStatement {
     Identifier id;
     Expressions expressions;
 
     public RoutineCall(Identifier id, Expressions expressions){
         this.expressions = expressions;
+        Collections.reverse(this.expressions);
         this.id = id;
     }
 
