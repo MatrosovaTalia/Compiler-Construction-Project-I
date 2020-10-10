@@ -3,6 +3,9 @@ package simple;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import static org.objectweb.asm.Opcodes.*;
 
 public class VariableDeclaration implements IDeclaration{
@@ -27,34 +30,69 @@ public class VariableDeclaration implements IDeclaration{
 
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
-
-        String descriptor;
-        if (type instanceof PrimitiveType) {
-            switch (((PrimitiveType) type).primitivetype) {
-                case "boolean" -> {
-                    descriptor = "Z";
-                }
-                case "real" -> {
-                    descriptor = "D";
-                }
-                default -> {
-                    descriptor = "I";
-                }
-            }
-            st.addGlobalVariable(id.v, null, type, value);
-            cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, descriptor, null, null);
-            if (value != null) {
-                value.emit(cw, mv, methodName);
-                mv.visitFieldInsn(PUTSTATIC, "MetaMain", id.v, descriptor);
-            }
+        String varName = id.v;
+        if (st.globalVariableExists(varName)) {
+            throw new RuntimeException(String.format("Global variable with name %s already exists!", varName));
         }
-        else if (type == null) {
-            var type = value.resolve_type();
-            cw.visitField(ACC_PUBLIC + ACC_STATIC, id.v, type, null, null);
-            if (value != null) {
-                value.emit(cw, mv, methodName);
-                mv.visitFieldInsn(PUTSTATIC, "MetaMain", id.v, type);
+        String desc = "I";
+        if (type == null) {
+            desc = value.resolve_type(methodName);
+            value.emit(cw, mv, methodName);
+            st.addGlobalVariable(varName, value.resolve_type(methodName), value);
+            cw.visitField(ACC_PUBLIC + ACC_STATIC, varName, desc, null, null);
+            mv.visitFieldInsn(PUTSTATIC, "MetaMain", varName, desc);
+        }
+        else if (value == null) {
+            desc = type.resolve();
+            IExpression defaultValue;
+            if (desc.equals("F")) {
+                defaultValue = new RealLiteral(BigDecimal.ZERO);
             }
+            else {
+                defaultValue = new IntegerLiteral(BigInteger.ZERO);
+            }
+            st.addGlobalVariable(varName, desc, defaultValue);
+            if (desc.equals("F")) {
+                mv.visitInsn(FCONST_0);
+            }
+            else {
+                mv.visitInsn(ICONST_0);
+            }
+            cw.visitField(ACC_PUBLIC + ACC_STATIC, varName, desc, null, null);
+            mv.visitFieldInsn(PUTSTATIC, "MetaMain", varName, desc);
+        }
+        else {
+            String expectedType = type.resolve();
+            String givenType = value.resolve_type(methodName);
+            value.emit(cw, mv, methodName);
+            if (expectedType.equals("I") && givenType.equals("I")) {
+                desc = "I";
+            } else if (expectedType.equals("I") && givenType.equals("F")) {
+                desc = "I";
+                mv.visitInsn(F2I);
+            } else if (expectedType.equals("I") && givenType.equals("Z")) {
+                desc = "I";
+            } else if (expectedType.equals("F") && givenType.equals("F")) {
+                desc = "F";
+            } else if (expectedType.equals("Z") && givenType.equals("Z")) {
+                desc = "Z";
+            } else if (expectedType.equals("F") && givenType.equals("I")) {
+                mv.visitInsn(I2F);
+                desc = "F";
+            } else if (expectedType.equals("F") && givenType.equals("Z")) {
+                mv.visitInsn(I2F);
+                desc = "F";
+            } else if (expectedType.equals("Z") && givenType.equals("I")) {
+                throw new RuntimeException(String.format("Method %s: trying to assign integer value to a boolean variable %s",
+                        methodName, varName));
+
+            } else if (expectedType.equals("Z") && givenType.equals("F")) {
+                throw new RuntimeException(String.format("Method %s: trying to assign real value to a boolean variable %s",
+                        methodName, varName));
+            }
+            st.addGlobalVariable(varName, desc, value);
+            cw.visitField(ACC_PUBLIC + ACC_STATIC, varName, desc, null, null);
+            mv.visitFieldInsn(PUTSTATIC, "MetaMain", varName, desc);
         }
     }
 }
