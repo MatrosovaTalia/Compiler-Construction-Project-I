@@ -32,6 +32,9 @@ public class WhileStatement implements IStatement{
         Label end = new Label();
         mv.visitLabel(start);
         expression.emit(cw, mv, methodName);
+        if (expression.resolve_type(methodName).equals("F")) {
+            mv.visitInsn(F2I);
+        }
         mv.visitInsn(ICONST_0);
         mv.visitJumpInsn(IF_ICMPEQ, end);
         for (var st: body) {

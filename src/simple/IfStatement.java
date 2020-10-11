@@ -40,8 +40,10 @@ public class IfStatement implements IStatement {
         Label if_false = new Label();
         Label end = new Label();
         expression.emit(cw, mv, methodName);
-        mv.visitInsn(ICONST_0);
-        mv.visitJumpInsn(IF_ICMPEQ, if_false);
+        if (expression.resolve_type(methodName).equals("F")) {
+            mv.visitInsn(F2I);
+        }
+        mv.visitJumpInsn(IFEQ, if_false);
         for (var st: ifBody) {
             st.emit(cw, mv, methodName);
         }
