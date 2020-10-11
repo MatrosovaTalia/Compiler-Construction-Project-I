@@ -18,11 +18,15 @@ routine main(argc: integer) is
     var c: real is 11.09
     var c1: real
     var c2 is 11.91
-    print(a, c)
-    var temp is a
-    a := c
-    c := temp
-    print(a, c)
+    var n is 81
+    while n /= 1 loop
+        if (n % 2) = 0 then
+            n := n / 2
+        else
+            n := (3*n) + 1
+        end
+        print(n)
+    end
     /*
     print(1.0 - 1.0)
     print(1.0 * 1.0)
