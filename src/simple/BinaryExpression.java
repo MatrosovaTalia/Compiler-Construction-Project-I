@@ -1230,32 +1230,12 @@ public class BinaryExpression implements IExpression{
         String left_exp = left.resolve_type(methodName);
         String right_exp = right.resolve_type(methodName);
 
-        if (left_exp.equals("I") && right_exp.equals("I")) {
+        if (left_exp.equals("F") || right_exp.equals("F")) {
+            return "F";
+        }
+        else if (left_exp.equals("I") || left_exp.equals("Z") ||
+        right_exp.equals("I") || right_exp.equals("Z")){
             return "I";
-        }
-        else if (left_exp.equals("I") && right_exp.equals("F")) {
-            return "F";
-        }
-        else if (left_exp.equals("I") && right_exp.equals("Z")) {
-            return "I";
-        }
-        else if (left_exp.equals("F") && right_exp.equals("F")) {
-            return "F";
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-            return "Z";
-        }
-        else if (left_exp.equals("F") && right_exp.equals("I")) {
-            return "F";
-        }
-        else if (left_exp.equals("F") && right_exp.equals("Z")) {
-            return "F";
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("I")) {
-            return "I";
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("F")) {
-            return "F";
         }
         else {
             System.out.println("Something wrong with types");
