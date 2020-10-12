@@ -2,9 +2,12 @@ package simple;
 
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import java.util.Collections;
+
+import static org.objectweb.asm.Opcodes.*;
 
 public class ForLoop implements IStatement {
     public Identifier id;
@@ -35,6 +38,47 @@ public class ForLoop implements IStatement {
 
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+        String varName = id.v;
+        Label start = new Label();
+        Label end = new Label();
+        st.addVariableToMethod(varName, methodName, "I", null);
+        st.addVariableToMethod("$", methodName, to.resolve_type(methodName), to);
+
+        var inc = 1;
+        var cmp = IF_ICMPGE;
+        if (reverse) {
+            inc = -1;
+            cmp = IF_ICMPLE;
+        }
+        if ((!from.resolve_type(methodName).equals("I")) ||
+                (!to.resolve_type(methodName).equals("I"))) {
+            throw new RuntimeException(
+                    String.format(
+                            "Routine %s: some of the range boundaries does not resolve to integer!",
+                            methodName)
+            );
+        }
+
+        var i = st.getLocalVariableIndex(methodName, varName);
+        var to = st.getLocalVariableIndex(methodName, "$");
+        this.from.emit(cw, mv, methodName);
+        mv.visitVarInsn(ISTORE, i);
+        this.to.emit(cw, mv, methodName);
+        mv.visitVarInsn(ISTORE, to);
+
+        mv.visitLabel(start);
+        mv.visitVarInsn(ILOAD, i);
+        mv.visitVarInsn(ILOAD, to);
+        mv.visitJumpInsn(cmp, end);
+        for (var stmt: body) {
+            stmt.emit(cw, mv, methodName);
+        }
+        mv.visitIincInsn(i, inc);
+        mv.visitJumpInsn(GOTO, start);
+        mv.visitLabel(end);
+
+        st.removeVariableFromMethod(varName, methodName);
+        st.removeVariableFromMethod("$", methodName);
 
     }
 }

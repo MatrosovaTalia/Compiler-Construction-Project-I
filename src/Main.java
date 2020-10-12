@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
-import static jdk.internal.org.objectweb.asm.Opcodes.V1_8;
+import static org.objectweb.asm.Opcodes.V1_8;
 import static org.objectweb.asm.Opcodes.*;
 
 public class Main {
@@ -53,7 +53,7 @@ public class Main {
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main",
                 "([Ljava/lang/String;)V", null, null);
 
-        Declarations ast = YYParser.makeAST("25");
+        Declarations ast = YYParser.makeAST("tests/25.txt");
 
 
 
@@ -65,7 +65,7 @@ public class Main {
             decl.emit(cw, mv, "main");
         }
         mv.visitInsn(ICONST_0);
-        mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V");
+        mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);
         mv.visitInsn(RETURN);
         mv.visitMaxs(-1, -1);
         mv.visitEnd();
