@@ -45,9 +45,9 @@ public class RoutineDeclaration implements IDeclaration {
         else {
             descriptor.append("V");
         }
-        st.addMethod(name, descriptor.toString(), params);
         descriptor.append(")");
         descriptor.append(returnType == null ? "V" : returnType.resolve());
+        st.addMethod(name, descriptor.toString(), params);
         MethodVisitor new_method = cw.visitMethod(
                 ACC_PUBLIC + ACC_STATIC,
                 name,
@@ -61,7 +61,7 @@ public class RoutineDeclaration implements IDeclaration {
         if (returnType == null) {
             new_method.visitInsn(RETURN);
         }
-        new_method.visitMaxs(-1, -1);
+        new_method.visitMaxs(100, 100);
         new_method.visitEnd();
 
     }

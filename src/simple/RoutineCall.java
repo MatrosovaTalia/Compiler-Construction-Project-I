@@ -6,7 +6,9 @@ import org.objectweb.asm.MethodVisitor;
 
 import java.util.Collections;
 
-public class RoutineCall implements IStatement {
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
+public class RoutineCall implements IStatement, IExpression {
     Identifier id;
     Expressions expressions;
 
@@ -26,6 +28,27 @@ public class RoutineCall implements IStatement {
 
     @Override
     public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+        if (st.methodExists(id.v)) {
+            var method = st.getMethod(id.v);
+            for (var exp : expressions) {
+                exp.emit(cw, mv, methodName);
+            }
+            mv.visitMethodInsn(INVOKESTATIC, "MetaMain", id.v, method.descriptor, false);
+        }
+        else {
+            throw new RuntimeException(
+                    String.format("Routine %s: Routine you are trying to call (%s) hasn't been declared!", methodName, id.v)
+            );
+        }
+    }
 
+    @Override
+    public Object resolve_value() {
+        return null;
+    }
+
+    @Override
+    public String resolve_type(String methodName) {
+        return st.getMethod(id.v).getReturnType();
     }
 }
