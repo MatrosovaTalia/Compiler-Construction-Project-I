@@ -1,3 +1,4 @@
+/*
 var a: integer is 5
 var a1: integer
 var a2 is 5
@@ -7,8 +8,17 @@ var b2 is false
 var c: real is 12.05
 var c1: real
 var c2 is 12.05
+*/
+
+routine factorial(a: integer): integer is
+    if a = 1 then
+        return a
+    end
+    return a * factorial(a - 1)
+end
 
 routine main(argc: integer) is
+/*
     var a: integer is 6
     var a1: integer
     var a2 is 6
@@ -18,7 +28,10 @@ routine main(argc: integer) is
     var c: real is 11.09
     var c1: real
     var c2 is 11.91
-    var n is 81
+*/
+    var n is factorial(5)
+    print(n)
+    /*
     while n /= 1 loop
         if (n % 2) = 0 then
             n := n / 2
@@ -27,6 +40,7 @@ routine main(argc: integer) is
         end
         print(n)
     end
+    */
     /*
     print(1.0 - 1.0)
     print(1.0 * 1.0)
