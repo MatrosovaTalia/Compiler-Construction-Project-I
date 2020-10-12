@@ -33,8 +33,7 @@ public class Print  implements IStatement {
             mv.visitMethodInsn(INVOKEVIRTUAL,
                     "java/io/PrintStream",
                     "println",
-                    desc,
-                    false);
+                    desc);
         }
     }
 }

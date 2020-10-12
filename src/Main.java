@@ -1,17 +1,18 @@
 import lexer.MyLexer;
 import lexer.Token;
 import lexer.TokenType;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import parser.YYParser;
 import reader.Reader;
-import parser.*;
-import simple.*;
-import org.objectweb.asm.*;
+import simple.Declarations;
 
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.objectweb.asm.Opcodes.V1_8;
+import static jdk.internal.org.objectweb.asm.Opcodes.V1_8;
 import static org.objectweb.asm.Opcodes.*;
 
 public class Main {
@@ -64,7 +65,7 @@ public class Main {
             decl.emit(cw, mv, "main");
         }
         mv.visitInsn(ICONST_0);
-        mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);
+        mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V");
         mv.visitInsn(RETURN);
         mv.visitMaxs(-1, -1);
         mv.visitEnd();

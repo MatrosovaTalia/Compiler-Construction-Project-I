@@ -1,3 +1,17 @@
+routine factorial(a: integer): integer is
+    if a = 1 then
+        return a
+    end
+    return a * factorial(a - 1)
+end
+
+routine main(argc: integer) is
+    var n is factorial(5)
+    print(n)
+end
+
+var k: integer is 10
+
 /*
 var a: integer is 5
 var a1: integer
@@ -29,8 +43,43 @@ routine main(argc: integer) is
     var c1: real
     var c2 is 11.91
 */
-    var n is factorial(5)
-    print(n)
+    //var n is factorial(5)
+    //print(n)
+    print(true or false)
+    print(true and false)
+    print((2>3) or (3>5))
+    print((2>3) xor (3<5))
+
+    print(true = true)
+
+    print(3 = 7)
+    print(3 > 7)
+    print(3 < 7)
+    print(3 <= 7)
+    print(3 >= 7)
+    print(3 /= 7)
+
+    print(3.1 = 7)
+    print(3.1 > 7)
+    print(3.1 < 7)
+    print(3.1 <= 7)
+    print(3.1 >= 7)
+    print(3.1 /= 7)
+
+    print(3 = 7.1)
+    print(3 > 7.1)
+    print(3 < 7.1)
+    print(3 <= 7.1)
+    print(3 >= 7.1)
+    print(3 /= 7.1)
+
+    print(3.1 = 7.1)
+    print(3.1 > 7.1)
+    print(3.1 < 7.1)
+    print(3.1 <= 7.1)
+    print(3.1 >= 7.1)
+    print(3.1 /= 7.1)
+
     /*
     while n /= 1 loop
         if (n % 2) = 0 then
@@ -41,8 +90,8 @@ routine main(argc: integer) is
         print(n)
     end
     */
-    /*
-    print(1.0 - 1.0)
+
+    /*print(1.0 - 1.0)
     print(1.0 * 1.0)
     print(1.0 / 1.0)
     print(1.0 % 1.0)
@@ -165,8 +214,8 @@ routine main(argc: integer) is
     print(true - true)
     print(true * true)
     print(true / true)
-    print(true % true)
-    */
+    print(true % true)*/
+
 end
 
 var k: integer is 10

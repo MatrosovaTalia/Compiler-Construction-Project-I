@@ -33,7 +33,7 @@ public class RoutineCall implements IStatement, IExpression {
             for (var exp : expressions) {
                 exp.emit(cw, mv, methodName);
             }
-            mv.visitMethodInsn(INVOKESTATIC, "MetaMain", id.v, method.descriptor, false);
+            mv.visitMethodInsn(INVOKESTATIC, "MetaMain", id.v, method.descriptor);
         }
         else {
             throw new RuntimeException(

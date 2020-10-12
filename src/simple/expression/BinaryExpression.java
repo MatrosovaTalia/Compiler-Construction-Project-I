@@ -1,14 +1,17 @@
-package simple;
+package simple.expression;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import simple.IExpression;
+import simple.Operation;
+import simple.Triple;
 
 import java.util.HashMap;
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class BinaryExpression implements IExpression{
+public class BinaryExpression implements IExpression {
 
     HashMap<Triple<String, String, Integer>, Integer> result_type;
     Operation operation;

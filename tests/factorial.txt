@@ -1,0 +1,11 @@
+routine factorial(a: integer): integer is
+    if a = 1 then
+        return a
+    end
+    return a * factorial(a - 1)
+end
+
+routine main(argc: integer) is
+    var n is factorial(5)
+    print(n)
+end
