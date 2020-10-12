@@ -4,13 +4,18 @@ import java.util.ArrayList;
 
 public class Method {
     String methodName;
-    String returnType;
+    public String descriptor;
     ArrayList<Variable> locals;
 
     public Method(String methodName, String returnType, ArrayList<Variable> locals) {
         this.methodName = methodName;
-        this.returnType = returnType;
+        this.descriptor = returnType;
         this.locals = locals;
+    }
+
+    public String getReturnType() {
+        var lst = descriptor.split("[()]");
+        return lst[lst.length-1];
     }
 
 
