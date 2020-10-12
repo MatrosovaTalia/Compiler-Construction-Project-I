@@ -2039,11 +2039,11 @@ private static final short[] yycheck_ = yycheck_init();
 /* "smallgrammar.y":23  */
 
     private static Declarations ast;
-    public static Declarations makeAST(String i) {
+    public static Declarations makeAST(String source) {
         ast = new Declarations();
         MyLexer lexer = new MyLexer();
         Reader reader = new Reader();
-        reader.read("tests/" + i + ".txt");
+        reader.read(source);
         lexer.tokenize(reader.sourceText);
         YYParser parser = new YYParser(lexer);
         if (!parser.parse()) {

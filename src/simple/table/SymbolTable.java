@@ -67,6 +67,14 @@ public class SymbolTable {
         methodToAdd.locals.add(variable);
     }
 
+    public void removeVariableFromMethod(String variableName, String methodName) {
+        var method = getMethod(methodName);
+        var index = method.getLocalVariableIndex(variableName);
+        if (index != -1) {
+            method.locals.remove(index);
+        }
+    }
+
     public void addValueToVariable(String variableName, String methodName, IExpression value){
         Method method = getMethod(methodName);
         for (Variable variable: method.locals) {
