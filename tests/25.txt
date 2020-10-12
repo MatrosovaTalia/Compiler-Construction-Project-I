@@ -41,8 +41,8 @@ routine main(argc: integer) is
         print(n)
     end
     */
-    /*
-    print(1.0 - 1.0)
+
+    /*print(1.0 - 1.0)
     print(1.0 * 1.0)
     print(1.0 / 1.0)
     print(1.0 % 1.0)
@@ -51,6 +51,7 @@ routine main(argc: integer) is
     print(1.0 * 2.0)
     print(1.0 / 2.0)
     print(1.0 % 2.0)
+    */
     print(1.0 + 1)
     print(1.0 - 1)
     print(1.0 * 1)
@@ -166,7 +167,7 @@ routine main(argc: integer) is
     print(true * true)
     print(true / true)
     print(true % true)
-    */
+
 end
 
 var k: integer is 10

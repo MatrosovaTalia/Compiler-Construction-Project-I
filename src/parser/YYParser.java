@@ -1063,98 +1063,98 @@ public class YYParser
   case 47: /* Expression: Expression PLUS Expression  */
   if (yyn == 47)
     /* "smallgrammar.y":233  */
-                                 {yyval = new BinaryExpression("PLUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                 {yyval = new PlusOperation("PLUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 48: /* Expression: Expression MINUS Expression  */
   if (yyn == 48)
     /* "smallgrammar.y":234  */
-                                  {yyval = new BinaryExpression("MINUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                  {yyval = new MinusOperation("MINUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 49: /* Expression: Expression MULTIPLY Expression  */
   if (yyn == 49)
     /* "smallgrammar.y":235  */
-                                     {yyval = new BinaryExpression("MULTIPLY", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                     {yyval = new MultiplyOperation("MULTIPLY", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 50: /* Expression: Expression DIVIDE Expression  */
   if (yyn == 50)
     /* "smallgrammar.y":236  */
-                                   {yyval = new BinaryExpression("DIVIDE", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                   {yyval = new DivideOperation("DIVIDE", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 51: /* Expression: Expression REMAINDER Expression  */
   if (yyn == 51)
     /* "smallgrammar.y":237  */
-                                      {yyval = new BinaryExpression("REMAINDER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                      {yyval = new RemainderOperation("REMAINDER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 52: /* Expression: Expression AND Expression  */
   if (yyn == 52)
     /* "smallgrammar.y":238  */
-                                {yyval = new BinaryExpression("AND", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                {yyval = new AndOperation("AND", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 53: /* Expression: Expression OR Expression  */
   if (yyn == 53)
     /* "smallgrammar.y":239  */
-                               {yyval = new BinaryExpression("OR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                               {yyval = new OrOperation("OR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 54: /* Expression: Expression XOR Expression  */
   if (yyn == 54)
     /* "smallgrammar.y":240  */
-                                 {yyval = new BinaryExpression("XOR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                 {yyval = new XorOperation("XOR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 55: /* Expression: Expression LESS Expression  */
   if (yyn == 55)
     /* "smallgrammar.y":241  */
-                                 {yyval = new BinaryExpression("LESS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                 {yyval = new LessOperation("LESS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 56: /* Expression: Expression GREATER Expression  */
   if (yyn == 56)
     /* "smallgrammar.y":242  */
-                                    {yyval = new BinaryExpression("GREATER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new GreaterOperation("GREATER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 57: /* Expression: Expression LEQUALS Expression  */
   if (yyn == 57)
     /* "smallgrammar.y":243  */
-                                    {yyval = new BinaryExpression("LEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new LEqualsOperation("LEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 58: /* Expression: Expression GEQUALS Expression  */
   if (yyn == 58)
     /* "smallgrammar.y":244  */
-                                    {yyval = new BinaryExpression("GEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new GEqualsOperation("GEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 59: /* Expression: Expression EQUALS Expression  */
   if (yyn == 59)
     /* "smallgrammar.y":245  */
-                                   {yyval = new BinaryExpression("EQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                   {yyval = new EqualsOperation("EQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 60: /* Expression: Expression NEQUALS Expression  */
   if (yyn == 60)
     /* "smallgrammar.y":246  */
-                                    {yyval = new BinaryExpression("NEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new NotEqualsOperation("NEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
