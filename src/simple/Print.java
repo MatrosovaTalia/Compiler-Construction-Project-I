@@ -32,8 +32,19 @@ public class Print  implements IStatement {
             String desc = "(" + exp.resolve_type(methodName) + ")V";
             mv.visitMethodInsn(INVOKEVIRTUAL,
                     "java/io/PrintStream",
-                    "println",
-                    desc);
+                    "print",
+                    desc, false);
+            mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            mv.visitLdcInsn(" ");
+            mv.visitMethodInsn(INVOKEVIRTUAL,
+                    "java/io/PrintStream",
+                    "print",
+                    "(Ljava/lang/String;)V", false);
         }
+        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitMethodInsn(INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "()V", false);
     }
 }
