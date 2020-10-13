@@ -19,6 +19,7 @@ public class RoutineDeclaration implements IDeclaration {
         this.params = params;
         this.returnType = returnType;
         this.body = body;
+        Collections.reverse(this.params);
         Collections.reverse(this.body);
     }
 
