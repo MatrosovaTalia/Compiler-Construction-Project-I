@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.objectweb.asm.Opcodes.V1_8;
 import static org.objectweb.asm.Opcodes.*;
 
 public class Main {
@@ -48,7 +47,7 @@ public class Main {
 //        MyLexer myLexer = new MyLexer();
 
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-        cw.visit(V1_8, ACC_PUBLIC,
+        cw.visit(V14, ACC_PUBLIC,
                 "MetaMain", null, "java/lang/Object", null);
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main",
                 "([Ljava/lang/String;)V", null, null);
