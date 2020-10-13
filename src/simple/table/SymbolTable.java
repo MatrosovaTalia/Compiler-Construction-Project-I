@@ -8,8 +8,8 @@ import java.util.Hashtable;
 
 public class SymbolTable {
 
-    private Hashtable<String, Variable> GlobalVariableTable;
-    private Hashtable<String, Method> MethodsTable;
+    private final Hashtable<String, Variable> GlobalVariableTable;
+    private final Hashtable<String, Method> MethodsTable;
 
     public SymbolTable() {
         this.GlobalVariableTable = new Hashtable<>();
@@ -18,7 +18,7 @@ public class SymbolTable {
     }
 
     public void addGlobalVariable(String variableName, String type, IExpression value) {
-        Variable variable = new Variable(variableName, "global", type, value);
+        Variable variable = new Variable(variableName, type);
         GlobalVariableTable.put(variableName, variable);
     }
 
@@ -27,7 +27,7 @@ public class SymbolTable {
         Method newMethod = new Method(methodName, returnType, variables);
         MethodsTable.put(methodName, newMethod);
         for (var param: params) {
-            addVariableToMethod(param.id.v, methodName, param.type.resolve(), null);
+            addVariableToMethod(param.id.v, methodName, param.type.resolve());
         }
     }
 
@@ -61,9 +61,9 @@ public class SymbolTable {
         return MethodsTable.get(name);
     }
 
-    public void addVariableToMethod(String variableName, String method, String type, IExpression value){
+    public void addVariableToMethod(String variableName, String method, String type){
         Method methodToAdd = getMethod(method);
-        Variable variable = new Variable(variableName, method, type, value);
+        Variable variable = new Variable(variableName, type);
         methodToAdd.locals.add(variable);
     }
 
@@ -74,37 +74,4 @@ public class SymbolTable {
             method.locals.remove(index);
         }
     }
-
-    public void addValueToVariable(String variableName, String methodName, IExpression value){
-        Method method = getMethod(methodName);
-        for (Variable variable: method.locals) {
-            if (variable.getVariableName().equals(variableName)){
-                variable.setValue(value);
-                return;
-            }
-        }
-
-        if (GlobalVariableTable.containsKey(variableName)){
-            GlobalVariableTable.get(variableName).setValue(value);
-            return;
-        }
-
-        throw new RuntimeException("No variable '" + variableName + "'");
-    }
-
-    public Variable getVariable(String variableName, String methodName){
-        Method method = getMethod(methodName);
-        for (Variable variable: method.locals) {
-            if (variable.getVariableName().equals(variableName)){
-                return variable;
-            }
-        }
-
-        if (GlobalVariableTable.containsKey(variableName)){
-            return GlobalVariableTable.get(variableName);
-        }
-
-        throw new RuntimeException("No variable '" + variableName + "'");
-    }
-
 }

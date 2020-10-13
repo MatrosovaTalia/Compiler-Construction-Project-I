@@ -17,17 +17,12 @@ public class FieldAccess implements IPrimary{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
 
-    }
-
-    @Override
-    public Object resolve_value() {
-        return null;
     }
 
     @Override
     public String resolve_type(String methodName) {
-        return "";
+        return "I";
     }
 }

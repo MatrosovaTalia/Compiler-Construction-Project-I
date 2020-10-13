@@ -27,18 +27,18 @@ public class WhileStatement implements IStatement{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         Label start = new Label();
         Label end = new Label();
         mv.visitLabel(start);
-        expression.emit(cw, mv, methodName);
+        expression.emit(cw, mv, methodName, maxDepth);
         if (expression.resolve_type(methodName).equals("F")) {
             mv.visitInsn(F2I);
         }
         mv.visitInsn(ICONST_0);
         mv.visitJumpInsn(IF_ICMPEQ, end);
         for (var st: body) {
-            st.emit(cw, mv, methodName);
+            st.emit(cw, mv, methodName, maxDepth);
         }
         mv.visitJumpInsn(GOTO, start);
         mv.visitLabel(end);

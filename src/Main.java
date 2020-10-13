@@ -61,8 +61,13 @@ public class Main {
         assert ast != null;
         Collections.reverse(ast);
         for (var decl : ast) {
-            System.out.println(decl);
-            decl.emit(cw, mv, "main");
+            try {
+                System.out.println(decl);
+                decl.emit(cw, mv, "main", 0);
+            }
+            catch (RuntimeException e) {
+                System.out.println(e.getStackTrace());
+            }
         }
         mv.visitInsn(ICONST_0);
         mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);

@@ -6,5 +6,5 @@ import simple.table.SymbolTable;
 
 public interface ILexem {
     static SymbolTable st = new SymbolTable();
-    void emit(ClassWriter cw, MethodVisitor mv, String methodName);
+    void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth);
 }

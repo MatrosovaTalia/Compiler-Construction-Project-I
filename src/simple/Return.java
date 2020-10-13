@@ -22,8 +22,8 @@ public class Return implements IStatement {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
-        expression.emit(cw, mv, methodName);
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
+        expression.emit(cw, mv, methodName, maxDepth);
         String type = expression.resolve_type(methodName);
         var returnType = st.getMethod(methodName).getReturnType();
         var gotType = expression.resolve_type(methodName);

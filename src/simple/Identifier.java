@@ -18,7 +18,7 @@ public class Identifier implements ILexem {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
 
     }
 }

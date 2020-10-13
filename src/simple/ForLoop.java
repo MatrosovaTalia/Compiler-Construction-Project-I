@@ -37,12 +37,12 @@ public class ForLoop implements IStatement {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String varName = id.v;
         Label start = new Label();
         Label end = new Label();
-        st.addVariableToMethod(varName, methodName, "I", null);
-        st.addVariableToMethod("$", methodName, to.resolve_type(methodName), to);
+        st.addVariableToMethod(varName, methodName, "I");
+        st.addVariableToMethod("$", methodName, to.resolve_type(methodName));
 
         var inc = 1;
         var cmp = IF_ICMPGE;
@@ -61,9 +61,15 @@ public class ForLoop implements IStatement {
 
         var i = st.getLocalVariableIndex(methodName, varName);
         var to = st.getLocalVariableIndex(methodName, "$");
-        this.from.emit(cw, mv, methodName);
+        if (this.from instanceof ModifiablePrimary) {
+            ((ModifiablePrimary) this.from).setReference(false);
+        }
+        this.from.emit(cw, mv, methodName, maxDepth);
         mv.visitVarInsn(ISTORE, i);
-        this.to.emit(cw, mv, methodName);
+        if (this.to instanceof ModifiablePrimary) {
+            ((ModifiablePrimary) this.to).setReference(false);
+        }
+        this.to.emit(cw, mv, methodName, maxDepth);
         mv.visitVarInsn(ISTORE, to);
 
         mv.visitLabel(start);
@@ -71,7 +77,7 @@ public class ForLoop implements IStatement {
         mv.visitVarInsn(ILOAD, to);
         mv.visitJumpInsn(cmp, end);
         for (var stmt: body) {
-            stmt.emit(cw, mv, methodName);
+            stmt.emit(cw, mv, methodName, maxDepth);
         }
         mv.visitIincInsn(i, inc);
         mv.visitJumpInsn(GOTO, start);

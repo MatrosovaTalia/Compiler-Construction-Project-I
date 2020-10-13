@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class RecordType extends ArrayList<VariableDeclaration> implements IType{
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
 
     }
 

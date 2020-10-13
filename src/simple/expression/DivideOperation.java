@@ -37,35 +37,35 @@ public class DivideOperation implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String left_exp = left.resolve_type(methodName);
         String right_exp = right.resolve_type(methodName);
 
         if (left_exp.equals("I") && right_exp.equals("I")) {
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
+            left.emit(cw, mv, methodName, maxDepth);
+            right.emit(cw, mv, methodName, maxDepth);
             mv.visitInsn(IDIV);
         }
         else if (left_exp.equals("I") && right_exp.equals("F")) {
-            left.emit(cw, mv, methodName);
+            left.emit(cw, mv, methodName, maxDepth);
             mv.visitInsn(I2F);
-            right.emit(cw, mv, methodName);
+            right.emit(cw, mv, methodName, maxDepth);
             mv.visitInsn(FDIV);
         }
         else if (left_exp.equals("I") && right_exp.equals("Z")) {
             throw new RuntimeException("Illegal expression: Arithmetical operation does not accept boolean value");
         }
         else if (left_exp.equals("F") && right_exp.equals("F")) {
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
+            left.emit(cw, mv, methodName, maxDepth);
+            right.emit(cw, mv, methodName, maxDepth);
             mv.visitInsn(FDIV);
         }
         else if (left_exp.equals("Z") && right_exp.equals("Z")) {
             throw new RuntimeException("Illegal expression: Arithmetical operation does not accept boolean value");
         }
         else if (left_exp.equals("F") && right_exp.equals("I")) {
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
+            left.emit(cw, mv, methodName, maxDepth);
+            right.emit(cw, mv, methodName, maxDepth);
             mv.visitInsn(I2F);
             mv.visitInsn(FDIV);
         }
@@ -79,11 +79,6 @@ public class DivideOperation implements IExpression {
             throw new RuntimeException("Illegal expression: Arithmetical operation does not accept boolean value");
         }
 
-    }
-
-    @Override
-    public Object resolve_value() {
-        return null;
     }
 
     @Override

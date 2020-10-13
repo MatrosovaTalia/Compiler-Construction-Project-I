@@ -38,111 +38,111 @@ public class BinaryExpression implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String left_exp = left.resolve_type(methodName);
         String right_exp = right.resolve_type(methodName);
 
         switch (operation) {
             case PLUS -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IADD);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FADD);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IADD);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FADD);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IADD);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FADD);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FADD);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IADD);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FADD);
                 }
             }
 
             case MINUS -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FSUB);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FSUB);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FSUB);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FSUB);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FSUB);
                 }
             }
@@ -150,180 +150,180 @@ public class BinaryExpression implements IExpression {
 
             case MULTIPLY -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IMUL);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FMUL);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IMUL);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FMUL);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IMUL);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FMUL);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FMUL);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IMUL);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FMUL);
                 }
             }
 
             case DIVIDE -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IDIV);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FDIV);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IDIV);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FDIV);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IDIV);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FDIV);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FDIV);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IDIV);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FDIV);
                 }
             }
 
             case REMAINDER -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IREM);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FREM);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IREM);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FREM);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IREM);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FREM);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FREM);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IREM);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FREM);
                 }
             }
 
             case AND -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IAND);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IAND);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IAND);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
@@ -333,8 +333,8 @@ public class BinaryExpression implements IExpression {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IAND);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
@@ -344,24 +344,24 @@ public class BinaryExpression implements IExpression {
 
             case OR -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IOR);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IOR);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IOR);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
@@ -371,8 +371,8 @@ public class BinaryExpression implements IExpression {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IOR);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
@@ -382,24 +382,24 @@ public class BinaryExpression implements IExpression {
 
             case XOR -> {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IXOR);
                 }
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IXOR);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IXOR);
                 }
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
@@ -409,8 +409,8 @@ public class BinaryExpression implements IExpression {
                     throw new RuntimeException("Illegal expression: Bitwise operation does not accept real value");
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(IXOR);
                 }
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
@@ -422,8 +422,8 @@ public class BinaryExpression implements IExpression {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, False);
@@ -436,9 +436,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, True);
@@ -451,8 +451,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, False);
@@ -465,8 +465,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, True);
@@ -479,8 +479,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, False);
@@ -493,8 +493,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -508,8 +508,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -523,8 +523,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, False);
@@ -537,9 +537,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, True);
@@ -555,8 +555,8 @@ public class BinaryExpression implements IExpression {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, False);
@@ -569,9 +569,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, True);
@@ -584,8 +584,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, False);
@@ -598,8 +598,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, True);
@@ -612,8 +612,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, False);
@@ -626,8 +626,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -641,8 +641,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -656,8 +656,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, False);
@@ -670,9 +670,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, True);
@@ -688,8 +688,8 @@ public class BinaryExpression implements IExpression {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, False);
@@ -702,9 +702,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, True);
@@ -717,8 +717,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, False);
@@ -731,8 +731,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, True);
@@ -745,8 +745,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, False);
@@ -759,8 +759,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -774,8 +774,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -789,8 +789,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGE, False);
@@ -803,9 +803,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLT, True);
@@ -821,8 +821,8 @@ public class BinaryExpression implements IExpression {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, False);
@@ -836,9 +836,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, True);
@@ -851,8 +851,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, False);
@@ -865,8 +865,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, True);
@@ -879,8 +879,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, False);
@@ -893,8 +893,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -908,8 +908,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -924,8 +924,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPGT, False);
@@ -938,9 +938,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPLE, True);
@@ -956,8 +956,8 @@ public class BinaryExpression implements IExpression {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, False);
@@ -970,9 +970,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, True);
@@ -985,8 +985,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, False);
@@ -999,8 +999,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, True);
@@ -1013,8 +1013,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, False);
@@ -1027,8 +1027,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -1042,8 +1042,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -1057,8 +1057,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, False);
@@ -1071,9 +1071,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, True);
@@ -1089,8 +1089,8 @@ public class BinaryExpression implements IExpression {
                 if (left_exp.equals("I") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPNE, False);
@@ -1103,9 +1103,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, True);
@@ -1118,8 +1118,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("I") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPNE, False);
@@ -1132,8 +1132,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, True);
@@ -1146,8 +1146,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("Z")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPNE, False);
@@ -1160,8 +1160,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("I")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -1175,8 +1175,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("F") && right_exp.equals("Z")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
@@ -1190,8 +1190,8 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("I")) {
                     Label False = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
-                    right.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(ISUB);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPNE, False);
@@ -1204,9 +1204,9 @@ public class BinaryExpression implements IExpression {
                 else if (left_exp.equals("Z") && right_exp.equals("F")) {
                     Label True = new Label();
                     Label End = new Label();
-                    left.emit(cw, mv, methodName);
+                    left.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(I2F);
-                    right.emit(cw, mv, methodName);
+                    right.emit(cw, mv, methodName, maxDepth);
                     mv.visitInsn(FCMPG);
                     mv.visitInsn(ICONST_0);
                     mv.visitJumpInsn(IF_ICMPEQ, True);
@@ -1220,11 +1220,6 @@ public class BinaryExpression implements IExpression {
 
 
         }
-    }
-
-    @Override
-    public Object resolve_value() {
-        return null;
     }
 
     @Override

@@ -36,22 +36,22 @@ public class IfStatement implements IStatement {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         Label if_false = new Label();
         Label end = new Label();
-        expression.emit(cw, mv, methodName);
+        expression.emit(cw, mv, methodName, maxDepth);
         if (expression.resolve_type(methodName).equals("F")) {
             mv.visitInsn(F2I);
         }
         mv.visitJumpInsn(IFEQ, if_false);
         for (var st: ifBody) {
-            st.emit(cw, mv, methodName);
+            st.emit(cw, mv, methodName, maxDepth);
         }
         mv.visitJumpInsn(GOTO, end);
         mv.visitLabel(if_false);
         if (elseBody != null) {
             for (var st : elseBody) {
-                st.emit(cw, mv, methodName);
+                st.emit(cw, mv, methodName, maxDepth);
             }
         }
         mv.visitLabel(end);

@@ -10,7 +10,6 @@ import simple.Triple;
 import java.util.HashMap;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.objectweb.asm.Opcodes.FADD;
 
 public class GEqualsOperation implements IExpression {
 
@@ -39,89 +38,31 @@ public class GEqualsOperation implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String left_exp = left.resolve_type(methodName);
         String right_exp = right.resolve_type(methodName);
-
-        if (left_exp.equals("I") && right_exp.equals("I")) {
-            Label False = new Label();
-            Label End = new Label();
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
-            mv.visitInsn(ISUB);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(IF_ICMPLT, False);
-            mv.visitInsn(ICONST_1);
-            mv.visitJumpInsn(GOTO, End);
-            mv.visitLabel(False);
-            mv.visitInsn(ICONST_0);
-            mv.visitLabel(End);
+        if (left_exp.equals("Z") || right_exp.equals("Z")) {
+            throw new RuntimeException(String.format("Routine %s: Comparison between %s and %s is forbidden.",
+                    methodName, left_exp, right_exp));
         }
-        else if (left_exp.equals("I") && right_exp.equals("F")) {
-            Label True = new Label();
-            Label End = new Label();
-            left.emit(cw, mv, methodName);
+        left.emit(cw, mv, methodName, maxDepth);
+        if (left_exp.equals("I")) {
             mv.visitInsn(I2F);
-            right.emit(cw, mv, methodName);
-            mv.visitInsn(FCMPG);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(IF_ICMPGE, True);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(GOTO, End);
-            mv.visitLabel(True);
-            mv.visitInsn(ICONST_1);
-            mv.visitLabel(End);
         }
-        else if (left_exp.equals("I") && right_exp.equals("Z")) {
-            throw new RuntimeException("Illegal expression: Comparison operation does not compare integer and boolean value");
-        }
-        else if (left_exp.equals("F") && right_exp.equals("F")) {
-            Label True = new Label();
-            Label End = new Label();
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
-            mv.visitInsn(FCMPG);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(IF_ICMPGE, True);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(GOTO, End);
-            mv.visitLabel(True);
-            mv.visitInsn(ICONST_1);
-            mv.visitLabel(End);
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-            throw new RuntimeException("Illegal expression: Comparison operation does not compare boolean and boolean value");
-        }
-        else if (left_exp.equals("F") && right_exp.equals("I")) {
-            Label True = new Label();
-            Label End = new Label();
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
+        right.emit(cw, mv, methodName, maxDepth);
+        if (right_exp.equals("I")) {
             mv.visitInsn(I2F);
-            mv.visitInsn(FCMPG);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(IF_ICMPGE, True);
-            mv.visitInsn(ICONST_0);
-            mv.visitJumpInsn(GOTO, End);
-            mv.visitLabel(True);
-            mv.visitInsn(ICONST_1);
-            mv.visitLabel(End);
         }
-        else if (left_exp.equals("F") && right_exp.equals("Z")) {
-            throw new RuntimeException("Illegal expression: Comparison operation does not compare real and boolean value");
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("I")) {
-            throw new RuntimeException("Illegal expression: Comparison operation does not compare boolean and integer value");
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("F")) {
-            throw new RuntimeException("Illegal expression: Comparison operation does not compare boolean and real value");
-        }
-
-    }
-
-    @Override
-    public Object resolve_value() {
-        return null;
+        Label True = new Label();
+        Label End = new Label();
+        mv.visitInsn(FCMPG);
+        mv.visitLdcInsn(-1);
+        mv.visitJumpInsn(IF_ICMPNE, True);
+        mv.visitInsn(ICONST_0);
+        mv.visitJumpInsn(GOTO, End);
+        mv.visitLabel(True);
+        mv.visitInsn(ICONST_1);
+        mv.visitLabel(End);
     }
 
     @Override

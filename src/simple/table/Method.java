@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Method {
     String methodName;
-    public String descriptor;
+    public final String descriptor;
     ArrayList<Variable> locals;
 
     public Method(String methodName, String returnType, ArrayList<Variable> locals) {
@@ -19,7 +19,6 @@ public class Method {
     }
 
 
-
     public int getLocalVariableIndex(String varName) {
         for (int i = 0; i < locals.size(); i++) {
             if (locals.get(i).getVariableName().equals(varName)) {
@@ -30,9 +29,9 @@ public class Method {
     }
 
     public Variable getLocalVariable(String varName) {
-        for (int i = 0; i < locals.size(); i++) {
-            if (locals.get(i).getVariableName().equals(varName)) {
-                return locals.get(i);
+        for (Variable local : locals) {
+            if (local.getVariableName().equals(varName)) {
+                return local;
             }
         }
         return null;

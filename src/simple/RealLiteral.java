@@ -21,13 +21,8 @@ public class RealLiteral implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         mv.visitLdcInsn(v.floatValue());
-    }
-
-    @Override
-    public Object resolve_value() {
-        return v.doubleValue();
     }
 
     @Override

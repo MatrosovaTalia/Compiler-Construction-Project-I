@@ -20,18 +20,13 @@ public class BooleanLiteral implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         if (v) {
             mv.visitInsn(ICONST_1);
         }
         else {
             mv.visitInsn(ICONST_0);
         }
-    }
-
-    @Override
-    public Object resolve_value() {
-        return v;
     }
 
     @Override

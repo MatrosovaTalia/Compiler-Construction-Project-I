@@ -9,7 +9,6 @@ import simple.Triple;
 import java.util.HashMap;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.objectweb.asm.Opcodes.FADD;
 
 public class XorOperation implements IExpression {
 
@@ -38,45 +37,21 @@ public class XorOperation implements IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String left_exp = left.resolve_type(methodName);
         String right_exp = right.resolve_type(methodName);
 
-        if (left_exp.equals("I") && right_exp.equals("I")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept integer and integer value");
-        }
-        else if (left_exp.equals("I") && right_exp.equals("F")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept integer and real values");
-        }
-        else if (left_exp.equals("I") && right_exp.equals("Z")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept integer and boolean value");
-        }
-        else if (left_exp.equals("F") && right_exp.equals("F")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept real values");
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("Z")) {
-            left.emit(cw, mv, methodName);
-            right.emit(cw, mv, methodName);
+        if (left_exp.equals("Z") && right_exp.equals("Z")) {
+            left.emit(cw, mv, methodName, maxDepth);
+            right.emit(cw, mv, methodName, maxDepth);
             mv.visitInsn(IXOR);
         }
-        else if (left_exp.equals("F") && right_exp.equals("I")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept real and integer value");
+        else {
+            throw new RuntimeException(
+                    String.format("Routine %s: and operation between %s and %s is not possible.",
+                            methodName, left_exp, right_exp)
+            );
         }
-        else if (left_exp.equals("F") && right_exp.equals("Z")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept real and boolean values");
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("I")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept real and integer value");
-        }
-        else if (left_exp.equals("Z") && right_exp.equals("F")) {
-            throw new RuntimeException("Illegal expression: Bitwise operation does not accept boolean and real values");
-        }
-
-    }
-
-    @Override
-    public Object resolve_value() {
-        return null;
     }
 
     @Override

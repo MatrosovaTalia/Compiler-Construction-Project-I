@@ -23,32 +23,48 @@ public class Assignment implements IStatement{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String varName = m_primary.id.v;
         if (st.localVariableExists(methodName, varName)) {
             var index = st.getLocalVariableIndex(methodName, varName);
             var variable = st.getLocalVariable(methodName, varName);
             var expectedType = variable.getVariableType();
             var givenType = expression.resolve_type(methodName);
-            expression.emit(cw, mv, methodName);
-            if (expectedType.equals("I") && givenType.equals("F")) {
-                mv.visitInsn(F2I);
-            } else if (expectedType.equals("F") && givenType.equals("I")) {
-                mv.visitInsn(I2F);
-            } else if (expectedType.equals("F") && givenType.equals("Z")) {
-                mv.visitInsn(I2F);
-            } else if (expectedType.equals("Z") && givenType.equals("I")) {
-                throw new RuntimeException(String.format("Method %s: trying to assign integer value to a boolean variable %s",
-                        methodName, varName));
-            } else if (expectedType.equals("Z") && givenType.equals("F")) {
-                throw new RuntimeException(String.format("Method %s: trying to assign real value to a boolean variable %s",
-                        methodName, varName));
-            }
-            if (expectedType.equals("F")) {
-                mv.visitVarInsn(FSTORE, index);
-            }
-            else {
-                mv.visitVarInsn(ISTORE, index);
+            LocalVariableDeclaration.castIfNecessary(mv, methodName, varName, expectedType, givenType);
+            var firstChar = variable.getVariableType().charAt(0);
+            switch (firstChar) {
+                case 'F' -> {
+                    expression.emit(cw, mv, methodName, maxDepth);
+                    mv.visitVarInsn(FSTORE, index);
+                }
+                case 'I', 'Z' -> {
+                    expression.emit(cw, mv, methodName, maxDepth);
+                    mv.visitVarInsn(ISTORE, index);
+                }
+                case '[' -> {
+                    m_primary.setReference(true);
+                    m_primary.emit(cw, mv, methodName, maxDepth);
+                    expression.emit(cw, mv, methodName, maxDepth);
+                    expectedType = m_primary.resolve_type(methodName);
+                    givenType = expression.resolve_type(methodName);
+                    var char1 = givenType.charAt(0);
+                    switch (char1) {
+                        case 'F' -> mv.visitInsn(FASTORE);
+                        case 'I', 'Z' -> mv.visitInsn(IASTORE);
+                        case '[' -> {
+                            if (givenType.equals(expectedType)) {
+                                mv.visitInsn(AASTORE);
+                            }
+                            else {
+                                throw new RuntimeException(
+                                        String.format("Routine %s: attempt to assign the array of incompatible type!",
+                                                methodName
+                                        )
+                                );
+                            }
+                        }
+                    }
+                }
             }
         }
         else {
@@ -56,20 +72,8 @@ public class Assignment implements IStatement{
                 var variable = st.getGlobalVariable(varName);
                 var expectedType = variable.getVariableType();
                 var givenType = expression.resolve_type(methodName);
-                expression.emit(cw, mv, methodName);
-                if (expectedType.equals("I") && givenType.equals("F")) {
-                    mv.visitInsn(F2I);
-                } else if (expectedType.equals("F") && givenType.equals("I")) {
-                    mv.visitInsn(I2F);
-                } else if (expectedType.equals("F") && givenType.equals("Z")) {
-                    mv.visitInsn(I2F);
-                } else if (expectedType.equals("Z") && givenType.equals("I")) {
-                    throw new RuntimeException(String.format("Method %s: trying to assign integer value to a boolean variable %s",
-                            methodName, varName));
-                } else if (expectedType.equals("Z") && givenType.equals("F")) {
-                    throw new RuntimeException(String.format("Method %s: trying to assign real value to a boolean variable %s",
-                            methodName, varName));
-                }
+                expression.emit(cw, mv, methodName, maxDepth);
+                LocalVariableDeclaration.castIfNecessary(mv, methodName, varName, expectedType, givenType);
                 mv.visitFieldInsn(PUTSTATIC, "MetaMain", varName, expectedType);
             }
             else {

@@ -29,7 +29,7 @@ public class VariableDeclaration implements IDeclaration{
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         String varName = id.v;
         if (st.globalVariableExists(varName)) {
             throw new RuntimeException(String.format("Global variable with name %s already exists!", varName));
@@ -37,7 +37,7 @@ public class VariableDeclaration implements IDeclaration{
         String desc = "I";
         if (type == null) {
             desc = value.resolve_type(methodName);
-            value.emit(cw, mv, methodName);
+            value.emit(cw, mv, methodName, maxDepth);
             st.addGlobalVariable(varName, value.resolve_type(methodName), value);
             cw.visitField(ACC_PUBLIC + ACC_STATIC, varName, desc, null, null);
             mv.visitFieldInsn(PUTSTATIC, "MetaMain", varName, desc);
@@ -64,7 +64,7 @@ public class VariableDeclaration implements IDeclaration{
         else {
             String expectedType = type.resolve();
             String givenType = value.resolve_type(methodName);
-            value.emit(cw, mv, methodName);
+            value.emit(cw, mv, methodName, maxDepth);
             if (expectedType.equals("I") && givenType.equals("I")) {
                 desc = "I";
             } else if (expectedType.equals("I") && givenType.equals("F")) {

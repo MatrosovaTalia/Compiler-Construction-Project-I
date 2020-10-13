@@ -27,11 +27,11 @@ public class RoutineCall implements IStatement, IExpression {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         if (st.methodExists(id.v)) {
             var method = st.getMethod(id.v);
             for (var exp : expressions) {
-                exp.emit(cw, mv, methodName);
+                exp.emit(cw, mv, methodName, maxDepth);
             }
             mv.visitMethodInsn(INVOKESTATIC, "MetaMain", id.v, method.descriptor);
         }
@@ -40,11 +40,6 @@ public class RoutineCall implements IStatement, IExpression {
                     String.format("Routine %s: Routine you are trying to call (%s) hasn't been declared!", methodName, id.v)
             );
         }
-    }
-
-    @Override
-    public Object resolve_value() {
-        return null;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class PrimitiveType implements IType {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
 
     }
 

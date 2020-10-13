@@ -25,10 +25,11 @@ public class Print  implements IStatement {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         for (var exp: expressions) {
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            exp.emit(cw, mv, methodName);
+
+            exp.emit(cw, mv, methodName, maxDepth);
             String desc = "(" + exp.resolve_type(methodName) + ")V";
             mv.visitMethodInsn(INVOKEVIRTUAL,
                     "java/io/PrintStream",

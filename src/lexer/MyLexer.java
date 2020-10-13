@@ -426,7 +426,7 @@ public class MyLexer implements YYParser.Lexer {
             case FALSE -> lval = new BooleanLiteral(false);
             default -> lval = new ILexem() {
                 @Override
-                public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+                public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
 
                 }
 

@@ -33,12 +33,12 @@ public class RoutineDeclaration implements IDeclaration {
     }
 
     @Override
-    public void emit(ClassWriter cw, MethodVisitor mv, String methodName) {
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
         StringBuilder descriptor = new StringBuilder("(");
         String name = this.name.v.equals("main") ? this.name.v + "_" : this.name.v;
         for (var param : params) {
             descriptor.append(param.type.resolve());
-            param.emit(cw, mv, name);
+            param.emit(cw, mv, name, maxDepth);
         }
         descriptor.append(")");
         descriptor.append(returnType == null ? "V" : returnType.resolve());
@@ -51,12 +51,12 @@ public class RoutineDeclaration implements IDeclaration {
                 new String[0]
         );
         for (var statement: body) {
-            statement.emit(cw, new_method, name);
+            statement.emit(cw, new_method, name, maxDepth);
         }
         if (returnType == null) {
             new_method.visitInsn(RETURN);
         }
-        new_method.visitMaxs(100, 100);
+        new_method.visitMaxs(-1, -1);
         new_method.visitEnd();
 
     }
