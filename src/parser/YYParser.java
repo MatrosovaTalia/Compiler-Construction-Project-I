@@ -38,7 +38,6 @@ package parser;
 
 
 
-import java.text.MessageFormat;
 /* "%code imports" blocks.  */
 /* "smallgrammar.y":14  */
 
@@ -47,7 +46,7 @@ import java.text.MessageFormat;
 import lexer.*;
 import reader.Reader;
 import simple.*;
-import java.util.ArrayList;
+import simple.expression.*;
 
 /* "YYParser.java":53  */
 
@@ -871,10 +870,10 @@ public class YYParser
   break;
 
 
-  case 20: /* BodyDeclaration: SimpleDeclaration  */
+  case 20: /* BodyDeclaration: VariableDeclaration  */
   if (yyn == 20)
     /* "smallgrammar.y":173  */
-                        {yyval = ((IDeclaration)(yystack.valueAt (0)));};
+                          {yyval = new LocalVariableDeclaration(((VariableDeclaration)(yystack.valueAt (0))));};
   break;
 
 
@@ -1063,98 +1062,98 @@ public class YYParser
   case 47: /* Expression: Expression PLUS Expression  */
   if (yyn == 47)
     /* "smallgrammar.y":233  */
-                                 {yyval = new BinaryExpression("PLUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                 {yyval = new PlusOperation("PLUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 48: /* Expression: Expression MINUS Expression  */
   if (yyn == 48)
     /* "smallgrammar.y":234  */
-                                  {yyval = new BinaryExpression("MINUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                  {yyval = new MinusOperation("MINUS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 49: /* Expression: Expression MULTIPLY Expression  */
   if (yyn == 49)
     /* "smallgrammar.y":235  */
-                                     {yyval = new BinaryExpression("MULTIPLY", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                     {yyval = new MultiplyOperation("MULTIPLY", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 50: /* Expression: Expression DIVIDE Expression  */
   if (yyn == 50)
     /* "smallgrammar.y":236  */
-                                   {yyval = new BinaryExpression("DIVIDE", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                   {yyval = new DivideOperation("DIVIDE", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 51: /* Expression: Expression REMAINDER Expression  */
   if (yyn == 51)
     /* "smallgrammar.y":237  */
-                                      {yyval = new BinaryExpression("REMAINDER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                      {yyval = new RemainderOperation("REMAINDER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 52: /* Expression: Expression AND Expression  */
   if (yyn == 52)
     /* "smallgrammar.y":238  */
-                                {yyval = new BinaryExpression("AND", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                {yyval = new AndOperation("AND", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 53: /* Expression: Expression OR Expression  */
   if (yyn == 53)
     /* "smallgrammar.y":239  */
-                               {yyval = new BinaryExpression("OR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                               {yyval = new OrOperation("OR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 54: /* Expression: Expression XOR Expression  */
   if (yyn == 54)
     /* "smallgrammar.y":240  */
-                                 {yyval = new BinaryExpression("XOR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                 {yyval = new XorOperation("XOR", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 55: /* Expression: Expression LESS Expression  */
   if (yyn == 55)
     /* "smallgrammar.y":241  */
-                                 {yyval = new BinaryExpression("LESS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                 {yyval = new LessOperation("LESS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 56: /* Expression: Expression GREATER Expression  */
   if (yyn == 56)
     /* "smallgrammar.y":242  */
-                                    {yyval = new BinaryExpression("GREATER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new GreaterOperation("GREATER", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 57: /* Expression: Expression LEQUALS Expression  */
   if (yyn == 57)
     /* "smallgrammar.y":243  */
-                                    {yyval = new BinaryExpression("LEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new LEqualsOperation("LEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 58: /* Expression: Expression GEQUALS Expression  */
   if (yyn == 58)
     /* "smallgrammar.y":244  */
-                                    {yyval = new BinaryExpression("GEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new GEqualsOperation("GEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 59: /* Expression: Expression EQUALS Expression  */
   if (yyn == 59)
     /* "smallgrammar.y":245  */
-                                   {yyval = new BinaryExpression("EQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                   {yyval = new EqualsOperation("EQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
   case 60: /* Expression: Expression NEQUALS Expression  */
   if (yyn == 60)
     /* "smallgrammar.y":246  */
-                                    {yyval = new BinaryExpression("NEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
+                                    {yyval = new NotEqualsOperation("NEQUALS", ((IExpression)(yystack.valueAt (2))), ((IExpression)(yystack.valueAt (0))));};
   break;
 
 
@@ -1684,7 +1683,7 @@ public class YYParser
     return yyvalue == yytable_ninf_;
   }
 
-  private static final short yypact_ninf_ = -94;
+  private static final short yypact_ninf_ = -88;
   private static final short yytable_ninf_ = -1;
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -1694,23 +1693,23 @@ public class YYParser
   {
     return new short[]
     {
-       2,     3,     3,     3,    23,   -94,     2,   -94,   -94,   -94,
-     -94,   -94,    15,     5,   -18,   -94,   -94,    82,   151,   151,
-       3,   -94,   -94,   -94,   -94,    82,   -94,   231,   -94,    35,
-      53,   -94,   -94,   -94,    26,    16,   -94,   -94,   -94,   -94,
-      33,    46,    45,    55,   259,    82,    82,    82,   -94,    82,
-      82,    82,    82,    82,    82,    82,    82,    82,    82,    82,
-     -94,    82,    82,     3,   -94,    53,    88,    82,    82,   -94,
-     -94,    38,     3,   151,   -94,   175,   175,   175,   -94,   -94,
-     -94,   -94,   -94,   -94,   245,   245,    84,    84,    84,    67,
-     287,   315,    61,   -94,   -94,   343,   231,   237,   151,   -94,
-     -94,   -94,    82,    61,   -94,   151,   -94,    82,     3,    82,
-      59,    82,   -94,    93,   237,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,    63,    97,   -94,   -94,   -94,    96,    89,
-     186,    82,   413,   -94,   -94,    82,   237,   237,   195,   237,
-      77,   413,   104,   106,    82,   357,    -2,   -94,   -94,   -94,
-     385,    82,   -94,   237,    82,   132,   108,   144,   237,   -94,
-     237,   109,   113,   -94,   -94
+      98,    18,    18,    18,    48,   -88,    98,   -88,   -88,   -88,
+     -88,   -88,     7,    47,    24,   -88,   -88,   108,   168,   168,
+      18,   -88,   -88,   -88,   -88,   108,   -88,   210,   -88,   -27,
+      52,   -88,   -88,   -88,    25,    -6,   -88,   -88,   -88,   -88,
+      29,    36,    26,    39,   238,   108,   108,   108,   -88,   108,
+     108,   108,   108,   108,   108,   108,   108,   108,   108,   108,
+     -88,   108,   108,    18,   -88,    52,    65,   108,   108,   -88,
+     -88,    15,    18,   168,   -88,   174,   174,   174,   -88,   -88,
+     -88,   -88,   -88,   -88,   224,   224,   252,   252,   252,    45,
+     266,   294,    13,   -88,   -88,   322,   210,    66,   168,   -88,
+     -88,   -88,   108,    13,   -88,   168,   -88,   108,    18,   108,
+      59,   108,   -88,    75,    66,   -88,   -88,   -88,   -88,   -88,
+     -88,   -88,   -88,    56,    85,   -88,   -88,   -88,   102,    82,
+     182,   108,   392,   -88,   -88,   108,    66,    66,   183,    66,
+      69,   392,    99,   105,   108,   336,    -1,   -88,   -88,   -88,
+     364,   108,   -88,    66,   108,   114,   115,   150,    66,   -88,
+      66,   119,   122,   -88,   -88
     };
   }
 
@@ -1748,9 +1747,9 @@ public class YYParser
   {
     return new byte[]
     {
-     -94,   -94,   127,   -94,    58,   -13,   -94,   -94,    64,   -94,
-     -57,   -94,   -94,   -94,   -93,   -94,   -94,   -94,   -94,   -94,
-     -55,   -17,   -28,   -14,   -94,   -94,    70,   -94,   -83,   -79,
+     -88,   -88,   103,   -88,   -88,    16,   -88,   -88,    53,   -88,
+     -36,   -88,   -88,   -88,   -83,   -88,   -88,   -88,   -88,   -88,
+     -87,   -17,   -29,   -14,   -88,   -88,    54,   -88,   -71,   -79,
        0
     };
   }
@@ -1761,7 +1760,7 @@ public class YYParser
   {
     return new byte[]
     {
-      -1,     4,     5,     6,   112,     8,     9,    10,    41,    42,
+      -1,     4,     5,     6,     7,   112,     9,    10,    41,    42,
      113,   114,   115,   116,    26,   118,   119,   120,   121,   122,
       89,    90,    60,    35,    36,    37,    66,    38,    28,    64,
       29
@@ -1776,53 +1775,51 @@ public class YYParser
   {
     return new short[]
     {
-      27,    12,    13,    14,   117,    40,    11,    69,    44,   152,
-       1,     2,    70,   104,   123,    19,    20,    65,    39,    39,
-      43,   117,   153,    15,   126,    17,    68,     3,    75,    76,
-      77,   123,    78,    79,    80,    81,    82,    83,    84,    85,
-      86,    87,    88,   117,   117,    91,   117,   125,    97,    48,
-      95,    96,    65,   123,   123,    18,   123,   134,     7,   100,
-     117,     1,    67,    92,     7,   117,    48,   117,   106,    61,
-     123,    62,    43,    39,    63,   123,   140,   123,    98,   142,
-     143,    71,   146,    72,   124,    11,    21,    22,    23,    24,
-     128,   127,   130,   131,   132,    73,   156,    62,    39,    94,
-      63,   161,   101,   162,   133,    39,   135,   136,   129,   138,
-      45,    46,   147,    47,   137,   148,    25,   149,   141,   159,
-     163,   145,    45,    46,   164,    47,    49,   150,    50,    51,
-      52,    53,    54,    16,   155,    93,    99,   157,    49,     0,
-      50,    51,    52,    53,    54,    55,    56,    57,    58,    59,
-     158,     0,     0,     0,    11,     0,     0,     0,    45,    46,
-       0,    47,   160,    30,    31,    32,    33,    34,     0,     0,
-      45,    46,     0,    47,    49,     0,    50,    51,    52,    53,
+      27,    12,    13,    14,    68,    40,    69,    61,    44,    62,
+     152,    70,    63,   104,   117,   125,     8,    17,    39,    39,
+      43,    11,     8,   153,   126,    97,   123,    48,    75,    76,
+      77,   117,    78,    79,    80,    81,    82,    83,    84,    85,
+      86,    87,    88,   123,   140,    91,    65,    18,    15,    62,
+      95,    96,    63,   117,   117,    98,   117,    19,    20,   100,
+       1,    67,    48,    92,    72,   123,   123,   106,   123,    11,
+     117,    71,    43,    39,     1,   117,    94,   117,   134,    73,
+     101,    65,   123,   107,   124,   108,   133,   123,   109,   123,
+     128,   127,   130,   131,   132,   136,   110,   111,    39,   135,
+     142,   143,   138,   146,   147,    39,     1,     2,   129,    16,
+     148,    11,    21,    22,    23,    24,   149,   156,   141,    93,
+     137,   145,   161,     3,   162,    99,   159,   150,    45,    46,
+     163,    47,   158,   164,   155,     0,     0,   157,     0,     0,
+      45,    46,    25,    47,    49,     0,    50,    51,    52,    53,
       54,    55,    56,    57,    58,    59,    49,     0,    50,    51,
-      52,    53,    54,    55,    56,    57,    58,    59,    11,    21,
-      22,    23,    24,     0,     0,     0,     0,     0,     0,   139,
-       0,     0,    45,    46,     0,    47,   144,    49,     0,    50,
-      51,    52,    53,    54,     0,     0,     0,     0,    49,    25,
+      52,    53,    54,    55,    56,    57,    58,    59,   160,     0,
+       0,    11,     0,     0,     0,     0,    45,    46,     0,    47,
+      30,    31,    32,    33,    34,     0,    11,    21,    22,    23,
+      24,     0,    49,     0,    50,    51,    52,    53,    54,    55,
+      56,    57,    58,    59,   144,   139,     0,     0,    45,    46,
+       0,    47,     0,     0,     0,     0,    49,    25,    50,    51,
+      52,    53,    54,     0,    49,     0,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    59,    45,    46,     0,    47,
+       0,     0,     0,    48,     0,     0,     0,     0,     0,     0,
+      45,    46,    49,    47,    50,    51,    52,    53,    54,    55,
+      56,    57,    58,    59,    45,    46,    49,    47,    50,    51,
+      52,    53,    54,    74,     0,    57,    58,    59,    45,    46,
+      49,    47,    50,    51,    52,    53,    54,    55,    56,    57,
+      58,    59,    45,    46,    49,    47,    50,    51,    52,    53,
+      54,     0,     0,     0,   102,     0,     0,     0,    49,     0,
       50,    51,    52,    53,    54,    55,    56,    57,    58,    59,
-      11,     0,     0,     0,     0,     1,     2,     0,     0,     0,
-       0,     0,     0,     0,   107,     0,   108,    45,    46,   109,
-      47,     0,     0,     0,    48,     0,     0,   110,   111,     0,
-       0,    45,    46,    49,    47,    50,    51,    52,    53,    54,
-      55,    56,    57,    58,    59,    45,    46,    49,    47,    50,
-      51,    52,    53,    54,    74,     0,    57,    58,    59,     0,
-       0,    49,     0,    50,    51,    52,    53,    54,    55,    56,
-      57,    58,    59,    45,    46,     0,    47,     0,     0,     0,
-       0,     0,     0,     0,     0,   102,     0,     0,     0,    49,
-       0,    50,    51,    52,    53,    54,    55,    56,    57,    58,
-      59,    45,    46,     0,    47,     0,     0,     0,     0,     0,
-       0,     0,   103,     0,     0,     0,     0,    49,     0,    50,
-      51,    52,    53,    54,    55,    56,    57,    58,    59,    45,
-      46,     0,    47,     0,     0,     0,     0,     0,     0,     0,
-     105,     0,     0,    45,    46,    49,    47,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    59,     0,   151,    49,
-       0,    50,    51,    52,    53,    54,    55,    56,    57,    58,
-      59,    45,    46,     0,    47,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,   154,    49,     0,    50,
-      51,    52,    53,    54,    55,    56,    57,    58,    59,    45,
-      46,     0,    47,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    49,     0,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    59
+      45,    46,     0,    47,     0,     0,     0,     0,     0,     0,
+       0,   103,     0,     0,     0,     0,    49,     0,    50,    51,
+      52,    53,    54,    55,    56,    57,    58,    59,    45,    46,
+       0,    47,     0,     0,     0,     0,     0,     0,     0,   105,
+       0,     0,    45,    46,    49,    47,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    59,     0,   151,    49,     0,
+      50,    51,    52,    53,    54,    55,    56,    57,    58,    59,
+      45,    46,     0,    47,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,   154,    49,     0,    50,    51,
+      52,    53,    54,    55,    56,    57,    58,    59,    45,    46,
+       0,    47,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    49,     0,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    59
     };
   }
 
@@ -1831,53 +1828,51 @@ private static final short[] yycheck_ = yycheck_init();
   {
     return new short[]
     {
-      17,     1,     2,     3,    97,    19,     3,    35,    25,    11,
-       8,     9,    40,    92,    97,    10,    34,    30,    18,    19,
-      20,   114,    24,     0,   103,    10,    10,    25,    45,    46,
+      17,     1,     2,     3,    10,    19,    35,    34,    25,    36,
+      11,    40,    39,    92,    97,   102,     0,    10,    18,    19,
+      20,     3,     6,    24,   103,    10,    97,    33,    45,    46,
       47,   114,    49,    50,    51,    52,    53,    54,    55,    56,
-      57,    58,    59,   136,   137,    62,   139,   102,    10,    33,
-      67,    68,    65,   136,   137,    40,   139,   114,     0,    73,
-     153,     8,    36,    63,     6,   158,    33,   160,    96,    34,
-     153,    36,    72,    73,    39,   158,   131,   160,    40,   136,
-     137,    35,   139,    38,    98,     3,     4,     5,     6,     7,
-     107,   105,   109,    34,   111,    40,   153,    36,    98,    11,
-      39,   158,    35,   160,    11,   105,    43,    10,   108,    20,
-      26,    27,    35,    29,    18,    11,    34,    11,   135,    11,
-      11,   138,    26,    27,    11,    29,    42,   144,    44,    45,
-      46,    47,    48,     6,   151,    65,    72,   154,    42,    -1,
-      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
-      18,    -1,    -1,    -1,     3,    -1,    -1,    -1,    26,    27,
-      -1,    29,    18,    12,    13,    14,    15,    16,    -1,    -1,
-      26,    27,    -1,    29,    42,    -1,    44,    45,    46,    47,
+      57,    58,    59,   114,   131,    62,    30,    40,     0,    36,
+      67,    68,    39,   136,   137,    40,   139,    10,    34,    73,
+       8,    36,    33,    63,    38,   136,   137,    96,   139,     3,
+     153,    35,    72,    73,     8,   158,    11,   160,   114,    40,
+      35,    65,   153,    17,    98,    19,    11,   158,    22,   160,
+     107,   105,   109,    34,   111,    10,    30,    31,    98,    43,
+     136,   137,    20,   139,    35,   105,     8,     9,   108,     6,
+      11,     3,     4,     5,     6,     7,    11,   153,   135,    65,
+      18,   138,   158,    25,   160,    72,    11,   144,    26,    27,
+      11,    29,    18,    11,   151,    -1,    -1,   154,    -1,    -1,
+      26,    27,    34,    29,    42,    -1,    44,    45,    46,    47,
       48,    49,    50,    51,    52,    53,    42,    -1,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    53,     3,     4,
-       5,     6,     7,    -1,    -1,    -1,    -1,    -1,    -1,    23,
-      -1,    -1,    26,    27,    -1,    29,    21,    42,    -1,    44,
-      45,    46,    47,    48,    -1,    -1,    -1,    -1,    42,    34,
+      46,    47,    48,    49,    50,    51,    52,    53,    18,    -1,
+      -1,     3,    -1,    -1,    -1,    -1,    26,    27,    -1,    29,
+      12,    13,    14,    15,    16,    -1,     3,     4,     5,     6,
+       7,    -1,    42,    -1,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    21,    23,    -1,    -1,    26,    27,
+      -1,    29,    -1,    -1,    -1,    -1,    42,    34,    44,    45,
+      46,    47,    48,    -1,    42,    -1,    44,    45,    46,    47,
+      48,    49,    50,    51,    52,    53,    26,    27,    -1,    29,
+      -1,    -1,    -1,    33,    -1,    -1,    -1,    -1,    -1,    -1,
+      26,    27,    42,    29,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    26,    27,    42,    29,    44,    45,
+      46,    47,    48,    35,    -1,    51,    52,    53,    26,    27,
+      42,    29,    44,    45,    46,    47,    48,    49,    50,    51,
+      52,    53,    26,    27,    42,    29,    44,    45,    46,    47,
+      48,    -1,    -1,    -1,    38,    -1,    -1,    -1,    42,    -1,
       44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
-       3,    -1,    -1,    -1,    -1,     8,     9,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    17,    -1,    19,    26,    27,    22,
-      29,    -1,    -1,    -1,    33,    -1,    -1,    30,    31,    -1,
-      -1,    26,    27,    42,    29,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    53,    26,    27,    42,    29,    44,
-      45,    46,    47,    48,    35,    -1,    51,    52,    53,    -1,
-      -1,    42,    -1,    44,    45,    46,    47,    48,    49,    50,
-      51,    52,    53,    26,    27,    -1,    29,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    38,    -1,    -1,    -1,    42,
-      -1,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-      53,    26,    27,    -1,    29,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    37,    -1,    -1,    -1,    -1,    42,    -1,    44,
-      45,    46,    47,    48,    49,    50,    51,    52,    53,    26,
-      27,    -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      37,    -1,    -1,    26,    27,    42,    29,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    -1,    41,    42,
-      -1,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-      53,    26,    27,    -1,    29,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    41,    42,    -1,    44,
-      45,    46,    47,    48,    49,    50,    51,    52,    53,    26,
-      27,    -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    42,    -1,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53
+      26,    27,    -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    37,    -1,    -1,    -1,    -1,    42,    -1,    44,    45,
+      46,    47,    48,    49,    50,    51,    52,    53,    26,    27,
+      -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    37,
+      -1,    -1,    26,    27,    42,    29,    44,    45,    46,    47,
+      48,    49,    50,    51,    52,    53,    -1,    41,    42,    -1,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      26,    27,    -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    41,    42,    -1,    44,    45,
+      46,    47,    48,    49,    50,    51,    52,    53,    26,    27,
+      -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    42,    -1,    44,    45,    46,    47,
+      48,    49,    50,    51,    52,    53
     };
   }
 
@@ -1899,7 +1894,7 @@ private static final short[] yycheck_ = yycheck_init();
       75,    75,    75,    75,    75,    75,    75,    75,    75,    74,
       75,    75,    84,    80,    11,    75,    75,    10,    40,    62,
       77,    35,    38,    37,    83,    37,    76,    17,    19,    22,
-      30,    31,    58,    64,    65,    66,    67,    68,    69,    70,
+      30,    31,    59,    64,    65,    66,    67,    68,    69,    70,
       71,    72,    73,    82,    77,    74,    83,    77,    75,    84,
       75,    34,    75,    11,    64,    43,    10,    18,    20,    23,
       74,    75,    64,    64,    21,    75,    64,    35,    11,    11,
@@ -2035,7 +2030,7 @@ private static final short[] yycheck_ = yycheck_init();
   }
 
 
-  private static final int YYLAST_ = 466;
+  private static final int YYLAST_ = 445;
   private static final int YYEMPTY_ = -2;
   private static final int YYFINAL_ = 15;
   private static final int YYNTOKENS_ = 54;
@@ -2044,11 +2039,11 @@ private static final short[] yycheck_ = yycheck_init();
 /* "smallgrammar.y":23  */
 
     private static Declarations ast;
-    public static Declarations makeAST(String i) {
+    public static Declarations makeAST(String source) {
         ast = new Declarations();
         MyLexer lexer = new MyLexer();
         Reader reader = new Reader();
-        reader.read("tests/" + i + ".txt");
+        reader.read(source);
         lexer.tokenize(reader.sourceText);
         YYParser parser = new YYParser(lexer);
         if (!parser.parse()) {
@@ -2057,7 +2052,7 @@ private static final short[] yycheck_ = yycheck_init();
         return ast;
     }
 
-/* "YYParser.java":2061  */
+/* "YYParser.java":2057  */
 
 }
 /* "smallgrammar.y":300  */

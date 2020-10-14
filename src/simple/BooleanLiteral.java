@@ -1,6 +1,9 @@
 package simple;
 
-import simple.IExpression;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
+import static org.objectweb.asm.Opcodes.*;
 
 public class BooleanLiteral implements IExpression {
     public final boolean v;
@@ -14,5 +17,20 @@ public class BooleanLiteral implements IExpression {
         return "BooleanLiteral{" +
                 "v=" + v +
                 '}';
+    }
+
+    @Override
+    public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
+        if (v) {
+            mv.visitInsn(ICONST_1);
+        }
+        else {
+            mv.visitInsn(ICONST_0);
+        }
+    }
+
+    @Override
+    public String resolve_type(String methodName) {
+        return "Z";
     }
 }

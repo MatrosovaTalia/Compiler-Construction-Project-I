@@ -1,0 +1,14 @@
+routine main(argc: integer) is
+
+    var d: array[5] integer
+
+    for i in 0 .. d.length loop
+        d[i] := i
+    end
+
+    for i in reverse d.length-1 .. 0-1 loop
+        print(d[i])
+    end
+
+
+end

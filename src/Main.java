@@ -1,14 +1,18 @@
 import lexer.MyLexer;
 import lexer.Token;
 import lexer.TokenType;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import parser.YYParser;
 import reader.Reader;
-import parser.*;
 import simple.Declarations;
-import simple.Identifier;
-import simple.Operation;
 
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
+
+import static org.objectweb.asm.Opcodes.*;
 
 public class Main {
     private static void testNToFile(int n) {
@@ -37,27 +41,49 @@ public class Main {
 
 
     public static void main(String[] args) {
+        String fib = "tests/fibonacci.txt";
+        String fact = "tests/factorial.txt";
 
 //         testNToFile(18);
 //        Reader reader = new Reader();
 //        MyLexer myLexer = new MyLexer();
 
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        cw.visit(V14, ACC_PUBLIC,
+                "MetaMain", null, "java/lang/Object", null);
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main",
+                "([Ljava/lang/String;)V", null, null);
 
-        Declarations ast = YYParser.makeAST("17");
-
-//        Identifier id = new Identifier("id1");
-//        System.out.println(id);
-//
-//        System.out.println( Operation.valueOf("PLUS"));
+        Declarations ast = YYParser.makeAST("tests/selection_sort.txt");
 
 
 
         System.out.println("Is Ast built?    "+ Boolean.toString(ast != null) + '\n');
-        for (int i = 0; i < ast.size(); i++){
-            System.out.println(ast.get(i));
-
+        assert ast != null;
+        Collections.reverse(ast);
+        for (var decl : ast) {
+            try {
+                System.out.println(decl);
+                decl.emit(cw, mv, "main", 0);
+            }
+            catch (RuntimeException e) {
+                System.out.println(e.getStackTrace());
+            }
         }
+        mv.visitInsn(ICONST_0);
+        mv.visitMethodInsn(INVOKESTATIC, "MetaMain", "main_", "(I)V", false);
+        mv.visitInsn(RETURN);
+        mv.visitMaxs(-1, -1);
+        mv.visitEnd();
+        cw.visitEnd();
 
+        byte[] b = cw.toByteArray();
+        String class_name = "MetaMain.class";
+        try (FileOutputStream stream = new FileOutputStream(class_name)) {
+            stream.write(b);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

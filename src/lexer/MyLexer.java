@@ -1,7 +1,8 @@
 package lexer;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import simple.*;
-import misc.Pair;
 import parser.YYParser;
 import parser.YYParser.*;
 import java.math.BigDecimal;
@@ -425,6 +426,11 @@ public class MyLexer implements YYParser.Lexer {
             case FALSE -> lval = new BooleanLiteral(false);
             default -> lval = new ILexem() {
                 @Override
+                public void emit(ClassWriter cw, MethodVisitor mv, String methodName, int maxDepth) {
+
+                }
+
+                @Override
                 public int hashCode() {
                     return super.hashCode();
                 }
@@ -448,6 +454,8 @@ public class MyLexer implements YYParser.Lexer {
                 protected void finalize() throws Throwable {
                     super.finalize();
                 }
+
+
             };
         }
         return lval;

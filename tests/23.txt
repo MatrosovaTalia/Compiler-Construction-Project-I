@@ -5,6 +5,7 @@ end
 routine do_add(v: integer, u: integer) : integer is
     add(true, false)
     c := 9
+    print(c)
     return 0
 
 end

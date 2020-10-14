@@ -1,0 +1,37 @@
+routine min(a: array[5] integer, s: integer) : integer is
+    var m is a[s]
+    var ind is s
+    for i in s .. a.length loop
+        if a[i] < m then
+            m := a[i]
+            ind := i
+        end
+    end
+    return ind
+end
+
+routine selection_sort(arr: array[5] integer) is
+    for i in 0 .. arr.length loop
+        var tmp is arr[i]
+        var index is min(arr, i)
+        arr[i] := arr[index]
+        arr[index] := tmp
+    end
+
+    print(arr[0], arr[1], arr[2], arr[3], arr[4])
+end
+
+
+routine main(argc: integer) is
+    var d: array[5] integer
+    var k is 5
+    d[0] := 5
+    d[1] := 3
+    d[2] := 7
+    d[3] := 1
+    d[4] := 4
+
+    print(d[0], d[1], d[2], d[3], d[4])
+
+    selection_sort(d)
+end
