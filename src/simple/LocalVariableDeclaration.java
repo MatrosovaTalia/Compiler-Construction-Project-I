@@ -1,6 +1,6 @@
 package simple;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
@@ -85,7 +85,7 @@ public class LocalVariableDeclaration implements IDeclaration {
         }
     }
 
-    static void castIfNecessary(MethodVisitor mv, String methodName, String varName, @NotNull String expectedType, String givenType) {
+    static void castIfNecessary(MethodVisitor mv, String methodName, String varName, String expectedType, String givenType) {
         if (expectedType.equals("I") && givenType.equals("F")) {
             mv.visitInsn(F2I)              ;
         } else if (expectedType.equals("F") && givenType.equals("I")) {

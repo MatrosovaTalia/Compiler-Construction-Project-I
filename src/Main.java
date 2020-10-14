@@ -41,6 +41,8 @@ public class Main {
 
 
     public static void main(String[] args) {
+        String fib = "tests/fibonacci.txt";
+        String fact = "tests/factorial.txt";
 
 //         testNToFile(18);
 //        Reader reader = new Reader();
@@ -52,7 +54,7 @@ public class Main {
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main",
                 "([Ljava/lang/String;)V", null, null);
 
-        Declarations ast = YYParser.makeAST("tests/25.txt");
+        Declarations ast = YYParser.makeAST("tests/selection_sort.txt");
 
 
 

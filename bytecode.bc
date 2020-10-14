@@ -1,0 +1,195 @@
+public class MetaMain {
+  public static void main(java.lang.String[]);
+    Code:
+       0: iconst_0
+       1: invokestatic  #42                 // Method main_:(I)V
+       4: return
+
+  public static int min(int[], int);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: iaload
+       3: istore_2
+       4: iload_1
+       5: istore_3
+       6: iload_1
+       7: istore        4
+       9: aload_0
+      10: arraylength
+      11: istore        5
+      13: iload         4
+      15: iload         5
+      17: if_icmpge     58
+      20: aload_0
+      21: iload         4
+      23: iaload
+      24: i2f
+      25: iload_2
+      26: i2f
+      27: fcmpg
+      28: ldc           #9                  // int -1
+      30: if_icmpeq     37
+      33: iconst_0
+      34: goto          38
+      37: iconst_1
+      38: ifeq          52
+      41: aload_0
+      42: iload         4
+      44: iaload
+      45: istore_2
+      46: iload         4
+      48: istore_3
+      49: goto          52
+      52: iinc          4, 1
+      55: goto          13
+      58: iload_3
+      59: ireturn
+
+  public static void selection_sort(int[]);
+    Code:
+       0: iconst_0
+       1: istore_1
+       2: aload_0
+       3: arraylength
+       4: istore_2
+       5: iload_1
+       6: iload_2
+       7: if_icmpge     39
+      10: aload_0
+      11: iload_1
+      12: iaload
+      13: istore_3
+      14: aload_0
+      15: iload_1
+      16: invokestatic  #15                 // Method min:([II)I
+      19: istore        4
+      21: aload_0
+      22: iload_1
+      23: aload_0
+      24: iload         4
+      26: iaload
+      27: iastore
+      28: aload_0
+      29: iload         4
+      31: iload_3
+      32: iastore
+      33: iinc          1, 1
+      36: goto          5
+      39: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      42: aload_0
+      43: iconst_0
+      44: iaload
+      45: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      48: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      51: ldc           #29                 // String
+      53: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      56: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      59: aload_0
+      60: iconst_1
+      61: iaload
+      62: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      65: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      68: ldc           #29                 // String
+      70: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      73: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      76: aload_0
+      77: iconst_2
+      78: iaload
+      79: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      82: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      85: ldc           #29                 // String
+      87: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      90: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      93: aload_0
+      94: iconst_3
+      95: iaload
+      96: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      99: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     102: ldc           #29                 // String
+     104: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+     107: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     110: aload_0
+     111: iconst_4
+     112: iaload
+     113: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+     116: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     119: ldc           #29                 // String
+     121: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+     124: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     127: invokevirtual #36                 // Method java/io/PrintStream.println:()V
+     130: return
+
+  public static void main_(int);
+    Code:
+       0: iconst_5
+       1: newarray       int
+       3: astore_1
+       4: iconst_5
+       5: istore_2
+       6: aload_1
+       7: iconst_0
+       8: iconst_5
+       9: iastore
+      10: aload_1
+      11: iconst_1
+      12: iconst_3
+      13: iastore
+      14: aload_1
+      15: iconst_2
+      16: ldc           #38                 // int 7
+      18: iastore
+      19: aload_1
+      20: iconst_3
+      21: iconst_1
+      22: iastore
+      23: aload_1
+      24: iconst_4
+      25: iconst_4
+      26: iastore
+      27: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      30: aload_1
+      31: iconst_0
+      32: iaload
+      33: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      36: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      39: ldc           #29                 // String
+      41: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      44: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      47: aload_1
+      48: iconst_1
+      49: iaload
+      50: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      53: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      56: ldc           #29                 // String
+      58: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      61: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      64: aload_1
+      65: iconst_2
+      66: iaload
+      67: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      70: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      73: ldc           #29                 // String
+      75: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      78: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      81: aload_1
+      82: iconst_3
+      83: iaload
+      84: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+      87: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      90: ldc           #29                 // String
+      92: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      95: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      98: aload_1
+      99: iconst_4
+     100: iaload
+     101: invokevirtual #27                 // Method java/io/PrintStream.print:(I)V
+     104: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     107: ldc           #29                 // String
+     109: invokevirtual #32                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+     112: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     115: invokevirtual #36                 // Method java/io/PrintStream.println:()V
+     118: aload_1
+     119: invokestatic  #40                 // Method selection_sort:([I)V
+     122: return
+}
