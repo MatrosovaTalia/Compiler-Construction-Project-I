@@ -1,5 +1,5 @@
 # Compiler-Construction-Project-I
-By a team **"Mikhail with girls"**: Natalia Matrosova, Mikhail Olokin, Alisa Martyanova and Alena Zavideeva 
+By a team **"Girls with Mikhail"**: Natalia Matrosova, Mikhail Olokin, Alisa Martyanova and Alena Zavideeva 
 
 ### Code
 All the code is located in the `src` folder. Ast classes are located in src/simple package. Bytecode is generated for each node of AST in emit function and combined in root node.
